@@ -1,0 +1,84 @@
+﻿@model LuanVan.Data.Chiendich
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Chỉnh Sửa</h1>
+
+<h4>Chiến Dịch</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MaCd" />
+            <div class="form-group">
+                <label asp-for="TenCd" class="control-label">Tên Chiến Dịch</label>
+                <input asp-for="TenCd" class="form-control" />
+                <span asp-validation-for="TenCd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ngaybatdau" class="control-label">Ngày bắt đầu</label>
+                <input asp-for="Ngaybatdau" class="form-control" />
+                <span asp-validation-for="Ngaybatdau" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ngayketthuc" class="control-label">Ngày kết thúc</label>
+                <input asp-for="Ngayketthuc" class="form-control" />
+                <span asp-validation-for="Ngayketthuc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NoidungCd" class="control-label">Nội dung</label>
+                <textarea asp-for="NoidungCd" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                @*<input asp-for="NoidungCd" type="text"  class="form-control" />*@
+                <span asp-validation-for="NoidungCd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AnhCd" class="control-label">Chọn ảnh:</label>
+                <input asp-for="AnhCd" type="file" id="fileImage" class="form-control-file" name="file">
+                <span asp-validation-for="AnhCd" class="text-danger"></span>
+
+                <br />
+
+                <img id="preview" src="#" width="150" height="100" class="hidden" />
+            </div>
+            <div class="form-group">
+                <label asp-for="MaTv" class="control-label">Người chịu trách nhiệm</label>
+                <select asp-for="MaTv" class="form-control" asp-items="ViewBag.MaTv"></select>
+                <span asp-validation-for="MaTv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaNoi" class="control-label">Nơi hỗ trợ</label>
+                <select asp-for="MaNoi" class="form-control" asp-items="ViewBag.MaNoi"></select>
+                <span asp-validation-for="MaNoi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    preview.src = "@Url.Content("~/Content/images/chiendich/"+Model.AnhCd)";
+    fileImage.onchange = evt => {
+
+        const [file] = fileImage.files
+
+        if (file) {
+
+            preview.src = URL.createObjectURL(file);
+
+            $("#preview").removeClass("hidden");
+
+        }
+
+    }
+
+
+</script>
+<div>
+    <a asp-action="Index">Về danh sách</a>
+</div>
+

@@ -1,0 +1,66 @@
+﻿@model IEnumerable<LuanVan.Data.Manhthuongquan>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.HotenMtq)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgaysinhMtq)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GioitinhMtq)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DonviTochucMtq)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SdtMtq)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiachiMtq)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.HotenMtq)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgaysinhMtq)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GioitinhMtq)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DonviTochucMtq)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SdtMtq)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiachiMtq)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MaMtq">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MaMtq">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MaMtq">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

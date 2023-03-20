@@ -1,0 +1,146 @@
+﻿@model IEnumerable<LuanVan.Data.Chiendich>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    h1 {
+        font-family: Arial, sans-serif;
+        font-size: 24px;
+    }
+
+    /* Thiết lập màu nền và khoảng cách cho thẻ p */
+    p {
+        background-color: #f2f2f2;
+        padding: 10px;
+    }
+
+    /* Thiết lập kiểu cho bảng */
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+    }
+
+        /* Thiết lập màu nền và kiểu cho tiêu đề bảng */
+        .table thead {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Thiết lập màu nền và kiểu cho từng hàng trong bảng */
+        .table tr {
+            background-color: #ffffff;
+        }
+
+    .table-heading {
+        text-align: center;
+    }
+    /* Thiết lập kiểu cho các ô trong bảng */
+    .table td, .table th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+
+    /* Thiết lập kiểu cho các liên kết */
+    a {
+        color: #337ab7;
+        text-decoration: none;
+    }
+
+        /* Thiết lập kiểu cho liên kết khi rê chuột vào */
+        a:hover {
+            text-decoration: underline;
+        }
+
+    .btn {
+        align-items: center;
+        margin: 5px;
+    }
+</style>
+<h1 class="page-title">Quản Lý Chiến Dịch</h1>
+
+<p class="create-link">
+    <a class="btn btn-primary" asp-action="Create">Tạo Chiến Dịch Mới</a>
+</p>
+
+<table class="table" ">
+    <thead>
+        <tr>
+            <th >
+                Ảnh
+            </th>
+            <th >
+                Tên chiến dịch
+            </th>
+
+            <th >
+                Ngày bắt đầu
+            </th>
+            <th >
+                Ngày kết thúc
+            </th>
+            <th >
+                Nội dung
+            </th>
+
+            <th >
+                Nơi hỗ trợ
+            </th>
+            <th >
+                Người chịu trách nhiệm
+            </th>
+            <th >
+                Thao tác
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+            <tr>
+                <td>
+                    <img src="@Url.Content("~/Content/images/chiendich/"+item.AnhCd)" width="100" height="80" style="margin-left:10px; border-radius:15px; border-style:outset " />
+                </td>
+                <td>
+            @Html.DisplayFor(modelItem => item.TenCd)
+                </td>
+
+                <td>
+            @Html.DisplayFor(modelItem => item.Ngaybatdau)
+                </td>
+                <td>
+            @Html.DisplayFor(modelItem => item.Ngayketthuc)
+                </td>
+                <td>
+            @Html.DisplayFor(modelItem => item.NoidungCd)
+                </td>
+
+                <td>
+
+            @if (item.MaNoi != null)
+            {
+                @Html.DisplayFor(modelItem => item.MaNoiNavigation.Diachi);
+            }
+            else
+            {
+                        <a>Không có</a>
+            }
+
+
+                </td>
+                <td>
+            @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
+                </td>
+                <td style="text-align:center">
+                    <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaCd })'" />
+                    <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaCd })'" />
+                    <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaCd })'" />
+
+                </td>
+            </tr>
+}
+    </tbody>
+</table>
