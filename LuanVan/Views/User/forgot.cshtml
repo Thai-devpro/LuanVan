@@ -1,0 +1,74 @@
+﻿@model LuanVan.Data.Manhthuongquan
+
+@{
+    ViewData["Title"] = "Đăng ký";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    body {
+        background-color: #f8f9fc;
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control {
+        border-radius: 25px;
+        padding: 15px;
+        font-size: 16px;
+        color: #6c757d;
+        background-color: #f1f3f5;
+        border: none;
+    }
+
+    .btn-primary {
+        border-radius: 25px;
+        padding: 15px;
+        font-size: 16px;
+        font-weight: 600;
+        background-color: #4e73df;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #2e59d9;
+        }
+
+    .text-gray-900 {
+        color: #343a40;
+    }
+
+</style>
+<div class="container" style="text-align:center; width:1300px; margin-left:10%;">
+    <div class="row justify-content-center align-items-center min-vh-100" style="width:80%">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <div class="card-body">
+                    <h4 class="text-danger">@ViewBag.Thongbao</h4>
+
+                    <h1 class="h4 text-gray-900 mb-4 text-center">Vui lòng nhập Số điện thoại đăng ký</h1>
+
+
+
+
+                    <form asp-action="forgot" method="post">
+                        
+                        
+                        <div class="form-group">
+                            <label asp-for="SdtMtq" class="control-label">Số điện thoại</label>
+                            <input asp-for="SdtMtq" class="form-control" />
+                            <span asp-validation-for="SdtMtq" class="text-danger"></span>
+                        </div>
+                       <br />
+                        <div class="form-group">
+                            <input type="submit" value="Tiếp tục" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

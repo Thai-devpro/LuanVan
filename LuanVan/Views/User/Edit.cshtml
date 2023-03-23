@@ -1,0 +1,71 @@
+﻿@model LuanVan.Data.Manhthuongquan
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .form-group{
+        width: 500px;
+    }
+</style>
+<h1>Chỉnh Sửa</h1>
+
+<h4>Thông tin người dùng</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MaMtq" />
+            <div class="form-group">
+                <label asp-for="HotenMtq" class="control-label">Họ Tên</label>
+                <input asp-for="HotenMtq" class="form-control" />
+                <span asp-validation-for="HotenMtq" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="GioitinhMtq" class="control-label">Giới tính</label>
+                <select asp-for="GioitinhMtq" class="form-control">
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                </select>
+                <span asp-validation-for="GioitinhMtq" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="DonviTochucMtq" class="control-label">Đơn vị/tổ chức</label>
+                <input asp-for="DonviTochucMtq" class="form-control" />
+                <span asp-validation-for="DonviTochucMtq" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="SdtMtq" class="control-label">Số điện thoại</label>
+                <input asp-for="SdtMtq" class="form-control" />
+                <span asp-validation-for="SdtMtq" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="DiachiMtq" class="control-label">Địa chỉ</label>
+                <input asp-for="DiachiMtq" class="form-control" />
+                <span asp-validation-for="DiachiMtq" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="MatkhauMtq" class="control-label">Mật khẩu</label>
+                <input asp-for="MatkhauMtq" class="form-control" />
+                <span asp-validation-for="MatkhauMtq" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+                
+                    <input type="button" style="width:110px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details")'" />
+              
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

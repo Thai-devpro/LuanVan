@@ -5,68 +5,79 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Thông tin quyên góp hiện vật</h1>
 <hr />
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Ghichu)
+                Mạnh thường quân
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SoluongQg)
+                Chiến dịch
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TrangthaiHv)
+                Hiện vật
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NgayQg)
+                Số lượng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaCdNavigation)
+                Giá trị ước tính
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaHvNavigation)
+                Ngày quyên góp
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaMtqNavigation)
+                Ghi chú
+            </th>
+            <th>
+                Trạng thái
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ghichu)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoluongQg)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrangthaiHv)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayQg)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaCdNavigation.MaCd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaHvNavigation.MaHv)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaMtqNavigation.MaMtq)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaQghv">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaQghv">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaQghv">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaMtqNavigation.HotenMtq)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoluongQg)<a style="color:black"> @item.MaHvNavigation.Donvitinh</a>
+                </td>
+                <td>
+                    @(item.MaHvNavigation.Gia * item.SoluongQg) <a style="color:black">VNĐ</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayQg)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ghichu)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.TrangthaiHv)
+                </td>
+
+                <td align="right" width="100px">
+
+                    @if (item.MaMtqNavigation.MaMtq == Context.Session.GetInt32("idmtq") && item.TrangthaiHv.Trim() == "Chưa nhận")
+                    {
+                        <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaQghv })'" />
+                        <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaQghv })'" />
+
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

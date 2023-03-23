@@ -56,7 +56,7 @@ namespace LuanVan.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaMtq,HotenMtq,NgaysinhMtq,GioitinhMtq,DonviTochucMtq,SdtMtq,DiachiMtq")] Manhthuongquan manhthuongquan)
+        public async Task<IActionResult> Create([Bind("MaMtq,HotenMtq,GioitinhMtq,DonviTochucMtq,SdtMtq,DiachiMtq")] Manhthuongquan manhthuongquan)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace LuanVan.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaMtq,HotenMtq,NgaysinhMtq,GioitinhMtq,DonviTochucMtq,SdtMtq,DiachiMtq")] Manhthuongquan manhthuongquan)
+        public async Task<IActionResult> Edit(int id, [Bind("MaMtq,HotenMtq,GioitinhMtq,DonviTochucMtq,SdtMtq,DiachiMtq")] Manhthuongquan manhthuongquan)
         {
             if (id != manhthuongquan.MaMtq)
             {

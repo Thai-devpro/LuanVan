@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace LuanVan.Data;
 
 public partial class Chiendich
 {
     public int MaCd { get; set; }
-   
+
     public string TenCd { get; set; } = null!;
 
     public DateTime Ngaybatdau { get; set; }
@@ -15,7 +14,7 @@ public partial class Chiendich
     public DateTime Ngayketthuc { get; set; }
 
     public string NoidungCd { get; set; } = null!;
- 
+
     public string? AnhCd { get; set; }
 
     public int? MaTv { get; set; }

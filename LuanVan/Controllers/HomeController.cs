@@ -15,6 +15,8 @@ namespace LuanVan.Controllers
 
         public IActionResult Index()
         {
+          //ViewBag.tkmtq = HttpContext.Session.GetString("tkmtq");
+          //ViewBag.idmtq = HttpContext.Session.GetString("idmtq");
             return View();
         }
         public IActionResult About()

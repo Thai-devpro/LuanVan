@@ -21,9 +21,13 @@ public partial class TtQuyengopHienvat
 
     public DateTime? NgayQg { get; set; }
 
+    public int? MaTv { get; set; }
+
     public virtual Chiendich? MaCdNavigation { get; set; }
 
     public virtual HienVat MaHvNavigation { get; set; } = null!;
 
     public virtual Manhthuongquan MaMtqNavigation { get; set; } = null!;
+
+    public virtual Thanhvien? MaTvNavigation { get; set; }
 }

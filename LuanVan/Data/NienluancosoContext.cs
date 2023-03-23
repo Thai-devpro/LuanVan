@@ -33,8 +33,6 @@ public partial class NienluancosoContext : DbContext
 
     public virtual DbSet<TaikhoanAdmin> TaikhoanAdmins { get; set; }
 
-    public virtual DbSet<TaikhoanMtq> TaikhoanMtqs { get; set; }
-
     public virtual DbSet<Thanhvien> Thanhviens { get; set; }
 
     public virtual DbSet<TtQuyengopHienvat> TtQuyengopHienvats { get; set; }
@@ -173,9 +171,10 @@ public partial class NienluancosoContext : DbContext
                 .HasMaxLength(50)
                 .IsFixedLength()
                 .HasColumnName("HOTEN_MTQ");
-            entity.Property(e => e.NgaysinhMtq)
-                .HasColumnType("date")
-                .HasColumnName("NGAYSINH_MTQ");
+            entity.Property(e => e.MatkhauMtq)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("MATKHAU_MTQ");
             entity.Property(e => e.SdtMtq).HasColumnName("SDT_MTQ");
         });
 
@@ -254,30 +253,6 @@ public partial class NienluancosoContext : DbContext
                 .HasColumnName("MATKHAU");
         });
 
-        modelBuilder.Entity<TaikhoanMtq>(entity =>
-        {
-            entity.HasKey(e => e.MaMtq).HasName("PK_TAIKHOA_MTQ");
-
-            entity.ToTable("TAIKHOAN_MTQ");
-
-            entity.Property(e => e.MaMtq)
-                .ValueGeneratedNever()
-                .HasColumnName("MA_MTQ");
-            entity.Property(e => e.MatkhauMtq)
-                .HasMaxLength(10)
-                .IsFixedLength()
-                .HasColumnName("MATKHAU_MTQ");
-            entity.Property(e => e.Taikhoan)
-                .HasMaxLength(10)
-                .IsFixedLength()
-                .HasColumnName("TAIKHOAN");
-
-            entity.HasOne(d => d.MaMtqNavigation).WithOne(p => p.TaikhoanMtq)
-                .HasForeignKey<TaikhoanMtq>(d => d.MaMtq)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TAIKHOA_MTQ_MANHTHUONGQUAN");
-        });
-
         modelBuilder.Entity<Thanhvien>(entity =>
         {
             entity.HasKey(e => e.MaTv);
@@ -330,6 +305,7 @@ public partial class NienluancosoContext : DbContext
             entity.Property(e => e.MaCd).HasColumnName("MA_CD");
             entity.Property(e => e.MaHv).HasColumnName("MA_HV");
             entity.Property(e => e.MaMtq).HasColumnName("MA_MTQ");
+            entity.Property(e => e.MaTv).HasColumnName("MA_TV");
             entity.Property(e => e.NgayQg)
                 .HasColumnType("date")
                 .HasColumnName("Ngay_QG");
@@ -353,6 +329,10 @@ public partial class NienluancosoContext : DbContext
                 .HasForeignKey(d => d.MaMtq)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TT_QUYENGOP_HIENVAT_MANHTHUONGQUAN");
+
+            entity.HasOne(d => d.MaTvNavigation).WithMany(p => p.TtQuyengopHienvats)
+                .HasForeignKey(d => d.MaTv)
+                .HasConstraintName("FK_TT_QUYENGOP_HIENVAT_THANHVIEN");
         });
 
         modelBuilder.Entity<TtTraotang>(entity =>

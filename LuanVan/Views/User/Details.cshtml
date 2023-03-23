@@ -2,49 +2,54 @@
 
 @{
     ViewData["Title"] = "Details";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Thông tin chi tiết</h1>
 
 <div>
-    <h4>Manhthuongquan</h4>
+    <h4>Người dùng</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HotenMtq)
+           Họ Tên
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.HotenMtq)
         </dd>
-        
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GioitinhMtq)
+           Giới tính
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.GioitinhMtq)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DonviTochucMtq)
+            Đơn vị/tổ chức
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DonviTochucMtq)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SdtMtq)
+           Số điện thoại
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SdtMtq)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DiachiMtq)
+           Địa chỉ
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DiachiMtq)
         </dd>
+        <dt class="col-sm-2">
+            Mật khẩu
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MatkhauMtq)
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.MaMtq">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = Model.MaMtq })'" />
+    <input type="button" style="width:110px" class="btn btn-secondary" value="Trang chủ" onclick="location.href='@Url.Action("index","Home")'" />
 </div>

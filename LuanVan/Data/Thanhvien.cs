@@ -27,5 +27,7 @@ public partial class Thanhvien
 
     public virtual ICollection<Noihotro> Noihotros { get; } = new List<Noihotro>();
 
+    public virtual ICollection<TtQuyengopHienvat> TtQuyengopHienvats { get; } = new List<TtQuyengopHienvat>();
+
     public virtual ICollection<TtTraotang> TtTraotangs { get; } = new List<TtTraotang>();
 }

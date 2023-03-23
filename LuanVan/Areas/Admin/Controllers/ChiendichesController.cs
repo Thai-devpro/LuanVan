@@ -238,9 +238,7 @@ namespace LuanVan.Areas.Admin.Controllers
                     throw;
                 }
             }
-            ViewData["MaNoi"] = new SelectList(Noihotros, "Manoi", "Diachi", chiendich.MaNoi);
-            ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", chiendich.MaTv);
-            return View(chiendich);
+           
         }
 
         // GET: Admin/Chiendiches/Delete/5

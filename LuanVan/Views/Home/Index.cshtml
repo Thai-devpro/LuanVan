@@ -8,15 +8,16 @@
             <div class="row justify-content-center">
                 <div class="col-xl-7 col-lg-9 text-center">
                     <h1>Thiện Nguyện Online<i class='bx bx-bookmark-heart'></i></h1>
-                    <h2 ><i>
-                        Sự sẻ chia luôn mang lại nhiều điều kỳ diệu cho cuộc sống.<br />
-                        Dù trong bất kỳ hoàn cảnh nào, chúng ta cũng đều có thể chia sẻ và quan tâm đến người khác.
+                    <h2>
+                        <i>
+                            Sự sẻ chia luôn mang lại nhiều điều kỳ diệu cho cuộc sống.<br />
+                            Dù trong bất kỳ hoàn cảnh nào, chúng ta cũng đều có thể chia sẻ và quan tâm đến người khác.
                         </i>
-                     </h2>
+                    </h2>
                 </div>
             </div>
             @*<div class="text-center">
-                <a href="#about" class="btn-get-started scrollto">Get Started</a>
+            <a href="#about" class="btn-get-started scrollto">Get Started</a>
             </div>*@
 
             <div class="row icon-boxes">
@@ -30,24 +31,24 @@
 
                 <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="300">
                     <div class="icon-box">
-                        <div class="icon"><i class='bx bx-book-heart'></i></div>
-                        <h4 class="title"><a href="">Đề Xuất Hỗ Trợ</a></h4>
+                        <div class="icon"><a asp-controller="Noihotroes"><i class='bx bx-book-heart'></i></a></div>
+                        <h4 class="title"><a asp-controller="Noihotroes">Đề Xuất Hỗ Trợ</a></h4>
                         <p class="description">Bạn có thể cung cấp thông tin cho những nơi gặp khó khăn, để tổ chức xem xét và có những sự hỗ trợ kịp thời</p>
                     </div>
                 </div>
-
-               <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="400">
-                    <div class="icon-box">
-                        <div class="icon"><i class='bx bxs-calendar-heart'></i></div>
-                        <h4 class="title"><a href="">Thông Tin Quyên Góp</a></h4>
-                        <p class="description">Bạn có thể xem thông tin quyên góp của mọi người, tình trạng của tặng vật luôn được tổ chức cập nhật</p>
+               
+                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="400">
+                        <div class="icon-box">
+                        <div class="icon"><a asp-controller="TtQuyengopHienvats"><i class='bx bxs-calendar-heart'></i></a></div>
+                        <h4 class="title"><a asp-controller="TtQuyengopHienvats">Thông Tin Quyên Góp</a></h4>
+                            <p class="description">Bạn có thể xem thông tin quyên góp của mọi người, tình trạng của tặng vật luôn được tổ chức cập nhật</p>
+                        </div>
                     </div>
-                </div>
-
+              
                 <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="500">
                     <div class="icon-box">
-                        <div class="icon"><i class='bx bx-donate-heart'></i></div>
-                        <h4 class="title"><a href="">Thông Tin Trao Tặng</a></h4>
+                        <div class="icon"><a asp-controller="TtTraotangs"><i class='bx bx-donate-heart'></i></a></div>
+                        <h4 class="title"><a asp-controller="TtTraotangs">Thông Tin Trao Tặng</a></h4>
                         <p class="description">Xem thêm các hoạt động trao tặng quà của tổ chức đến nhũng nơi gặp khó khăn, để thể hiện sự minh bạch trong hoạt động của tổ chức</p>
                     </div>
                 </div>

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<LuanVan.Data.Noihotro>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Diachi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tinhtrang)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Canhotro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrangthaiNht)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnhNth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaMtqNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaTvNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Diachi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tinhtrang)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Canhotro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrangthaiNht)
+            </td>
+            <td>
+                    <img src="@Url.Content("~/Content/images/noihotro/"+item.AnhNth)" width="400" height="300" style="margin-left:10px; border-radius:15px; border-style:outset " />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaMtqNavigation.MaMtq)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaTvNavigation.MaTv)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Manoi">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Manoi">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Manoi">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
