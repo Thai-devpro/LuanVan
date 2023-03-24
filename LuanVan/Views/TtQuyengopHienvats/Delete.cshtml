@@ -4,7 +4,7 @@
     ViewData["Title"] = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<br />
 <h1>Xóa đăng ký quyên góp</h1>
 
 <h3>Bạn chắc chắn muốn xóa?</h3>
@@ -63,7 +63,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="MaQghv" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="submit" value="Xóa" class="btn btn-danger" /> |
         <a asp-action="Index">Về danh sách</a>
     </form>
 </div>

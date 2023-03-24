@@ -5,68 +5,91 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<br />
+<h1>Đề xuất hỗ trợ</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <input type="button" style="width:120px;" class="btn btn-success" value="Thêm đề xuất" onclick="location.href='@Url.Action("Create")'" />
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Diachi)
+                Địa chỉ
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tinhtrang)
+                Tình trạng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Canhotro)
+                Cần hỗ trợ
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TrangthaiNht)
+                Hình ảnh
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AnhNth)
+                Trạng thái
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaMtqNavigation)
+                Người đề xuất
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaTvNavigation)
-            </th>
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Diachi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tinhtrang)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Canhotro)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrangthaiNht)
-            </td>
-            <td>
-                    <img src="@Url.Content("~/Content/images/noihotro/"+item.AnhNth)" width="400" height="300" style="margin-left:10px; border-radius:15px; border-style:outset " />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaMtqNavigation.MaMtq)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaTvNavigation.MaTv)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Manoi">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Manoi">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Manoi">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Diachi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tinhtrang)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Canhotro)
+                </td>
+                <td>
+                    <img src="@Url.Content("~/Content/images/noihotro/"+item.AnhNth)" width="120" height="100" style=" border-radius:15px; border-style:outset " />
+                </td>
+                <td>
+                    @if (item.TtTraotangs.Count > 0)
+                    {
+                        <span>Đã trao tặng</span>
+                    }
+                    else{
+                    <span>@Html.DisplayFor(modelItem => item.TrangthaiNht)</span>
+
+                    }
+
+                </td>
+
+                <td>
+                    @if (item.MaMtqNavigation.MaMtq != null)
+                    {
+                        <span>@Html.DisplayFor(modelItem => item.MaMtqNavigation.HotenMtq)</span>
+                    }
+                    else
+                    {
+                        <span>@Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)</span>
+                    }
+
+                </td>
+
+                <td align ="right" width="100px">
+
+                    @if (item.MaMtqNavigation.MaMtq == Context.Session.GetInt32("idmtq") && item.TrangthaiNht.Trim() == "Đã duyệt" && item.TtTraotangs.Count == 0)
+                    {
+
+                        <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.Manoi })'" />
+                    }
+                    else if (item.MaMtqNavigation.MaMtq == Context.Session.GetInt32("idmtq") && item.TtTraotangs.Count == 0)
+                    {
+                        <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.Manoi })'" />
+                        <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.Manoi })'" />
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

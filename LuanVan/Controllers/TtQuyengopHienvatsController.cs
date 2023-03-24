@@ -56,9 +56,9 @@ namespace LuanVan.Controllers
             else if (id != null)
                 {
                     ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv");
-                ViewData["MaHv2"] = new SelectList(_context.HienVats, "MaHv", "Donvitinh ");
-                var cd = _context.Chiendiches.Where(s => s.MaCd == id);
-                    ViewData["MaCd"] = new SelectList(cd, "MaCd", "TenCd");
+                
+      
+                    ViewData["MaCd"] = new SelectList(_context.Chiendiches.Where(s => s.MaCd == id), "MaCd", "TenCd");
                 ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans.Where(s => s.MaMtq == HttpContext.Session.GetInt32("idmtq")), "MaMtq", "HotenMtq");
               
                 return View();
@@ -78,9 +78,11 @@ namespace LuanVan.Controllers
             if (ttQuyengopHienvat.SoluongQg == null || ttQuyengopHienvat.SoluongQg <= 0)
             {
                 ModelState.AddModelError("SoLuongQg", "Vui lòng điền số lượng ?");
-                ViewData["MaCd"] = new SelectList(_context.Chiendiches, "MaCd", "TenCd", ttQuyengopHienvat.MaCd);
-                ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv", ttQuyengopHienvat.MaHv);
-                ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans, "MaMtq", "HotenMtq", ttQuyengopHienvat.MaMtq);
+                ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv");
+
+
+                ViewData["MaCd"] = new SelectList(_context.Chiendiches.Where(s => s.MaCd == ttQuyengopHienvat.MaCd), "MaCd", "TenCd");
+                ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans.Where(s => s.MaMtq == HttpContext.Session.GetInt32("idmtq")), "MaMtq", "HotenMtq");
                 return View(ttQuyengopHienvat);
 
                 
@@ -88,9 +90,11 @@ namespace LuanVan.Controllers
             if (ttQuyengopHienvat.Ghichu == null )
             {
                 ModelState.AddModelError("Ghichu", "Hãy viết gì đó cho chúng tôi");
-                ViewData["MaCd"] = new SelectList(_context.Chiendiches, "MaCd", "TenCd", ttQuyengopHienvat.MaCd);
-                ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv", ttQuyengopHienvat.MaHv);
-                ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans, "MaMtq", "HotenMtq", ttQuyengopHienvat.MaMtq);
+                ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv");
+
+
+                ViewData["MaCd"] = new SelectList(_context.Chiendiches.Where(s => s.MaCd == ttQuyengopHienvat.MaCd), "MaCd", "TenCd");
+                ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans.Where(s => s.MaMtq == HttpContext.Session.GetInt32("idmtq")), "MaMtq", "HotenMtq");
                 return View(ttQuyengopHienvat);
 
 

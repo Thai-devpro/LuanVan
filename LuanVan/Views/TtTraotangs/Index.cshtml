@@ -4,69 +4,119 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    h1 {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+    }
 
-<h1>Index</h1>
+    .table {
+        margin: 20px 0;
+        padding: 0;
+        border-collapse: collapse;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+        .table th, .table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+            .table th:nth-child(1),
+            .table td:nth-child(1) {
+                text-align: center;
+            }
+
+            .table th:nth-child(2),
+            .table td:nth-child(2),
+            .table th:nth-child(3),
+            .table td:nth-child(3),
+            .table th:nth-child(4),
+            .table td:nth-child(4),
+            .table th:nth-child(7),
+            .table td:nth-child(7),
+            .table th:nth-child(8),
+            .table td:nth-child(8) {
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+        .table img {
+            display: block;
+            margin: 0 auto;
+            border-radius: 50%;
+        }
+</style>
+<br />
+<h1>Danh sách trao tặng của tổ chức</h1>
+
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SoluongTt)
+                Ảnh trao tặng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ngaytang)
+                Chiến dịch
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AnhTt)
+                Nơi trao tặng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaCdNavigation)
+                Hiện vật
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaHvNavigation)
+                Số lượng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaTvNavigation)
+                Trị giá
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ManoiNavigation)
+                Ngày tặng
             </th>
-            <th></th>
+
+            <th>
+                Người chịu trách nhiệm
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoluongTt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ngaytang)
-            </td>
-            <td>
-                    <img src="@Url.Content("~/Content/images/traotang/"+item.AnhTt)" width="120" height="100" style="margin-left:10px; border-radius:15px; border-style:outset " />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaCdNavigation.MaCd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaHvNavigation.MaHv)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaTvNavigation.MaTv)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ManoiNavigation.Manoi)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaTt">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaTt">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaTt">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@Url.Content("~/Content/images/traotang/"+item.AnhTt)" width="120" height="100" style=" border-radius:15px; border-style:outset " />
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ManoiNavigation.Diachi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoluongTt) <a style="color:black"> @item.MaHvNavigation.Donvitinh</a>
+                </td>
+                <td>
+                    @(item.MaHvNavigation.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ngaytang)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
+                </td>
+
+
+
+            </tr>
+        }
     </tbody>
 </table>

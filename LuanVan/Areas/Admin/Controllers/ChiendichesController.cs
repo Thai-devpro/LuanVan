@@ -65,11 +65,14 @@ namespace LuanVan.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MaCd,TenCd,Ngaybatdau,Ngayketthuc,NoidungCd,AnhCd,MaTv,MaNoi")] Chiendich chiendich, IFormFile file)
         {
-
+            var Noihotros = _context.Noihotros.ToList();
+            Noihotros.Insert(0, new Noihotro { Manoi = 0, Diachi = "---KHÔNG---" });
             if (ModelState.IsValid)
             {
                 if (chiendich.MaNoi == 0)
                     chiendich.MaNoi = null;
+
+                
                 //Upload file
                 var fileName = Path.GetFileName(file.FileName);
 
@@ -88,11 +91,19 @@ namespace LuanVan.Areas.Admin.Controllers
                 chiendich.AnhCd = file.FileName;
                 if (chiendich.Ngayketthuc <= chiendich.Ngaybatdau)
                 {
+                    ViewData["MaNoi"] = new SelectList(Noihotros, "Manoi", "Diachi", chiendich.MaNoi);
+
+                    ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", chiendich.MaTv);
                     ModelState.AddModelError("Ngayketthuc", "Ngày kết thúc không được nhỏ hơn ngày bắt đầu!");
                     return View(chiendich);
                 }
                 if (chiendich.AnhCd == null)
                 {
+                   
+                   
+                    ViewData["MaNoi"] = new SelectList(Noihotros, "Manoi", "Diachi", chiendich.MaNoi);
+
+                    ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", chiendich.MaTv);
                     ModelState.AddModelError("AnhCd", "Ảnh chiến dịch không được trống!");
                     return View(chiendich);
                 }
@@ -101,8 +112,7 @@ namespace LuanVan.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            var Noihotros = _context.Noihotros.ToList();
-            Noihotros.Insert(0, new Noihotro { Manoi = 0, Diachi = "---KHÔNG---" });
+           
             ViewData["MaNoi"] = new SelectList(Noihotros, "Manoi", "Diachi", chiendich.MaNoi);
 
             ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", chiendich.MaTv);

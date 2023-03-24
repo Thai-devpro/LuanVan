@@ -43,11 +43,7 @@
                 <img id="preview" src="#" width="150" height="100" class="hidden" />
                 
             </div>
-            @*<div class="form-group">
-                <label asp-for="AnhCd" class="control-label">Hình ảnh</label>
-                <input asp-for="AnhCd" class="form-control-file" type="file" name="file" />
-                <span asp-validation-for="AnhCd" class="text-danger"></span>
-            </div>*@
+            
             <div class="form-group">
                 <label asp-for="MaTv" class="control-label">Người chịu trách nhiệm</label>
                 <select asp-for="MaTv" class ="form-control" asp-items="ViewBag.MaTv"></select>
@@ -81,6 +77,6 @@
 
 </script>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Về danh sách</a>
 </div>
 

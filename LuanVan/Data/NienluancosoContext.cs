@@ -186,7 +186,7 @@ public partial class NienluancosoContext : DbContext
 
             entity.Property(e => e.Manoi).HasColumnName("MANOI");
             entity.Property(e => e.AnhNth)
-                .HasMaxLength(50)
+                .HasMaxLength(255)
                 .HasColumnName("ANH_NTH");
             entity.Property(e => e.Canhotro)
                 .HasMaxLength(255)
@@ -199,7 +199,7 @@ public partial class NienluancosoContext : DbContext
             entity.Property(e => e.MaMtq).HasColumnName("MA__MTQ");
             entity.Property(e => e.MaTv).HasColumnName("MA_TV");
             entity.Property(e => e.Tinhtrang)
-                .HasMaxLength(255)
+                .HasMaxLength(500)
                 .IsFixedLength()
                 .HasColumnName("TINHTRANG");
             entity.Property(e => e.TrangthaiNht)
@@ -343,7 +343,7 @@ public partial class NienluancosoContext : DbContext
 
             entity.Property(e => e.MaTt).HasColumnName("MA_TT");
             entity.Property(e => e.AnhTt)
-                .HasMaxLength(50)
+                .HasMaxLength(255)
                 .HasColumnName("ANH_TT");
             entity.Property(e => e.MaCd).HasColumnName("MA_CD");
             entity.Property(e => e.MaHv).HasColumnName("MA_HV");

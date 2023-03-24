@@ -4,56 +4,79 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .form-group{
+        width:400px;
+    }
+</style>
+<br />
+<h1>Thêm đề xuất</h1>
 
-<h1>Create</h1>
-
-<h4>Noihotro</h4>
+<h4>Nơi cần hỗ trợ</h4>
 <hr />
+<h2>@ViewBag.thongbao</h2>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="MaMtq" class="control-label"></label>
+                <label asp-for="MaMtq" class="control-label">Người đề xuất</label>
                 <select asp-for="MaMtq" class ="form-control" asp-items="ViewBag.MaMtq"></select>
             </div>
+            <br />
             <div class="form-group">
-                <label asp-for="Diachi" class="control-label"></label>
+                <label asp-for="Diachi" class="control-label">Địa chỉ nơi cần hỗ trợ</label>
                 <input asp-for="Diachi" class="form-control" />
                 <span asp-validation-for="Diachi" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
-                <label asp-for="Tinhtrang" class="control-label"></label>
+                <label asp-for="Tinhtrang" class="control-label">Trình trạng nơi cần hỗ trợ</label>
                 <input asp-for="Tinhtrang" class="form-control" />
                 <span asp-validation-for="Tinhtrang" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
-                <label asp-for="Canhotro" class="control-label"></label>
+                <label asp-for="Canhotro" class="control-label">Cần hỗ trợ gì</label>
                 <input asp-for="Canhotro" class="form-control" />
                 <span asp-validation-for="Canhotro" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
-                <label asp-for="TrangthaiNht" class="control-label"></label>
-                <input asp-for="TrangthaiNht" class="form-control" />
-                <span asp-validation-for="TrangthaiNht" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MaTv" class="control-label"></label>
-                <select asp-for="MaTv" class ="form-control" asp-items="ViewBag.MaTv"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="AnhNth" class="control-label"></label>
-                <input asp-for="AnhNth" class="form-control" />
+                <label asp-for="AnhNth" class="control-label">Thêm hình ảnh</label>
+                <input asp-for="AnhNth" type="file" id="fileImage" class="form-control-file" name="file">
+                
+                <br />
+
+                <img id="preview" src="#" width="150" height="100" class="hidden" />
+                <br />
                 <span asp-validation-for="AnhNth" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Thêm" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
+<script>
 
+    fileImage.onchange = evt => {
+
+        const [file] = fileImage.files
+
+        if (file) {
+
+            preview.src = URL.createObjectURL(file);
+
+            $("#preview").removeClass("hidden");
+
+        }
+
+    }
+
+</script>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Về danh sách</a>
 </div>
 

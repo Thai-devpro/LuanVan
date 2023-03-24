@@ -9,7 +9,7 @@
 <h1>Chỉnh sửa</h1>
 
 <h4>Thông tin quyên góp hiện vật</h4>
-<hr />
+
 
 
 <style>
@@ -53,7 +53,7 @@
         border-radius: 5px;
         border: 1px solid #ccc;
 </style>
-<h1>Đăng ký quyên góp</h1>
+
 
 <hr />
 <div style="width:1300px">
@@ -65,41 +65,42 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="MaQghv" />
                         <div class="form-group">
-                            <label asp-for="MaMtq" class="control-label"></label>
+                            <label asp-for="MaMtq" class="control-label">Họ tên</label>
                             <select asp-for="MaMtq" class="form-control" asp-items="ViewBag.MaMtq"></select>
                             <span asp-validation-for="MaMtq" class="text-danger"></span>
-                        </div>
+                        </div><br />
                         <div class="form-group">
-                            <label asp-for="MaCd" class="control-label"></label>
+                            <label asp-for="MaCd" class="control-label">Chiến dịch</label>
                             <select asp-for="MaCd" class="form-control" asp-items="ViewBag.MaCd"></select>
                             <span asp-validation-for="MaCd" class="text-danger"></span>
-                        </div>
+                        </div><br />
                         <div class="form-group">
-                            <label asp-for="MaHv" class="control-label"></label>
+                            <label asp-for="MaHv" class="control-label">Hiện vật</label>
                             <select asp-for="MaHv" class="form-control" asp-items="ViewBag.MaHv"></select>
                             <span asp-validation-for="MaHv" class="text-danger"></span>
                         </div>
-                        
+                        <br />
                         <div class="form-group">
-                            <label asp-for="SoluongQg" class="control-label"></label>
+                            <label asp-for="SoluongQg" class="control-label">Số lượng</label>
                             <input asp-for="SoluongQg" class="form-control" />
                             <span asp-validation-for="SoluongQg" class="text-danger"></span>
-                        </div>
+                        </div><br />
                         <div class="form-group">
-                            <label asp-for="Ghichu" class="control-label"></label>
+                            <label asp-for="Ghichu" class="control-label">Ghi chư</label>
                             <input asp-for="Ghichu" class="form-control" />
                             <span asp-validation-for="Ghichu" class="text-danger"></span>
-                        </div>
+                        </div><br />
                        
                        
                         
                         <div class="form-group">
-                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <input type="submit" value="Lưu" class="btn btn-primary" />
                         </div>
+                        <br />
                     </form>
                 </div>
                 <div>
-                    <a asp-action=" TtQuyengopHienvats">Danh sách quyên góp</a>
+                    <a asp-action="index">Danh sách quyên góp</a>
                 </div>
             </div>
 
