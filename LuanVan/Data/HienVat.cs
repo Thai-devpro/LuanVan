@@ -15,7 +15,7 @@ public partial class HienVat
 
     public int? Soluongcon { get; set; }
 
-    public int? Gia { get; set; }
+    public int Gia { get; set; }
 
     public virtual LoaiHv MaLoaiNavigation { get; set; } = null!;
 

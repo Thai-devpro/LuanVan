@@ -15,7 +15,7 @@ public partial class TtQuyengopHienvat
 
     public string? Ghichu { get; set; }
 
-    public int? SoluongQg { get; set; }
+    public int SoluongQg { get; set; }
 
     public string TrangthaiHv { get; set; } = null!;
 

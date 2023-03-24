@@ -23,7 +23,7 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chiendiches
         public async Task<IActionResult> Index()
         {
-            var nienluancosoContext = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation);
+            var nienluancosoContext = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats);
             return View(await nienluancosoContext.ToListAsync());
         }
 
@@ -38,6 +38,8 @@ namespace LuanVan.Areas.Admin.Controllers
             var chiendich = await _context.Chiendiches
                 .Include(c => c.MaNoiNavigation)
                 .Include(c => c.MaTvNavigation)
+                .Include(c => c.TtQuyengopHienvats)
+                .Include(c => c.TtTraotangs)
                 .FirstOrDefaultAsync(m => m.MaCd == id);
             if (chiendich == null)
             {
@@ -280,6 +282,9 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return Problem("Entity set 'NienluancosoContext.Chiendiches'  is null.");
             }
+
+           
+            
             var chiendich = await _context.Chiendiches.FindAsync(id);
             if (chiendich != null)
             {

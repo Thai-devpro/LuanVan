@@ -193,13 +193,13 @@ public partial class NienluancosoContext : DbContext
                 .IsFixedLength()
                 .HasColumnName("CANHOTRO");
             entity.Property(e => e.Diachi)
-                .HasMaxLength(255)
+                .HasMaxLength(500)
                 .IsFixedLength()
                 .HasColumnName("DIACHI");
             entity.Property(e => e.MaMtq).HasColumnName("MA__MTQ");
             entity.Property(e => e.MaTv).HasColumnName("MA_TV");
             entity.Property(e => e.Tinhtrang)
-                .HasMaxLength(500)
+                .HasMaxLength(255)
                 .IsFixedLength()
                 .HasColumnName("TINHTRANG");
             entity.Property(e => e.TrangthaiNht)

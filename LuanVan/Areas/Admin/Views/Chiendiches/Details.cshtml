@@ -1,4 +1,7 @@
-﻿@model LuanVan.Data.Chiendich
+﻿@using LuanVan.Data;
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@model LuanVan.Data.Chiendich
 
 @{
     ViewData["Title"] = "Details";
@@ -11,40 +14,40 @@
     <h4>Chiến Dịch</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-           Tên chiến dịch:
+        <dt class="col-sm-2">
+            Tên chiến dịch:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TenCd)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Ngày bắt đầu:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Ngaybatdau)
         </dd>
-        <dt class = "col-sm-2">
-           Ngày kết thúc:
+        <dt class="col-sm-2">
+            Ngày kết thúc:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Ngayketthuc)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Nội dung:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.NoidungCd)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Ảnh:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             <img src="@Url.Content("~/Content/images/chiendich/"+Model.AnhCd)" width="100" height="80" style="margin-left:10px; border-radius:15px; border-style:outset " />
         </dd>
-        <dt class = "col-sm-2">
-           Nơi hỗ trợ
+        <dt class="col-sm-2">
+            Nơi hỗ trợ
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @if (Model.MaNoi != null)
             {
                 @Html.DisplayFor(modelItem => modelItem.MaNoiNavigation.Diachi)
@@ -55,10 +58,10 @@
                 <a>Không có</a>
             }
         </dd>
-        <dt class = "col-sm-2">
-           Người chịu trách nhiệm
+        <dt class="col-sm-2">
+            Người chịu trách nhiệm
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MaTvNavigation.TenTv)
         </dd>
     </dl>
@@ -66,5 +69,195 @@
 <div>
     <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = Model.MaCd })'" />
     <input type="button" style="width:110px" class="btn btn-secondary" value="Danh sách" onclick="location.href='@Url.Action("index")'" />
-    
+
 </div>
+<hr />
+
+
+
+@if (Model.TtQuyengopHienvats.Count > 0)
+{
+    NienluancosoContext db = new NienluancosoContext();
+    <h4>Thông tin quyên góp của chiến dịch</h4>
+    var tongqg = 0;
+
+    var listChienDich = db.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.MaMtqNavigation).Where(t => t.MaCd == Model.MaCd).ToList();
+    <table class="table">
+        @foreach (var item in listChienDich)
+        {
+            if (item.TrangthaiHv.Trim() == "Đã nhận")
+            {
+                tongqg += (item.MaHvNavigation.Gia) * (item.SoluongQg);
+            }
+        }
+
+        <tr>
+            <b>Tổng giá trị quyên góp đã nhận của chiến dịch:  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
+        </tr>
+        <tr>
+            <th>
+                Mã quyên góp
+            </th>
+            <th>
+                Hiện vật
+            </th>
+            <th>
+                Số lượng
+            </th>
+            <th>
+                Mạnh thường quân
+            </th>
+
+            <th>
+                Ghi chú
+            </th>
+
+            <th>
+                Trạng thái
+            </th>
+            <th>
+                Ngày quyên góp
+            </th>
+            <th>
+                Giá trị ước tính
+            </th>
+            <th>Người nhận</th>
+        </tr>
+        @foreach (var item in listChienDich)
+        {
+
+            <tr>
+
+            <tr>
+                <td>
+                        @Html.DisplayFor(modelItem => item.MaQghv)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.SoluongQg) <a>@item.MaHvNavigation?.Donvitinh</a>
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.MaMtqNavigation.HotenMtq)
+                </td>
+
+                <td>
+                        @Html.DisplayFor(modelItem => item.Ghichu)
+                </td>
+
+                <td>
+                        @Html.DisplayFor(modelItem => item.TrangthaiHv)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.NgayQg)
+                </td>
+                <td>
+                        @(item.MaHvNavigation.Gia  * item.SoluongQg) <a style="color:black">VNĐ</a>
+                </td>
+                    @if (item.MaTvNavigation?.MaTv != null)
+                    {
+                    <td>
+                            @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
+                    </td>
+                    }
+                    else
+                    {
+                        <td>Chưa nhận</td>
+                    }
+            </tr>
+            </tr>
+        }
+
+    </table>
+    <hr />
+}
+
+
+@if (Model.TtTraotangs.Count > 0)
+{
+    NienluancosoContext db = new NienluancosoContext();
+
+    <h4>Thông tin trao tặng của chiến dịch</h4>
+    var tongtt = 0;
+    var listtt = db.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(t => t.MaCd == Model.MaCd).ToList();
+
+    <table class="table">
+        @foreach (var item in listtt)
+        {
+
+
+            tongtt += (item.MaHvNavigation.Gia) * (item.SoluongTt);
+
+        }
+
+        <tr>
+            <b>Tổng giá trị trao tặng của chiến dịch:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
+        </tr>
+        <tr>
+
+            <th>
+                Nơi hỗ trợ
+            </th>
+            <th>
+                Chiến dịch
+            </th>
+            <th>
+                Hiện vật
+            </th>
+            <th>
+                Số lượng
+            </th>
+            <th>
+                Ngày tặng
+            </th>
+            <th>
+                Ảnh
+            </th>
+            <th>
+                Giá trị ước tính
+            </th>
+            <th>
+                Người tặng
+            </th>
+        </tr>
+        @foreach (var item in listtt)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ManoiNavigation.Diachi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoluongTt) <a>@item.MaHvNavigation?.Donvitinh</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ngaytang)
+                </td>
+                <td>
+                    <img src="@Url.Content("~/Content/images/traotang/"+item.AnhTt)" width="45" />
+                </td>
+                <td>
+                    @(item.MaHvNavigation?.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
+                </td>
+                @if (item.MaTvNavigation?.MaTv != null)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
+                    </td>
+                }
+                else
+                {
+
+                }
+            </tr>
+        }
+
+    </table>
+}

@@ -69,30 +69,30 @@
 <table class="table" ">
     <thead>
         <tr>
-            <th >
+            <th>
                 Ảnh
             </th>
-            <th >
+            <th>
                 Tên chiến dịch
             </th>
 
-            <th >
+            <th>
                 Ngày bắt đầu
             </th>
-            <th >
+            <th>
                 Ngày kết thúc
             </th>
-            <th >
+            <th>
                 Nội dung
             </th>
 
-            <th >
+            <th>
                 Nơi hỗ trợ
             </th>
-            <th >
+            <th>
                 Người chịu trách nhiệm
             </th>
-            <th >
+            <th>
                 Thao tác
             </th>
         </tr>
@@ -122,7 +122,8 @@
 
             @if (item.MaNoi != null)
             {
-                @Html.DisplayFor(modelItem => item.MaNoiNavigation.Diachi);
+                @Html.DisplayFor(modelItem => item.MaNoiNavigation.Diachi)
+                ;
             }
             else
             {
@@ -135,9 +136,18 @@
             @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
                 </td>
                 <td style="text-align:center">
-                    <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaCd })'" />
-                    <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaCd })'" />
-                    <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaCd })'" />
+            @if (item.TtQuyengopHienvats.Count > 0 || item.TtTraotangs.Count >0)
+            {
+                        <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaCd })'" />
+                        <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaCd })'" />
+            }
+            else
+            {
+                        <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaCd })'" />
+                        <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaCd })'" />
+                        <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaCd })'" />
+            }
+
 
                 </td>
             </tr>
