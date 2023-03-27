@@ -22,7 +22,7 @@ namespace LuanVan.Controllers
         // GET: Noihotroes
         public async Task<IActionResult> Index()
         {
-            var nienluancosoContext = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.MaTvNavigation).Include(n => n.TtTraotangs);
+            var nienluancosoContext = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches);
             return View(await nienluancosoContext.ToListAsync());
         }
 
@@ -34,9 +34,7 @@ namespace LuanVan.Controllers
                 return NotFound();
             }
 
-            var noihotro = await _context.Noihotros
-                .Include(n => n.MaMtqNavigation)
-                .Include(n => n.MaTvNavigation)
+            var noihotro = await _context.Noihotros.Include(n => n.MaMtqNavigation)
                 .FirstOrDefaultAsync(m => m.Manoi == id);
             if (noihotro == null)
             {
@@ -109,7 +107,7 @@ namespace LuanVan.Controllers
                 ModelState.AddModelError("AnhNth", "Vui lòng chọn ảnh làm minh chứng");
                 return View(noihotro);
             }
-            noihotro.MaTv = null;
+           
                 noihotro.TrangthaiNht = "Chưa duyệt";
                 _context.Add(noihotro);
                 await _context.SaveChangesAsync();
@@ -198,7 +196,7 @@ namespace LuanVan.Controllers
             }
             try
             {
-                noihotro.MaTv = null;
+              
                 noihotro.TrangthaiNht = "Chưa duyệt";
                 _context.Update(noihotro);
                 await _context.SaveChangesAsync();
@@ -226,9 +224,7 @@ namespace LuanVan.Controllers
                 return NotFound();
             }
 
-            var noihotro = await _context.Noihotros
-                .Include(n => n.MaMtqNavigation)
-                .Include(n => n.MaTvNavigation)
+            var noihotro = await _context.Noihotros.Include(n => n.MaMtqNavigation)
                 .FirstOrDefaultAsync(m => m.Manoi == id);
             if (noihotro == null)
             {

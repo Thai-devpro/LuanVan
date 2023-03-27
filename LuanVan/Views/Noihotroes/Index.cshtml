@@ -53,32 +53,36 @@
                     <img src="@Url.Content("~/Content/images/noihotro/"+item.AnhNth)" width="120" height="100" style=" border-radius:15px; border-style:outset " />
                 </td>
                 <td>
-                    @if (item.TtTraotangs.Count > 0)
+                    @if (item.TtTraotangs.Count > 0 && item.Chiendiches.Count > 0)
                     {
-                        <span>Đã trao tặng</span>
+                        <span>Đã mở chiến dịch và trao tặng</span>
                     }
-                    else{
-                    <span>@Html.DisplayFor(modelItem => item.TrangthaiNht)</span>
+                    else if (item.Chiendiches.Count > 0)
+                    {
+                        <span>Đã mở chiến dịch</span>
+                    }
+                    else if (item.TtTraotangs.Count > 0)
+                    {
+                        <span>Đã có hỗ trợ</span>
 
+
+                    }
+                    else
+                    {
+                        <span>@Html.DisplayFor(modelItem => item.TrangthaiNht)</span>
                     }
 
                 </td>
 
                 <td>
-                    @if (item.MaMtqNavigation.MaMtq != null)
-                    {
-                        <span>@Html.DisplayFor(modelItem => item.MaMtqNavigation.HotenMtq)</span>
-                    }
-                    else
-                    {
-                        <span>@Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)</span>
-                    }
+                    
+                       @Html.DisplayFor(modelItem => item.MaMtqNavigation.HotenMtq)
 
                 </td>
 
                 <td align ="right" width="100px">
 
-                    @if (item.MaMtqNavigation.MaMtq == Context.Session.GetInt32("idmtq") && item.TrangthaiNht.Trim() == "Đã duyệt" && item.TtTraotangs.Count == 0)
+                    @if (item.MaMtqNavigation.MaMtq == Context.Session.GetInt32("idmtq") && item.TrangthaiNht.Trim() == "Đã duyệt" && item.TtTraotangs.Count == 0 && item.Chiendiches.Count ==0)
                     {
 
                         <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.Manoi })'" />

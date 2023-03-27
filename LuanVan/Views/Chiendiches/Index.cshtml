@@ -140,10 +140,16 @@
                         <hr>
 
                     </div>
+                    @if(item.Ngayketthuc.Date < DateTime.Now.Date)
+                    {
+                        <div style="height:15%; text-align:center; margin-bottom:auto; margin-top:30px ">
+                            <h3 class="text-danger">Chiến dịch đã kết thúc</h3>
+                        </div>
+                    }else{
                     <div style="height:15%; text-align:center; margin-bottom:auto; margin-top:30px ">
                         <input type="button" class="btn" value="Quyên Góp" onclick="location.href='@Url.Action("Create", "TtQuyengopHienvats", new { id = item.MaCd })'" />
                     </div>
-
+                    }
                 </td>
             </tr>
         </table>

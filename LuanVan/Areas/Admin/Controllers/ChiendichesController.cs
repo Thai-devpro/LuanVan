@@ -58,16 +58,24 @@ namespace LuanVan.Areas.Admin.Controllers
         }
 
         // GET: Admin/Chiendiches/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
             }
-            var Noihotros = _context.Noihotros.ToList();
-            Noihotros.Insert(0, new Noihotro { Manoi = 0, Diachi = "---KHÔNG---" });
-            ViewData["MaNoi"] = new SelectList(Noihotros, "Manoi", "Diachi");
-
+            if (id != null)
+            {
+                var Noihotros = _context.Noihotros.Where(n => n.Manoi == id).ToList();
+                
+                ViewData["MaNoi"] = new SelectList(Noihotros, "Manoi", "Diachi");
+            }
+            else
+            {
+                var Noihotros = _context.Noihotros.Where(n => n.TrangthaiNht.Trim() == "Đã duyệt").ToList();
+                Noihotros.Insert(0, new Noihotro { Manoi = 0, Diachi = "---KHÔNG---" });
+                ViewData["MaNoi"] = new SelectList(Noihotros, "Manoi", "Diachi");
+            }
             ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv");
             return View();
         }

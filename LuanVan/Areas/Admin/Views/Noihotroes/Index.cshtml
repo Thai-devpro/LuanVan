@@ -4,35 +4,86 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+<style>
+    h1 {
+        font-family: Arial, sans-serif;
+        font-size: 24px;
+    }
 
-<h1>Index</h1>
+    /* Thiết lập màu nền và khoảng cách cho thẻ p */
+    p {
+        background-color: #f2f2f2;
+        padding: 10px;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    /* Thiết lập kiểu cho bảng */
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+    }
+
+        /* Thiết lập màu nền và kiểu cho tiêu đề bảng */
+        .table thead {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Thiết lập màu nền và kiểu cho từng hàng trong bảng */
+        .table tr {
+            background-color: #ffffff;
+        }
+
+    .table-heading {
+        text-align: center;
+    }
+    /* Thiết lập kiểu cho các ô trong bảng */
+    .table td, .table th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+
+    /* Thiết lập kiểu cho các liên kết */
+    a {
+        color: #337ab7;
+        text-decoration: none;
+    }
+
+        /* Thiết lập kiểu cho liên kết khi rê chuột vào */
+        a:hover {
+            text-decoration: underline;
+        }
+
+    .btn {
+        align-items: center;
+        margin: 5px;
+    }
+</style>
+<h1>Danh sách đề xuất hỗ trợ</h1>
+
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Diachi)
+                Địa chỉ
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tinhtrang)
+               Tình trạng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Canhotro)
+               Cần hỗ trợ
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TrangthaiNht)
+               Trạng thái
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AnhNth)
+                Hình ảnh
             </th>
+            
             <th>
-                @Html.DisplayNameFor(model => model.MaMtqNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaTvNavigation)
+                Người đề xuất
             </th>
             <th></th>
         </tr>
@@ -50,22 +101,46 @@
                 @Html.DisplayFor(modelItem => item.Canhotro)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TrangthaiNht)
+                    @if (item.TtTraotangs.Count > 0 && item.Chiendiches.Count >0)
+                    {
+                        <span>Đã mở chiến dịch và trao tặng</span>
+                    }else if(item.Chiendiches.Count > 0)
+                    {
+                        <span>Đã mở chiến dịch</span>
+                    }
+                    else if(item.TtTraotangs.Count > 0) 
+                    {
+                        <span>Đã có hỗ trợ</span>
+
+
+                    }
+                    else
+                    {
+                        <span>@Html.DisplayFor(modelItem => item.TrangthaiNht)</span>
+                    }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AnhNth)
+                    <img src="@Url.Content("~/Content/images/noihotro/"+item.AnhNth)" width="120" height="100" style=" border-radius:15px; border-style:outset " />
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaMtqNavigation.MaMtq)
+                    
+                     @Html.DisplayFor(modelItem => item.MaMtqNavigation.HotenMtq)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaTvNavigation.MaTv)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Manoi">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Manoi">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Manoi">Delete</a>
-            </td>
+                <td align="right" width="100px">
+
+                    @if (item.TtTraotangs.Count == 0 && item.TrangthaiNht.Trim() == "Đã duyệt" && item.Chiendiches.Count == 0)
+                    {
+                        <input type="button" style="width:115px;" class="btn btn-primary" value="Cập nhật" onclick="location.href='@Url.Action("Edit", new { id = item.Manoi })'" />
+                        <input type="button" style="width:115px;" class="btn btn-primary" value="Mở chiến dịch" onclick="location.href='@Url.Action("Create","ChienDiches", new { id = item.Manoi })'" />
+                        <input type="button" style="width:115px;" class="btn btn-primary" value="Thêm hỗ trợ" onclick="location.href='@Url.Action("Edit", new { id = item.Manoi })'" />
+                    }
+                    else if (item.TtTraotangs.Count == 0 && item.Chiendiches.Count == 0)
+                    {
+                        <input type="button" style="width:90px;" class="btn btn-primary" value="Cập nhật" onclick="location.href='@Url.Action("Edit", new { id = item.Manoi })'" />
+
+                    }
+
+                </td>
         </tr>
 }
     </tbody>

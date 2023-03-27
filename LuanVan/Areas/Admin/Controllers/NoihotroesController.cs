@@ -26,7 +26,7 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return RedirectToAction("Login", "ThanhVien");
             }
-            var nienluancosoContext = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.MaTvNavigation);
+            var nienluancosoContext = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches);
             return View(await nienluancosoContext.ToListAsync());
         }
 
@@ -40,7 +40,7 @@ namespace LuanVan.Areas.Admin.Controllers
 
             var noihotro = await _context.Noihotros
                 .Include(n => n.MaMtqNavigation)
-                .Include(n => n.MaTvNavigation)
+                
                 .FirstOrDefaultAsync(m => m.Manoi == id);
             if (noihotro == null)
             {
@@ -51,34 +51,34 @@ namespace LuanVan.Areas.Admin.Controllers
         }
 
         // GET: Admin/Noihotroes/Create
-        public IActionResult Create()
-        {
-            if (HttpContext.Session.GetInt32("idtv") == null)
-            {
-                return RedirectToAction("Login", "ThanhVien");
-            }
-            ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans, "MaMtq", "MaMtq");
-            ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "MaTv");
-            return View();
-        }
+        //public IActionResult Create()
+        //{
+        //    if (HttpContext.Session.GetInt32("idtv") == null)
+        //    {
+        //        return RedirectToAction("Login", "ThanhVien");
+        //    }
+        //    ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans, "MaMtq", "MaMtq");
+            
+        //    return View();
+        //}
 
-        // POST: Admin/Noihotroes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Manoi,MaMtq,Diachi,Tinhtrang,Canhotro,TrangthaiNht,MaTv,AnhNth")] Noihotro noihotro)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(noihotro);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans, "MaMtq", "MaMtq", noihotro.MaMtq);
-            ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "MaTv", noihotro.MaTv);
-            return View(noihotro);
-        }
+        //// POST: Admin/Noihotroes/Create
+        //// To protect from overposting attacks, enable the specific properties you want to bind to.
+        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Manoi,MaMtq,Diachi,Tinhtrang,Canhotro,TrangthaiNht,MaTv,AnhNth")] Noihotro noihotro)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(noihotro);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans, "MaMtq", "MaMtq", noihotro.MaMtq);
+           
+        //    return View(noihotro);
+        //}
 
         // GET: Admin/Noihotroes/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -92,13 +92,13 @@ namespace LuanVan.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var noihotro = await _context.Noihotros.FindAsync(id);
+            var noihotro = await _context.Noihotros.Include(n => n.MaMtqNavigation).FirstOrDefaultAsync(n => n.Manoi == id);
             if (noihotro == null)
             {
                 return NotFound();
             }
-            ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans, "MaMtq", "MaMtq", noihotro.MaMtq);
-            ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "MaTv", noihotro.MaTv);
+            ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans.Where(s => s.MaMtq == noihotro.MaMtq), "MaMtq", "HotenMtq");
+
             return View(noihotro);
         }
 
@@ -118,6 +118,8 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 try
                 {
+                    var nht = _context.Noihotros.AsNoTracking().FirstOrDefault(n => n.Manoi == id);
+                    noihotro.AnhNth = nht.AnhNth;
                     _context.Update(noihotro);
                     await _context.SaveChangesAsync();
                 }
@@ -135,7 +137,7 @@ namespace LuanVan.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans, "MaMtq", "MaMtq", noihotro.MaMtq);
-            ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "MaTv", noihotro.MaTv);
+      
             return View(noihotro);
         }
 
@@ -153,7 +155,7 @@ namespace LuanVan.Areas.Admin.Controllers
 
             var noihotro = await _context.Noihotros
                 .Include(n => n.MaMtqNavigation)
-                .Include(n => n.MaTvNavigation)
+                
                 .FirstOrDefaultAsync(m => m.Manoi == id);
             if (noihotro == null)
             {

@@ -197,7 +197,6 @@ public partial class NienluancosoContext : DbContext
                 .IsFixedLength()
                 .HasColumnName("DIACHI");
             entity.Property(e => e.MaMtq).HasColumnName("MA__MTQ");
-            entity.Property(e => e.MaTv).HasColumnName("MA_TV");
             entity.Property(e => e.Tinhtrang)
                 .HasMaxLength(255)
                 .IsFixedLength()
@@ -209,12 +208,7 @@ public partial class NienluancosoContext : DbContext
 
             entity.HasOne(d => d.MaMtqNavigation).WithMany(p => p.Noihotros)
                 .HasForeignKey(d => d.MaMtq)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_NOIHOTRO_MANHTHUONGQUAN");
-
-            entity.HasOne(d => d.MaTvNavigation).WithMany(p => p.Noihotros)
-                .HasForeignKey(d => d.MaTv)
-                .HasConstraintName("FK_NOIHOTRO_THANHVIEN");
         });
 
         modelBuilder.Entity<Quyen>(entity =>
