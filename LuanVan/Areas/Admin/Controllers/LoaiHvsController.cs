@@ -19,7 +19,7 @@ namespace LuanVan.Areas.Admin.Controllers
             _context = context;
         }
 
-
+        // GET: Admin/LoaiHvs
         public async Task<IActionResult> Index()
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
