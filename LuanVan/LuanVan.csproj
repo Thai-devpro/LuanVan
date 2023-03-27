@@ -1874,7 +1874,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Data\" />
     <Folder Include="Pages\" />
     <Folder Include="wwwroot\css\" />

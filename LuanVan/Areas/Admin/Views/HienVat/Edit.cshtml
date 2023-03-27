@@ -5,48 +5,48 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Chỉnh sửa</h1>
 
-<h4>HienVat</h4>
+<h4>Hiện vật</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="MaLoai" class="control-label"></label>
+                <label asp-for="MaLoai" class="control-label">Loại hiện vật</label>
                 <select asp-for="MaLoai" class="form-control" asp-items="ViewBag.MaLoai"></select>
                 <span asp-validation-for="MaLoai" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="MaHv" />
             <div class="form-group">
-                <label asp-for="TenHv" class="control-label"></label>
+                <label asp-for="TenHv" class="control-label">Tên hiện vật</label>
                 <input asp-for="TenHv" class="form-control" />
                 <span asp-validation-for="TenHv" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Donvitinh" class="control-label"></label>
+                <label asp-for="Donvitinh" class="control-label">Đơn vị tính</label>
                 <input asp-for="Donvitinh" class="form-control" />
                 <span asp-validation-for="Donvitinh" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Soluongcon" class="control-label"></label>
+                <label asp-for="Soluongcon" class="control-label">Số lượng còn</label>
                 <input asp-for="Soluongcon" class="form-control" />
                 <span asp-validation-for="Soluongcon" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Gia" class="control-label"></label>
+                <label asp-for="Gia" class="control-label">Giá</label>
                 <input asp-for="Gia" class="form-control" />
                 <span asp-validation-for="Gia" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Lưu" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Về danh sách</a>
 </div>
 

@@ -18,7 +18,49 @@ namespace LuanVan.Areas.Admin.Controllers
         {
             _context = context;
         }
+        public async Task<ActionResult> Login()
+        {
 
+
+            return View();
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<ActionResult> Login(Thanhvien tv)
+        {
+
+            if (tv.SdtTv == null)
+            {
+                ModelState.AddModelError("SdtTv", "Số điện thoại không được trống!");
+
+                return View(tv);
+            }
+            if (tv.MatkhauTv == null)
+            {
+                ModelState.AddModelError("MatkhauTv", "Vui lòng nhập mật khẩu!");
+
+                return View(tv);
+            }
+                Thanhvien ad = _context.Thanhviens.AsNoTracking().SingleOrDefault(n => n.SdtTv.Equals(tv.SdtTv) && n.MatkhauTv.Trim().Equals(tv.MatkhauTv.Trim()));
+            if (ad != null)
+            {
+
+                HttpContext.Session.SetString("tktv", ad.TenTv);
+                HttpContext.Session.SetInt32("idtv", ad.MaTv);
+                return RedirectToAction("index", "Home");
+            }
+            else
+                ViewBag.Thongbao = "Tài khoản hoặc mật khẩu không đúng";
+            return View(tv);
+
+
+        }
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Login", "ThanhVien");
+        }
         // GET: Admin/Thanhvien
         public async Task<IActionResult> Index()
         {
@@ -29,6 +71,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Thanhvien/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Thanhviens == null)
             {
                 return NotFound();
@@ -48,6 +94,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Thanhvien/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             ViewData["MaCv"] = new SelectList(_context.Chucvus, "MaCv", "MaCv");
             return View();
         }
@@ -93,6 +143,10 @@ namespace LuanVan.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("MaTv,TenTv,GioitinhTv,DiachiTv,SdtTv,EmailTv,MatkhauTv,MaCv")] Thanhvien thanhvien)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id != thanhvien.MaTv)
             {
                 return NotFound();
@@ -125,6 +179,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Thanhvien/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Thanhviens == null)
             {
                 return NotFound();

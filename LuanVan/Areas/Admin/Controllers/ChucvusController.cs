@@ -22,12 +22,20 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chucvus
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Chucvus.ToListAsync());
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
+            return View(await _context.Chucvus.ToListAsync());
         }
 
         // GET: Admin/Chucvus/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Chucvus == null)
             {
                 return NotFound();
@@ -46,6 +54,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chucvus/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             return View();
         }
 
@@ -68,6 +80,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chucvus/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Chucvus == null)
             {
                 return NotFound();
@@ -119,6 +135,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chucvus/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Chucvus == null)
             {
                 return NotFound();

@@ -22,6 +22,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/TtQuyengopHienvats
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             var nienluancosoContext = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation);
             return View(await nienluancosoContext.ToListAsync());
         }
@@ -29,6 +33,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/TtQuyengopHienvats/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.TtQuyengopHienvats == null)
             {
                 return NotFound();
@@ -50,6 +58,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/TtQuyengopHienvats/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             ViewData["MaCd"] = new SelectList(_context.Chiendiches, "MaCd", "MaCd");
             ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "MaHv");
             ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans, "MaMtq", "MaMtq");
@@ -78,6 +90,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/TtQuyengopHienvats/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.TtQuyengopHienvats == null)
             {
                 return NotFound();
@@ -135,6 +151,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/TtQuyengopHienvats/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.TtQuyengopHienvats == null)
             {
                 return NotFound();

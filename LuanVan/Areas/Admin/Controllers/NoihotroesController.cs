@@ -22,6 +22,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Noihotroes
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             var nienluancosoContext = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.MaTvNavigation);
             return View(await nienluancosoContext.ToListAsync());
         }
@@ -49,6 +53,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Noihotroes/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans, "MaMtq", "MaMtq");
             ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "MaTv");
             return View();
@@ -75,6 +83,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Noihotroes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Noihotros == null)
             {
                 return NotFound();
@@ -130,6 +142,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Noihotroes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Noihotros == null)
             {
                 return NotFound();

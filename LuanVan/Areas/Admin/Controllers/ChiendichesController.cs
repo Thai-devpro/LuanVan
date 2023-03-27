@@ -23,6 +23,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chiendiches
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             var nienluancosoContext = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats);
             return View(await nienluancosoContext.ToListAsync());
         }
@@ -30,6 +34,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chiendiches/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Chiendiches == null)
             {
                 return NotFound();
@@ -52,6 +60,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chiendiches/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             var Noihotros = _context.Noihotros.ToList();
             Noihotros.Insert(0, new Noihotro { Manoi = 0, Diachi = "---KHÔNG---" });
             ViewData["MaNoi"] = new SelectList(Noihotros, "Manoi", "Diachi");
@@ -124,6 +136,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chiendiches/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Chiendiches == null)
             {
                 return NotFound();
@@ -256,6 +272,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chiendiches/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Chiendiches == null)
             {
                 return NotFound();

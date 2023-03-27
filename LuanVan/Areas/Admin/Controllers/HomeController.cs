@@ -7,6 +7,10 @@ namespace LuanVan.Areas.Admin.Controllers
     {
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             return View();
         }
        

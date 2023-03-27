@@ -22,13 +22,21 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/HienVat
         public async Task<IActionResult> Index()
         {
-            var nienluancosoContext = _context.HienVats.Include(h => h.MaLoaiNavigation);
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
+            var nienluancosoContext = _context.HienVats.Include(h => h.MaLoaiNavigation).Include(h => h.TtQuyengopHienvats).Include(h => h.TtTraotangs);
             return View(await nienluancosoContext.ToListAsync());
         }
 
         // GET: Admin/HienVat/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.HienVats == null)
             {
                 return NotFound();
@@ -48,7 +56,11 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/HienVat/Create
         public IActionResult Create()
         {
-            ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "MaLoai");
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
+            ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai");
             return View();
         }
 
@@ -59,19 +71,51 @@ namespace LuanVan.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MaLoai,MaHv,TenHv,Donvitinh,Soluongcon,Gia")] HienVat hienVat)
         {
-            if (ModelState.IsValid)
+            if (hienVat.TenHv == null)
             {
+                ModelState.AddModelError("TenHv", "Vui lòng nhập tên hiện vật!");
+                ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai", hienVat.MaLoai);
+                return View(hienVat);
+            }
+            if (hienVat.Donvitinh== null)
+            {
+                ModelState.AddModelError("Donvitinh", "Vui lòng nhập đơn vị tính hiện vật!");
+                ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai", hienVat.MaLoai);
+                return View(hienVat);
+            }
+            if (hienVat.Soluongcon == null)
+            {
+                ModelState.AddModelError("Soluongcon", "Vui lòng nhập số lượng còn!");
+                ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai", hienVat.MaLoai);
+                return View(hienVat);
+            }
+            if (hienVat.Gia == null)
+            {
+                ModelState.AddModelError("Gia", "Vui lòng nhập giá hiện vật!");
+                ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai", hienVat.MaLoai);
+                return View(hienVat);
+            }
+            var hv = _context.HienVats.FirstOrDefault(t => t.TenHv == hienVat.TenHv);
+                if (hv != null)
+                {
+                    ModelState.AddModelError("TenHv", "Hiện vật đã tồn tại!");
+                ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai", hienVat.MaLoai);
+                return View(hienVat);
+                }
                 _context.Add(hienVat);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "MaLoai", hienVat.MaLoai);
-            return View(hienVat);
+            
+           
         }
 
         // GET: Admin/HienVat/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.HienVats == null)
             {
                 return NotFound();
@@ -82,7 +126,7 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "MaLoai", hienVat.MaLoai);
+            ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai", hienVat.MaLoai);
             return View(hienVat);
         }
 
@@ -98,9 +142,38 @@ namespace LuanVan.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (hienVat.TenHv == null)
             {
-                try
+                ModelState.AddModelError("TenHv", "Vui lòng nhập tên hiện vật!");
+                ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai", hienVat.MaLoai);
+                return View(hienVat);
+            }
+            if (hienVat.Donvitinh == null)
+            {
+                ModelState.AddModelError("Donvitinh", "Vui lòng nhập đơn vị tính hiện vật!");
+                ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai", hienVat.MaLoai);
+                return View(hienVat);
+            }
+            if (hienVat.Soluongcon == null)
+            {
+                ModelState.AddModelError("Soluongcon", "Vui lòng nhập số lượng còn!");
+                ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai", hienVat.MaLoai);
+                return View(hienVat);
+            }
+            if (hienVat.Gia == null)
+            {
+                ModelState.AddModelError("Gia", "Vui lòng nhập giá hiện vật!");
+                ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai", hienVat.MaLoai);
+                return View(hienVat);
+            }
+            var hv = _context.HienVats.AsNoTracking().FirstOrDefault(t => t.TenHv == hienVat.TenHv.Trim());
+            if (hv != null && hv.MaHv != hienVat.MaHv)
+            {
+                ModelState.AddModelError("TenHv", "Hiện vật đã tồn tại!");
+                ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai", hienVat.MaLoai);
+                return View(hienVat);
+            }
+            try
                 {
                     _context.Update(hienVat);
                     await _context.SaveChangesAsync();
@@ -117,14 +190,17 @@ namespace LuanVan.Areas.Admin.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "MaLoai", hienVat.MaLoai);
-            return View(hienVat);
+            
+            
         }
 
         // GET: Admin/HienVat/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.HienVats == null)
             {
                 return NotFound();

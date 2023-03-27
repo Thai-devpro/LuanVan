@@ -22,12 +22,20 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/LoaiHvs
         public async Task<IActionResult> Index()
         {
-              return View(await _context.LoaiHvs.ToListAsync());
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
+            return View(await _context.LoaiHvs.Include(m => m.HienVats).ToListAsync());
         }
 
         // GET: Admin/LoaiHvs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.LoaiHvs == null)
             {
                 return NotFound();
@@ -46,6 +54,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/LoaiHvs/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             return View();
         }
 
@@ -58,6 +70,12 @@ namespace LuanVan.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var hv = _context.LoaiHvs.FirstOrDefault(t => t.DienGiai == loaiHv.DienGiai);
+                if (hv != null)
+                {
+                    ModelState.AddModelError("DienGiai", "Loại hiện vật đã tồn tại!");
+                    return View(loaiHv);
+                }
                 _context.Add(loaiHv);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -68,6 +86,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/LoaiHvs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.LoaiHvs == null)
             {
                 return NotFound();
@@ -95,6 +117,12 @@ namespace LuanVan.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                var hv = _context.LoaiHvs.FirstOrDefault(t => t.DienGiai == loaiHv.DienGiai);
+                if (hv != null )
+                {
+                    ModelState.AddModelError("DienGiai", "Loại hiện vật đã tồn tại!");
+                    return View(loaiHv);
+                }
                 try
                 {
                     _context.Update(loaiHv);
@@ -119,6 +147,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/LoaiHvs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.LoaiHvs == null)
             {
                 return NotFound();

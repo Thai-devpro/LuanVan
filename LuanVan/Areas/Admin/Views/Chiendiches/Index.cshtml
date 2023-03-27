@@ -136,7 +136,7 @@
             @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
                 </td>
                 <td style="text-align:center">
-            @if (item.TtQuyengopHienvats.Count > 0 || item.TtTraotangs.Count >0)
+            @if (item.TtQuyengopHienvats.Count > 0 || item.TtTraotangs.Count > 0)
             {
                         <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaCd })'" />
                         <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaCd })'" />

@@ -4,30 +4,87 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 16px;
+        text-align: center;
+    }
 
-<h1>Index</h1>
+    th, td {
+        padding: 12px;
+        text-align: left;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    th {
+        background-color: #F7F7F7;
+        font-weight: bold;
+    }
+
+    td {
+        background-color: #FFFFFF;
+    }
+
+    tr:nth-child(even) td {
+        background-color: #F2F2F2;
+    }
+
+    tr:hover td {
+        background-color: #EFEFEF;
+    }
+
+    a {
+        color: #007BFF;
+        text-decoration: none;
+    }
+
+    .btn {
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #007BFF;
+    }
+
+    .btn-danger {
+        background-color: #DC3545;
+    }
+
+    .btn-secondary {
+        background-color: #6C757D;
+    }
+
+        .btn-primary:hover, .btn-secondary:hover, .btn-danger:hover {
+            opacity: 0.8;
+        }
+</style>
+<h1>Danh sách người dùng</h1>
+
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.HotenMtq)
+                Họ tên
             </th>
            
             <th>
-                @Html.DisplayNameFor(model => model.GioitinhMtq)
+               Giới tính
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DonviTochucMtq)
+                Đơn vị/tổ chức
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SdtMtq)
+               Số điện thoại
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DiachiMtq)
+               Địa chỉ
             </th>
             <th></th>
         </tr>
@@ -40,7 +97,15 @@
             </td>
             
             <td>
-                @Html.DisplayFor(modelItem => item.GioitinhMtq)
+                    @if(item.GioitinhMtq.Trim() != "Nam")
+                    {
+                        <span>Nữ</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.GioitinhMtq)
+                    }
+                   
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DonviTochucMtq)
@@ -51,11 +116,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DiachiMtq)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaMtq">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaMtq">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaMtq">Delete</a>
-            </td>
+           
         </tr>
 }
     </tbody>

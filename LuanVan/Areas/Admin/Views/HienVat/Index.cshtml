@@ -4,36 +4,99 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 16px;
+        text-align: center;
+    }
 
-<h1>Index</h1>
+    th, td {
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #F7F7F7;
+        font-weight: bold;
+    }
+
+    td {
+        background-color: #FFFFFF;
+    }
+
+    tr:nth-child(even) td {
+        background-color: #F2F2F2;
+    }
+
+    tr:hover td {
+        background-color: #EFEFEF;
+    }
+
+    a {
+        color: #007BFF;
+        text-decoration: none;
+    }
+
+    .btn {
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #007BFF;
+    }
+
+    .btn-danger {
+        background-color: #DC3545;
+    }
+
+    .btn-secondary {
+        background-color: #6C757D;
+    }
+
+        .btn-primary:hover, .btn-secondary:hover, .btn-danger:hover {
+            opacity: 0.8;
+        }
+</style>
+<h1>Danh sách hiện vật</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Thêm mới</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TenHv)
+              Loại hiện vật
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Donvitinh)
+                Tên hiện vật
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Soluongcon)
+               Đơn vị tính
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Gia)
+               Số lượng còn
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaLoaiNavigation)
+                Giá ước tính
             </th>
+            
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaLoaiNavigation.DienGiai)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TenHv)
             </td>
@@ -46,13 +109,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Gia)
             </td>
+            
             <td>
-                @Html.DisplayFor(modelItem => item.MaLoaiNavigation.MaLoai)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaHv">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaHv">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaHv">Delete</a>
+                    @if (item.TtTraotangs.Count > 0 || item.TtQuyengopHienvats.Count > 0)
+                    {
+                        <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaHv})'" />
+                    }
+                    else
+                    {
+                        <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaHv })'" />
+                        @*<input type = "button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaCd })'" />*@
+                        <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaHv})'" />
+                    }
             </td>
         </tr>
 }

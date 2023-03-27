@@ -60,7 +60,7 @@ namespace LuanVan.Controllers
                     return RedirectToAction("index", "Home");
                 }
                 else
-                    ViewBag.Thongbao = "Tài khoản hoặc mật khẩu không đúng";
+                    ViewBag.Thongbao = "Số điện thoại hoặc mật khẩu không đúng";
                 return View(mtq);
            
            

@@ -22,7 +22,11 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Manhthuongquans
         public async Task<IActionResult> Index()
         {
-              return _context.Manhthuongquans != null ? 
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
+            return _context.Manhthuongquans != null ? 
                           View(await _context.Manhthuongquans.ToListAsync()) :
                           Problem("Entity set 'NienluancosoContext.Manhthuongquans'  is null.");
         }
@@ -30,6 +34,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Manhthuongquans/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Manhthuongquans == null)
             {
                 return NotFound();
@@ -48,6 +56,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Manhthuongquans/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             return View();
         }
 
@@ -70,6 +82,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Manhthuongquans/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Manhthuongquans == null)
             {
                 return NotFound();
@@ -121,6 +137,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Manhthuongquans/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Manhthuongquans == null)
             {
                 return NotFound();
@@ -141,6 +161,10 @@ namespace LuanVan.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (_context.Manhthuongquans == null)
             {
                 return Problem("Entity set 'NienluancosoContext.Manhthuongquans'  is null.");

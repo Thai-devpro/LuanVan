@@ -22,12 +22,21 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chucnangs
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Chucnangs.ToListAsync());
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
+
+            return View(await _context.Chucnangs.ToListAsync());
         }
 
         // GET: Admin/Chucnangs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Chucnangs == null)
             {
                 return NotFound();
@@ -46,6 +55,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chucnangs/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             return View();
         }
 
@@ -68,6 +81,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chucnangs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Chucnangs == null)
             {
                 return NotFound();
@@ -119,6 +136,10 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Chucnangs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
             if (id == null || _context.Chucnangs == null)
             {
                 return NotFound();
