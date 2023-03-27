@@ -20,7 +20,7 @@ namespace LuanVan.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Chiendiches
+    
         public async Task<IActionResult> Index()
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
