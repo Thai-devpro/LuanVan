@@ -5,58 +5,67 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Cập nhật</h1>
 
-<h4>TtQuyengopHienvat</h4>
+<h4>Thông tin quyên góp</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MaQghv" />
+            
             <div class="form-group">
-                <label asp-for="MaHv" class="control-label"></label>
-                <select asp-for="MaHv" class="form-control" asp-items="ViewBag.MaHv"></select>
-                <span asp-validation-for="MaHv" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MaMtq" class="control-label"></label>
+                <label asp-for="MaMtq" class="control-label">Người quyên góp</label>
                 <select asp-for="MaMtq" class="form-control" asp-items="ViewBag.MaMtq"></select>
                 <span asp-validation-for="MaMtq" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MaCd" class="control-label"></label>
+                <label asp-for="MaCd" class="control-label">Chiến dịch</label>
                 <select asp-for="MaCd" class="form-control" asp-items="ViewBag.MaCd"></select>
                 <span asp-validation-for="MaCd" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
-                <label asp-for="Ghichu" class="control-label"></label>
+                <label asp-for="MaHv" class="control-label">Hiện vật</label>
+                <select asp-for="MaHv" class="form-control" asp-items="ViewBag.MaHv"></select>
+                <span asp-validation-for="MaHv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoluongQg" class="control-label">Số lượng</label>
+                <input asp-for="SoluongQg" class="form-control" />
+                <span asp-validation-for="SoluongQg" class="text-danger"></span>
+            </div><div class="form-group">
+                <label asp-for="Ghichu" class="control-label">Ghi chú</label>
                 <input asp-for="Ghichu" class="form-control" />
                 <span asp-validation-for="Ghichu" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SoluongQg" class="control-label"></label>
-                <input asp-for="SoluongQg" class="form-control" />
-                <span asp-validation-for="SoluongQg" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TrangthaiHv" class="control-label"></label>
-                <input asp-for="TrangthaiHv" class="form-control" />
-                <span asp-validation-for="TrangthaiHv" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NgayQg" class="control-label"></label>
-                <input asp-for="NgayQg" class="form-control" />
+                <label asp-for="NgayQg" class="control-label">Ngày quyên góp</label>
+                <input asp-for="NgayQg" class="form-control" readonly />
                 <span asp-validation-for="NgayQg" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label asp-for="TrangthaiHv" class="control-label">Cập nhật trạng thái</label>
+                <select asp-for="TrangthaiHv" class="form-control">
+                    <option value="Đã nhận">Đã nhận</option>
+                    <option value="Chưa nhận">Chưa nhận</option>
+                </select>
+                <span asp-validation-for="TrangthaiHv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaTv" class="control-label">Người nhận</label>
+                <select asp-for="MaTv" class="form-control" asp-items="ViewBag.MaTv"></select>
+                <span asp-validation-for="MaTv" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Về danh sách</a>
 </div>
 

@@ -40,8 +40,9 @@ namespace LuanVan.Areas.Admin.Controllers
 
             var noihotro = await _context.Noihotros
                 .Include(n => n.MaMtqNavigation)
-                
-                .FirstOrDefaultAsync(m => m.Manoi == id);
+                .Include(n => n.TtTraotangs)
+                .Include(n => n.Chiendiches)
+                .FirstOrDefaultAsync(n => n.Manoi == id);
             if (noihotro == null)
             {
                 return NotFound();

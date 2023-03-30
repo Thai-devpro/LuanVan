@@ -103,14 +103,14 @@
             <td>
                     @if (item.TtTraotangs.Count > 0 && item.Chiendiches.Count >0)
                     {
-                        <span>Đã mở chiến dịch và trao tặng</span>
+                        <span class="text-danger">Đã mở chiến dịch và trao tặng</span>
                     }else if(item.Chiendiches.Count > 0)
                     {
-                        <span>Đã mở chiến dịch</span>
+                        <span class="text-danger">Đã mở chiến dịch</span>
                     }
                     else if(item.TtTraotangs.Count > 0) 
                     {
-                        <span>Đã có hỗ trợ</span>
+                        <span class="text-danger">Đã có hỗ trợ</span>
 
 
                     }
@@ -131,14 +131,18 @@
                     @if (item.TtTraotangs.Count == 0 && item.TrangthaiNht.Trim() == "Đã duyệt" && item.Chiendiches.Count == 0)
                     {
                         <input type="button" style="width:115px;" class="btn btn-primary" value="Cập nhật" onclick="location.href='@Url.Action("Edit", new { id = item.Manoi })'" />
-                        <input type="button" style="width:115px;" class="btn btn-primary" value="Mở chiến dịch" onclick="location.href='@Url.Action("Create","ChienDiches", new { id = item.Manoi })'" />
-                        <input type="button" style="width:115px;" class="btn btn-primary" value="Thêm hỗ trợ" onclick="location.href='@Url.Action("Edit", new { id = item.Manoi })'" />
+                        <input type="button" style="width:115px;" class="btn btn-success" value="Mở chiến dịch" onclick="location.href='@Url.Action("Create","ChienDiches", new { id = item.Manoi })'" />
+                        <input type="button" style="width:115px;" class="btn btn-success" value="Thêm hỗ trợ" onclick="location.href='@Url.Action("Create","TtTraotangs", new { manoi = item.Manoi })'" />
                     }
                     else if (item.TtTraotangs.Count == 0 && item.Chiendiches.Count == 0)
                     {
-                        <input type="button" style="width:90px;" class="btn btn-primary" value="Cập nhật" onclick="location.href='@Url.Action("Edit", new { id = item.Manoi })'" />
-
+                        <input type="button" style="width:115px;" class="btn btn-primary" value="Cập nhật" onclick="location.href='@Url.Action("Edit", new { id = item.Manoi })'" />
                     }
+                    else{
+                        <input type="button" style="width:115px;" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.Manoi })'" />
+                        <input type="button" style="width:115px;" class="btn btn-success" value="Mở chiến dịch" onclick="location.href='@Url.Action("Create","ChienDiches", new { id = item.Manoi })'" />
+                        <input type="button" style="width:115px;" class="btn btn-success" value="Thêm hỗ trợ" onclick="location.href='@Url.Action("Create","TtTraotangs", new { manoi = item.Manoi })'" />
+                        }
 
                 </td>
         </tr>

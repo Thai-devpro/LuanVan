@@ -22,7 +22,7 @@ namespace LuanVan.Controllers
         // GET: TtQuyengopHienvats
         public async Task<IActionResult> Index()
         {
-            var nienluancosoContext = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation);
+            var nienluancosoContext = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation);
             return View(await nienluancosoContext.ToListAsync());
         }
 

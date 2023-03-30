@@ -153,7 +153,7 @@ namespace LuanVan.Controllers
                 var fileName = Path.GetFileName(file.FileName);
 
                 //Luu duong dan file anh
-                var path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "Content/images/chiendich/"));
+                var path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "Content/images/noihotro/"));
 
                 //Kiem tra file da ton tai
                 if (System.IO.File.Exists(path))

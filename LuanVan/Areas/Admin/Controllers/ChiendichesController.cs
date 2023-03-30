@@ -337,7 +337,7 @@ namespace LuanVan.Areas.Admin.Controllers
                 if (file.Length > 0)
                 {
                     var fileName = Path.GetFileName(file.FileName);
-                    path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Content/images/chiendich"));
+                    path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Content/images/chiendich/"));
                     using (var filestream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
                     {
                         await file.CopyToAsync(filestream);

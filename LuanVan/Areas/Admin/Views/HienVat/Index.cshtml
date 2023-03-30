@@ -79,13 +79,14 @@
                 Tên hiện vật
             </th>
             <th>
+                Số lượng còn
+            </th>
+            <th>
                Đơn vị tính
             </th>
+           <th>Giá</th>
             <th>
-               Số lượng còn
-            </th>
-            <th>
-                Giá ước tính
+                Tổng giá trị ước tính
             </th>
             
             <th></th>
@@ -100,14 +101,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TenHv)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Donvitinh)
-            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Soluongcon)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Donvitinh)
+                </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Gia)
+                    @Html.DisplayFor(modelItem => item.Gia) <a style="color:black">VNĐ</a>
+            </td>
+            <td>
+                    @( item.Gia *  item.Soluongcon) <a style="color:black">VNĐ</a>
             </td>
             
             <td>

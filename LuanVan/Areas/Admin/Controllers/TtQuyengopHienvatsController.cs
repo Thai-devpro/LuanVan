@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuanVan.Data;
+using Microsoft.CodeAnalysis;
 
 namespace LuanVan.Areas.Admin.Controllers
 {
@@ -18,7 +19,7 @@ namespace LuanVan.Areas.Admin.Controllers
         {
             _context = context;
         }
-
+        
         // GET: Admin/TtQuyengopHienvats
         public async Task<IActionResult> Index()
         {
@@ -26,7 +27,7 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return RedirectToAction("Login", "ThanhVien");
             }
-            var nienluancosoContext = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation);
+            var nienluancosoContext = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation);
             return View(await nienluancosoContext.ToListAsync());
         }
 
@@ -99,14 +100,15 @@ namespace LuanVan.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var ttQuyengopHienvat = await _context.TtQuyengopHienvats.FindAsync(id);
+            var ttQuyengopHienvat = await _context.TtQuyengopHienvats.Include(n => n.MaMtqNavigation).Include(n => n.MaHvNavigation).FirstOrDefaultAsync(n => n.MaQghv == id);
             if (ttQuyengopHienvat == null)
             {
                 return NotFound();
             }
-            ViewData["MaCd"] = new SelectList(_context.Chiendiches, "MaCd", "MaCd", ttQuyengopHienvat.MaCd);
-            ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "MaHv", ttQuyengopHienvat.MaHv);
-            ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans, "MaMtq", "MaMtq", ttQuyengopHienvat.MaMtq);
+            ViewData["MaCd"] = new SelectList(_context.Chiendiches.Where(s => s.MaCd == ttQuyengopHienvat.MaCd), "MaCd", "TenCd");
+            ViewData["MaHv"] = new SelectList(_context.HienVats.Where(s => s.MaHv == ttQuyengopHienvat.MaHv), "MaHv", "TenHv");
+            ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans.Where(s => s.MaMtq == ttQuyengopHienvat.MaMtq), "MaMtq", "HotenMtq");
+            ViewData["MaTv"] = new SelectList(_context.Thanhviens.ToList(), "MaTv", "TenTv");
             return View(ttQuyengopHienvat);
         }
 
@@ -115,17 +117,57 @@ namespace LuanVan.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaQghv,MaHv,MaMtq,MaCd,Ghichu,SoluongQg,TrangthaiHv,NgayQg")] TtQuyengopHienvat ttQuyengopHienvat)
+        public async Task<IActionResult> Edit(int id, [Bind("MaQghv,MaHv,MaTv,MaMtq,MaCd,Ghichu,SoluongQg,TrangthaiHv,NgayQg")] TtQuyengopHienvat ttQuyengopHienvat)
         {
             if (id != ttQuyengopHienvat.MaQghv)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            if (ttQuyengopHienvat.SoluongQg == null || ttQuyengopHienvat.SoluongQg <= 0)
             {
-                try
+                ModelState.AddModelError("SoLuongQg", "Vui lòng điền số lượng ?");
+                ViewData["MaCd"] = new SelectList(_context.Chiendiches.Where(s => s.MaCd == ttQuyengopHienvat.MaCd), "MaCd", "TenCd");
+                ViewData["MaHv"] = new SelectList(_context.HienVats.Where(s => s.MaHv == ttQuyengopHienvat.MaHv), "MaHv", "TenHv");
+                ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans.Where(s => s.MaMtq == ttQuyengopHienvat.MaMtq), "MaMtq", "HotenMtq");
+                ViewData["MaTv"] = new SelectList(_context.Thanhviens.ToList(), "MaTv", "TenTv");
+                return View(ttQuyengopHienvat);
+
+
+            }
+            if (ttQuyengopHienvat.Ghichu == null)
+            {
+                ModelState.AddModelError("Ghichu", "Vui lòng thêm ghi chú ?");
+                ViewData["MaCd"] = new SelectList(_context.Chiendiches.Where(s => s.MaCd == ttQuyengopHienvat.MaCd), "MaCd", "TenCd");
+                ViewData["MaHv"] = new SelectList(_context.HienVats.Where(s => s.MaHv == ttQuyengopHienvat.MaHv), "MaHv", "TenHv");
+                ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans.Where(s => s.MaMtq == ttQuyengopHienvat.MaMtq), "MaMtq", "HotenMtq");
+                ViewData["MaTv"] = new SelectList(_context.Thanhviens.ToList(), "MaTv", "TenTv");
+                return View(ttQuyengopHienvat);
+
+
+            }
+
+            try
                 {
+                
+               var ttqg = _context.TtQuyengopHienvats.AsNoTracking().FirstOrDefault(od => od.MaQghv == ttQuyengopHienvat.MaQghv);
+                var cd = _context.Chiendiches.AsNoTracking().FirstOrDefault(c => c.MaCd == ttQuyengopHienvat.MaCd);
+                if (ttQuyengopHienvat.TrangthaiHv == "Đã nhận" && ttqg.TrangthaiHv.Trim() == "Chưa nhận" && cd.MaNoi == null)
+                {
+
+                    var hv = _context.HienVats.FirstOrDefault(od => od.MaHv == ttQuyengopHienvat.MaHv);
+                    hv.Soluongcon += ttQuyengopHienvat.SoluongQg;
+                    await _context.SaveChangesAsync();
+                }
+                
+                if (ttqg.TrangthaiHv.Trim() == "Đã nhận" && ttQuyengopHienvat.TrangthaiHv == "Chưa nhận" && cd.MaNoi == null)
+                {
+                    var hv = _context.HienVats.FirstOrDefault(od => od.MaHv == ttQuyengopHienvat.MaHv);
+                    hv.Soluongcon -= ttQuyengopHienvat.SoluongQg;
+                    await _context.SaveChangesAsync();
+                    ttQuyengopHienvat.MaTv = null;
+                }
+                      
+                    
                     _context.Update(ttQuyengopHienvat);
                     await _context.SaveChangesAsync();
                 }
@@ -141,11 +183,9 @@ namespace LuanVan.Areas.Admin.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["MaCd"] = new SelectList(_context.Chiendiches, "MaCd", "MaCd", ttQuyengopHienvat.MaCd);
-            ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "MaHv", ttQuyengopHienvat.MaHv);
-            ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans, "MaMtq", "MaMtq", ttQuyengopHienvat.MaMtq);
-            return View(ttQuyengopHienvat);
+            
+            
+           
         }
 
         // GET: Admin/TtQuyengopHienvats/Delete/5

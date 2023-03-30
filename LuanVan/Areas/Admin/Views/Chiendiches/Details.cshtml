@@ -85,7 +85,7 @@
     <table class="table">
         @foreach (var item in listChienDich)
         {
-            if (item.TrangthaiHv.Trim() == "Đã nhận")
+            if (item.TrangthaiHv.Trim() == "Đã nhận" || item.TrangthaiHv.Trim() == "Đã tặng")
             {
                 tongqg += (item.MaHvNavigation.Gia) * (item.SoluongQg);
             }
@@ -126,7 +126,7 @@
         @foreach (var item in listChienDich)
         {
 
-            <tr>
+            
 
             <tr>
                 <td>
@@ -148,6 +148,7 @@
 
                 <td>
                         @Html.DisplayFor(modelItem => item.TrangthaiHv)
+                    
                 </td>
                 <td>
                         @Html.DisplayFor(modelItem => item.NgayQg)
@@ -166,7 +167,7 @@
                         <td>Chưa nhận</td>
                     }
             </tr>
-            </tr>
+            
         }
 
     </table>
@@ -174,7 +175,7 @@
 }
 
 
-@if (Model.TtTraotangs.Count > 0)
+@if (Model.TtTraotangs.Count > 0 && Model.MaNoi == null)
 {
     NienluancosoContext db = new NienluancosoContext();
 
@@ -185,10 +186,10 @@
     <table class="table">
         @foreach (var item in listtt)
         {
-
-
-            tongtt += (item.MaHvNavigation.Gia) * (item.SoluongTt);
-
+            if ( item.MaHv != null)
+            {
+                tongtt += ( item.MaHvNavigation.Gia) * ( item.SoluongTt );
+            }
         }
 
         <tr>
@@ -218,7 +219,7 @@
                 Giá trị ước tính
             </th>
             <th>
-                Người tặng
+                Người chịu trách nhiệm
             </th>
         </tr>
         @foreach (var item in listtt)

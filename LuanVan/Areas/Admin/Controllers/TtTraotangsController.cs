@@ -57,16 +57,45 @@ namespace LuanVan.Areas.Admin.Controllers
         }
 
         // GET: Admin/TtTraotangs/Create
-        public IActionResult Create()
+        public IActionResult Create(int? manoi, int? macd)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
             }
-            ViewData["MaCd"] = new SelectList(_context.Chiendiches, "MaCd", "MaCd");
-            ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "MaHv");
-            ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "MaTv");
-            ViewData["Manoi"] = new SelectList(_context.Noihotros, "Manoi", "Manoi");
+            if (manoi != null)
+            {
+                
+                var cd3 = _context.Chiendiches.Where(c => c.MaNoi == manoi && c.Ngayketthuc < DateTime.Now).ToList();
+                cd3.Insert(0, new Chiendich { MaCd = 0, TenCd = "---KHÔNG---" });
+                ViewData["MaCd"] = new SelectList(cd3, "MaCd", "TenCd");
+                ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv");
+                ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv");
+                ViewData["Manoi"] = new SelectList(_context.Noihotros.Where(n => n.Manoi == manoi), "Manoi", "Diachi");
+                return View();
+            }
+            if (macd != null)
+            {
+
+                var cd2 = _context.Chiendiches.Where(c => c.MaCd == macd).ToList();
+                if (cd2 != null)
+                {
+                    var hv = _context.HienVats.Where(c => c.MaHv == null).ToList();
+                    hv.Insert(0, new HienVat { MaHv = 0, TenHv = "---Tất cả hiện vật đã nhận của chiến dịch---" });
+                    Chiendich cd1 = _context.Chiendiches.FirstOrDefault(cd => cd.MaCd == macd);
+                    ViewData["MaCd"] = new SelectList(cd2, "MaCd", "TenCd");
+                    ViewData["MaHv"] = new SelectList(hv, "MaHv", "TenHv");
+                    ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv");
+                    ViewData["Manoi"] = new SelectList(_context.Noihotros.Where(n => n.Manoi == cd1.MaNoi), "Manoi", "Diachi");
+                }
+                return View();
+            }
+            var cd = _context.Chiendiches.Where(c => c.MaCd == null).ToList();
+            cd.Insert(0, new Chiendich { MaCd = 0, TenCd = "---KHÔNG---" });
+            ViewData["MaCd"] = new SelectList(cd, "MaCd", "TenCd");
+            ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv");
+            ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv");
+            ViewData["Manoi"] = new SelectList(_context.Noihotros.Where(n => n.TrangthaiNht.Trim() == "Đã duyệt"), "Manoi", "Diachi");
             return View();
         }
 
@@ -75,19 +104,116 @@ namespace LuanVan.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaTt,Manoi,MaHv,MaCd,SoluongTt,Ngaytang,AnhTt,MaTv")] TtTraotang ttTraotang)
+        public async Task<IActionResult> Create([Bind("MaTt,Manoi,MaHv,MaCd,SoluongTt,Ngaytang,AnhTt,MaTv")] TtTraotang ttTraotang, IFormFile file)
         {
-            if (ModelState.IsValid)
+            if (ttTraotang.MaCd != 0)
             {
+                ttTraotang.SoluongTt = 0;
+                
+                if (ttTraotang.AnhTt == null && file == null && ttTraotang.MaCd != null)
+                {
+                    
+                    ViewData["MaCd"] = new SelectList(_context.Chiendiches.Where(c => c.MaCd == ttTraotang.MaCd), "MaCd", "TenCd");
+                    var hv = _context.HienVats.Where(c => c.MaHv == null).ToList();
+                    hv.Insert(0, new HienVat { MaHv = 0, TenHv = "---Tất cả hiện vật đã nhận của chiến dịch---" });
+                    ViewData["MaHv"] = new SelectList(hv, "MaHv", "TenHv", ttTraotang.MaHv);
+                    ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", ttTraotang.MaTv);
+                    ViewData["Manoi"] = new SelectList(_context.Noihotros.Where(n => n.Manoi == ttTraotang.Manoi), "Manoi", "Diachi", ttTraotang.Manoi);
+                    ModelState.AddModelError("AnhTt", "Vui lòng thêm ảnh trao tặng");
+                    return View(ttTraotang);
+                }
+                var fileName = Path.GetFileName(file.FileName);
+
+                //Luu duong dan file anh
+                var path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "Content/images/traotang/"));
+
+                //Kiem tra file da ton tai
+                if (System.IO.File.Exists(path))
+                {
+                    ViewBag.ThongBao = "Hình ảnh đã tồn tại";
+                }
+                else
+                {
+                    await UploadFile(file);
+                }
+                ttTraotang.AnhTt = file.FileName;
+
+                var listTtQghv =await _context.TtQuyengopHienvats.AsNoTracking().Where(t => t.MaCd == ttTraotang.MaCd && t.TrangthaiHv.Trim() == "Đã nhận").ToListAsync();
+
+                foreach (var ttQghv in listTtQghv)
+                {
+                    ttQghv.TrangthaiHv = "Đã tặng";
+                 _context.Update(ttQghv);
+                   
+                }
+            
+                ttTraotang.MaHv = null;
                 _context.Add(ttTraotang);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["MaCd"] = new SelectList(_context.Chiendiches, "MaCd", "MaCd", ttTraotang.MaCd);
-            ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "MaHv", ttTraotang.MaHv);
-            ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "MaTv", ttTraotang.MaTv);
-            ViewData["Manoi"] = new SelectList(_context.Noihotros, "Manoi", "Manoi", ttTraotang.Manoi);
-            return View(ttTraotang);
+            else
+            {
+                ttTraotang.MaCd = null;
+
+                HienVat hv = _context.HienVats.FirstOrDefault(h => h.MaHv == ttTraotang.MaHv);
+
+                if (ttTraotang.SoluongTt > hv.Soluongcon && ttTraotang.MaCd == null)
+                {
+                    var cd = _context.Chiendiches.Where(c => c.MaCd == null).ToList();
+                    cd.Insert(0, new Chiendich { MaCd = 0, TenCd = "---KHÔNG---" });
+                    ViewData["MaCd"] = new SelectList(cd, "MaCd", "TenCd");
+                    ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv", ttTraotang.MaHv);
+                    ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", ttTraotang.MaTv);
+                    ViewData["Manoi"] = new SelectList(_context.Noihotros.Where(n => n.Manoi == ttTraotang.Manoi), "Manoi", "Diachi", ttTraotang.Manoi);
+                    ModelState.AddModelError("SoluongTt", "Số lượng trao tặng vượt quá số lượng trong kho!");
+                    return View(ttTraotang);
+                }
+                if (ttTraotang.MaCd == null && ttTraotang.SoluongTt <= 0)
+                {
+                    var cd = _context.Chiendiches.Where(c => c.MaCd == null).ToList();
+                    cd.Insert(0, new Chiendich { MaCd = 0, TenCd = "---KHÔNG---" });
+                    ViewData["MaCd"] = new SelectList(cd, "MaCd", "TenCd");
+                    ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv", ttTraotang.MaHv);
+                    ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", ttTraotang.MaTv);
+                    ViewData["Manoi"] = new SelectList(_context.Noihotros.Where(n => n.Manoi == ttTraotang.Manoi), "Manoi", "Diachi", ttTraotang.Manoi);
+                    ModelState.AddModelError("SoluongTt", "Số lượng trao tặng ít nhất là 1!");
+                    return View(ttTraotang);
+                }
+                if (ttTraotang.AnhTt == null && file == null && ttTraotang.MaCd == null)
+                {
+                    var cd = _context.Chiendiches.Where(c => c.MaCd == null).ToList();
+                    cd.Insert(0, new Chiendich { MaCd = 0, TenCd = "---KHÔNG---" });
+                    ViewData["MaCd"] = new SelectList(cd, "MaCd", "TenCd");
+                    ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv", ttTraotang.MaHv);
+                    ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", ttTraotang.MaTv);
+                    ViewData["Manoi"] = new SelectList(_context.Noihotros.Where(n => n.Manoi == ttTraotang.Manoi), "Manoi", "Diachi", ttTraotang.Manoi);
+                    ModelState.AddModelError("AnhTt", "Vui lòng thêm ảnh trao tặng");
+                    return View(ttTraotang);
+                }
+                var fileName = Path.GetFileName(file.FileName);
+
+                //Luu duong dan file anh
+                var path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "Content/images/traotang/"));
+
+                //Kiem tra file da ton tai
+                if (System.IO.File.Exists(path))
+                {
+                    ViewBag.ThongBao = "Hình ảnh đã tồn tại";
+                }
+                else
+                {
+                    await UploadFile(file);
+                }
+                ttTraotang.AnhTt = file.FileName;
+
+                hv.Soluongcon -= ttTraotang.SoluongTt;
+                await _context.SaveChangesAsync();
+                _context.Add(ttTraotang);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
+
         }
 
         // GET: Admin/TtTraotangs/Edit/5
@@ -103,14 +229,32 @@ namespace LuanVan.Areas.Admin.Controllers
             }
 
             var ttTraotang = await _context.TtTraotangs.FindAsync(id);
+            
             if (ttTraotang == null)
             {
                 return NotFound();
             }
-            ViewData["MaCd"] = new SelectList(_context.Chiendiches, "MaCd", "MaCd", ttTraotang.MaCd);
-            ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "MaHv", ttTraotang.MaHv);
-            ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "MaTv", ttTraotang.MaTv);
-            ViewData["Manoi"] = new SelectList(_context.Noihotros, "Manoi", "Manoi", ttTraotang.Manoi);
+            if(ttTraotang.MaCd != null)
+            {
+                var cd2 = _context.Chiendiches.Where(c => c.MaCd == ttTraotang.MaCd).ToList();
+                if (cd2 != null)
+                {
+                    var hv = _context.HienVats.Where(c => c.MaHv == null).ToList();
+                    hv.Insert(0, new HienVat { MaHv = 0, TenHv = "---Tất cả hiện vật đã nhận của chiến dịch---" });
+                    Chiendich cd1 = _context.Chiendiches.FirstOrDefault(cd => cd.MaCd == ttTraotang.MaCd);
+                    ViewData["MaCd"] = new SelectList(cd2, "MaCd", "TenCd");
+                    ViewData["MaHv"] = new SelectList(hv, "MaHv", "TenHv");
+                    ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv");
+                    ViewData["Manoi"] = new SelectList(_context.Noihotros.Where(n => n.Manoi == cd1.MaNoi), "Manoi", "Diachi");
+                }
+                return View(ttTraotang);
+            }
+            var cd = _context.Chiendiches.Where(c => c.MaCd == null).ToList();
+            cd.Insert(0, new Chiendich { MaCd = 0, TenCd = "---KHÔNG---" }) ;
+            ViewData["MaCd"] = new SelectList(cd, "MaCd", "TenCd");
+            ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv");
+            ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv");
+            ViewData["Manoi"] = new SelectList(_context.Noihotros.Where(n => n.TrangthaiNht.Trim() == "Đã duyệt"), "Manoi", "Diachi");
             return View(ttTraotang);
         }
 
@@ -119,38 +263,137 @@ namespace LuanVan.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaTt,Manoi,MaHv,MaCd,SoluongTt,Ngaytang,AnhTt,MaTv")] TtTraotang ttTraotang)
+        public async Task<IActionResult> Edit(int id, [Bind("MaTt,Manoi,MaHv,MaCd,SoluongTt,Ngaytang,AnhTt,MaTv")] TtTraotang ttTraotang, IFormFile file)
         {
-            if (id != ttTraotang.MaTt)
+            if(ttTraotang.MaCd == 0) { ttTraotang.MaCd = null; }
+            if (ttTraotang.MaCd != null )
             {
-                return NotFound();
-            }
+                var tt = _context.TtTraotangs.AsNoTracking().SingleOrDefault(s => s.MaCd == ttTraotang.MaCd);
+                if (file != null)
+                {
+                    //Upload file
+                    var fileName = Path.GetFileName(file.FileName);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(ttTraotang);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TtTraotangExists(ttTraotang.MaTt))
+                    //Luu duong dan file anh
+                    var path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "Content/images/traotang/"));
+
+                    //Kiem tra file da ton tai
+                    if (System.IO.File.Exists(path))
                     {
-                        return NotFound();
+                        ViewBag.ThongBao = "Hình ảnh đã tồn tại";
                     }
                     else
                     {
-                        throw;
+                        await UploadFile(file);
                     }
+                    ttTraotang.AnhTt = file.FileName;
                 }
-                return RedirectToAction(nameof(Index));
+                else
+                {
+                    ttTraotang.AnhTt = tt.AnhTt;
+                }
+                
+
+                var listTtQghv = await _context.TtQuyengopHienvats.AsNoTracking().Where(t => t.MaCd == ttTraotang.MaCd && t.TrangthaiHv.Trim() == "Đã nhận").ToListAsync();
+
+                foreach (var ttQghv in listTtQghv)
+                {
+                    ttQghv.TrangthaiHv = "Đã tặng";
+                    _context.Update(ttQghv);
+
+                }
+
+                ttTraotang.MaHv = null;
+                ttTraotang.SoluongTt = 0;
+                _context.Update(ttTraotang);
+                await _context.SaveChangesAsync();
             }
-            ViewData["MaCd"] = new SelectList(_context.Chiendiches, "MaCd", "MaCd", ttTraotang.MaCd);
-            ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "MaHv", ttTraotang.MaHv);
-            ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "MaTv", ttTraotang.MaTv);
-            ViewData["Manoi"] = new SelectList(_context.Noihotros, "Manoi", "Manoi", ttTraotang.Manoi);
-            return View(ttTraotang);
+            else
+            {
+                
+                var tt = _context.TtTraotangs.AsNoTracking().SingleOrDefault(s => s.MaTt == ttTraotang.MaTt);
+                HienVat hvc = _context.HienVats.FirstOrDefault(h => h.MaHv == tt.MaHv);
+                HienVat hvm = _context.HienVats.FirstOrDefault(h => h.MaHv == ttTraotang.MaHv);
+                if (hvc.TenHv == hvm.TenHv && tt.SoluongTt != ttTraotang.SoluongTt)
+                {
+                
+                    hvm.Soluongcon = hvc.Soluongcon += tt.SoluongTt;
+                    
+                }
+                else if(hvc.TenHv != hvm.TenHv)
+                {
+                    hvc.Soluongcon += tt.SoluongTt;
+                    hvm.Soluongcon -=ttTraotang.SoluongTt;
+                }
+                if (ttTraotang.SoluongTt > hvm.Soluongcon && ttTraotang.MaCd == null)
+                {
+                    var cd = _context.Chiendiches.Where(c => c.MaCd == null).ToList();
+                    cd.Insert(0, new Chiendich { MaCd = 0, TenCd = "---KHÔNG---" });
+                    ViewData["MaCd"] = new SelectList(cd, "MaCd", "TenCd");
+                    ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv", ttTraotang.MaHv);
+                    ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", ttTraotang.MaTv);
+                    ViewData["Manoi"] = new SelectList(_context.Noihotros.Where(n => n.Manoi == ttTraotang.Manoi), "Manoi", "Diachi", ttTraotang.Manoi);
+                    ModelState.AddModelError("SoluongTt", "Số lượng trao tặng vượt quá số lượng trong kho!");
+                    return View(ttTraotang);
+                }
+                if ( ttTraotang.MaCd == null && ttTraotang.SoluongTt <= 0)
+                {
+                    var cd = _context.Chiendiches.Where(c => c.MaCd == null).ToList();
+                    cd.Insert(0, new Chiendich { MaCd = 0, TenCd = "---KHÔNG---" });
+                    ViewData["MaCd"] = new SelectList(cd, "MaCd", "TenCd");
+                    ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv", ttTraotang.MaHv);
+                    ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", ttTraotang.MaTv);
+                    ViewData["Manoi"] = new SelectList(_context.Noihotros.Where(n => n.Manoi == ttTraotang.Manoi), "Manoi", "Diachi", ttTraotang.Manoi);
+                    ModelState.AddModelError("SoluongTt", "Số lượng trao tặng ít nhất là 1!");
+                    return View(ttTraotang);
+                }
+                if (ttTraotang.AnhTt == null && file == null && tt.AnhTt == null && ttTraotang.MaCd == null)
+                {
+                    var cd = _context.Chiendiches.Where(c => c.MaCd == null).ToList();
+                    cd.Insert(0, new Chiendich { MaCd = 0, TenCd = "---KHÔNG---" });
+                    ViewData["MaCd"] = new SelectList(cd, "MaCd", "TenCd");
+                    ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv", ttTraotang.MaHv);
+                    ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", ttTraotang.MaTv);
+                    ViewData["Manoi"] = new SelectList(_context.Noihotros.Where(n => n.Manoi == ttTraotang.Manoi), "Manoi", "Diachi", ttTraotang.Manoi);
+                    ModelState.AddModelError("AnhTt", "Vui lòng thêm ảnh trao tặng");
+                    return View(ttTraotang);
+                }
+               
+                if (file != null)
+                {
+                    //Upload file
+                    var fileName = Path.GetFileName(file.FileName);
+
+                    //Luu duong dan file anh
+                    var path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "Content/images/traotang/"));
+
+                    //Kiem tra file da ton tai
+                    if (System.IO.File.Exists(path))
+                    {
+                        ModelState.AddModelError("AnhTt", "Ảnh đã tồn tại! Vui lòng chọn ảnh khác");
+                    }
+                    else
+                    {
+                        await UploadFile(file);
+                    }
+                    ttTraotang.AnhTt = file.FileName;
+                }
+                else
+                {
+                    ttTraotang.AnhTt = tt.AnhTt;
+                }
+                if (hvc.TenHv == hvm.TenHv && tt.SoluongTt != ttTraotang.SoluongTt)
+                {
+
+                    hvm.Soluongcon -=ttTraotang.SoluongTt;
+
+                }
+
+                _context.Update(ttTraotang);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Admin/TtTraotangs/Delete/5
@@ -189,18 +432,52 @@ namespace LuanVan.Areas.Admin.Controllers
                 return Problem("Entity set 'NienluancosoContext.TtTraotangs'  is null.");
             }
             var ttTraotang = await _context.TtTraotangs.FindAsync(id);
-            if (ttTraotang != null)
+            if (ttTraotang != null  && ttTraotang.MaCd == null && ttTraotang.MaHv != null)
             {
+                HienVat hvc = _context.HienVats.FirstOrDefault(h => h.MaHv == ttTraotang.MaHv);
+                hvc.Soluongcon += ttTraotang.SoluongTt;
                 _context.TtTraotangs.Remove(ttTraotang);
             }
-            
+            if(ttTraotang != null && ttTraotang.MaCd != null && ttTraotang.MaHv == null)
+            {
+                var listTtQghv = await _context.TtQuyengopHienvats.AsNoTracking().Where(t => t.MaCd == ttTraotang.MaCd && t.TrangthaiHv.Trim() == "Đã tặng").ToListAsync();
+
+                foreach (var ttQghv in listTtQghv)
+                {
+                    ttQghv.TrangthaiHv = "Đã nhận";
+                    _context.Update(ttQghv);
+
+                }
+                _context.TtTraotangs.Remove(ttTraotang);
+            }
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TtTraotangExists(int id)
         {
-          return (_context.TtTraotangs?.Any(e => e.MaTt == id)).GetValueOrDefault();
+            return (_context.TtTraotangs?.Any(e => e.MaTt == id)).GetValueOrDefault();
+        }
+        public async Task<bool> UploadFile(IFormFile file)
+        {
+            string path = "";
+            bool iscopied = false;
+            try
+            {
+                if (file.Length > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Content/images/traotang/"));
+                    using (var filestream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                    {
+                        await file.CopyToAsync(filestream);
+                    }
+                    iscopied = true;
+                }
+                else iscopied = false;
+            }
+            catch (Exception) { throw; }
+            return iscopied;
         }
     }
 }

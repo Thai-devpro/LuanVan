@@ -350,12 +350,10 @@ public partial class NienluancosoContext : DbContext
 
             entity.HasOne(d => d.MaCdNavigation).WithMany(p => p.TtTraotangs)
                 .HasForeignKey(d => d.MaCd)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TT_TRAOTANG_CHIENDICH");
 
             entity.HasOne(d => d.MaHvNavigation).WithMany(p => p.TtTraotangs)
                 .HasForeignKey(d => d.MaHv)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TT_TRAOTANG_HIEN_VAT");
 
             entity.HasOne(d => d.MaTvNavigation).WithMany(p => p.TtTraotangs)

@@ -66,7 +66,7 @@
     <a class="btn btn-primary" asp-action="Create">Tạo Chiến Dịch Mới</a>
 </p>
 
-<table class="table" ">
+<table class="table">
     <thead>
         <tr>
             <th>
@@ -98,59 +98,68 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model)
-{
+        @foreach (var item in Model)
+        {
             <tr>
                 <td>
                     <img src="@Url.Content("~/Content/images/chiendich/"+item.AnhCd)" width="100" height="80" style="margin-left:10px; border-radius:15px; border-style:outset " />
                 </td>
                 <td>
-            @Html.DisplayFor(modelItem => item.TenCd)
+                    @Html.DisplayFor(modelItem => item.TenCd)
                 </td>
 
                 <td>
-            @Html.DisplayFor(modelItem => item.Ngaybatdau)
+                    @Html.DisplayFor(modelItem => item.Ngaybatdau)
                 </td>
                 <td>
-            @Html.DisplayFor(modelItem => item.Ngayketthuc)
+                    @Html.DisplayFor(modelItem => item.Ngayketthuc)
                 </td>
                 <td>
-            @Html.DisplayFor(modelItem => item.NoidungCd)
+                    @Html.DisplayFor(modelItem => item.NoidungCd)
                 </td>
 
                 <td>
 
-            @if (item.MaNoi != null)
-            {
-                @Html.DisplayFor(modelItem => item.MaNoiNavigation.Diachi)
-                ;
-            }
-            else
-            {
+                    @if (item.MaNoi != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.MaNoiNavigation.Diachi)
+                        ;
+                    }
+                    else
+                    {
                         <a>Không có</a>
-            }
+                    }
 
 
                 </td>
                 <td>
-            @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
+                    @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
                 </td>
                 <td style="text-align:center">
-            @if (item.TtQuyengopHienvats.Count > 0 || item.TtTraotangs.Count > 0)
-            {
+                    @if (item.MaNoi != null && item.Ngayketthuc < DateTime.Now && item.TtTraotangs.Count == 0 )
+                    {
+                        <a class="text-danger">Chiến dịch đã kết thúc</a>
+
+                        <br />
+                        <input type="button" style="width:90px;" class="btn btn-success" value="Trao tặng" onclick="location.href='@Url.Action("Create","TtTraotangs", new { macd = item.MaCd })'" />
                         <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaCd })'" />
                         <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaCd })'" />
-            }
-            else
-            {
+                    }else if (item.TtQuyengopHienvats.Count > 0 || item.TtTraotangs.Count > 0)
+                    {
+                        <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaCd })'" />
+                        <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaCd })'" />
+                    }
+                    else
+                    {
                         <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaCd })'" />
                         <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaCd })'" />
                         <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaCd })'" />
-            }
+                    }
+                    
 
 
                 </td>
             </tr>
-}
+        }
     </tbody>
 </table>

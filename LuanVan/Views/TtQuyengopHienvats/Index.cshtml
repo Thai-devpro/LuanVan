@@ -4,6 +4,62 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    h1 {
+        font-family: Arial, sans-serif;
+        font-size: 24px;
+    }
+
+    /* Thiết lập màu nền và khoảng cách cho thẻ p */
+    p {
+        background-color: #f2f2f2;
+        padding: 10px;
+    }
+
+    /* Thiết lập kiểu cho bảng */
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+    }
+
+        /* Thiết lập màu nền và kiểu cho tiêu đề bảng */
+        .table thead {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Thiết lập màu nền và kiểu cho từng hàng trong bảng */
+        .table tr {
+            background-color: #ffffff;
+        }
+
+    .table-heading {
+        text-align: center;
+    }
+    /* Thiết lập kiểu cho các ô trong bảng */
+    .table td, .table th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+
+    /* Thiết lập kiểu cho các liên kết */
+    a {
+        color: #337ab7;
+        text-decoration: none;
+    }
+
+        /* Thiết lập kiểu cho liên kết khi rê chuột vào */
+        a:hover {
+            text-decoration: underline;
+        }
+
+    .btn {
+        align-items: center;
+        margin: 5px;
+    }
+</style>
 <br />
 <h1>Thông tin quyên góp hiện vật</h1>
 <hr />
@@ -35,6 +91,7 @@
             <th>
                 Trạng thái
             </th>
+            
             <th></th>
         </tr>
     </thead>
@@ -66,6 +123,14 @@
 
                 <td>
                     @Html.DisplayFor(modelItem => item.TrangthaiHv)
+                    <br>
+                    @if (item.TrangthaiHv.Trim() == "Đã nhận")
+                    {
+                        <a>Người nhận: </a>
+                  
+                        <a style="font-weight:bold">@Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)</a>
+                    }
+
                 </td>
 
                 <td align="right" width="100px">

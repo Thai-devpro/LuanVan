@@ -5,34 +5,32 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Danh sách thành viên của tổ chức</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Thêm thành viên mới</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TenTv)
+               Họ tên
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GioitinhTv)
+                Giới tính
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DiachiTv)
+               Địa chỉ
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SdtTv)
+               Số điện thoại
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EmailTv)
+               Email
             </th>
+           
             <th>
-                @Html.DisplayNameFor(model => model.MatkhauTv)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaCvNavigation)
+              Chức vụ
             </th>
             <th></th>
         </tr>
@@ -55,16 +53,21 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EmailTv)
             </td>
+            
             <td>
-                @Html.DisplayFor(modelItem => item.MatkhauTv)
+                @Html.DisplayFor(modelItem => item.MaCvNavigation.TenCv)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaCvNavigation.MaCv)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaTv">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaTv">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaTv">Delete</a>
+                    @if(item.TtTraotangs.Count > 0 || item.TtQuyengopHienvats.Count> 0 || item.Chiendiches.Count > 0)
+                    {
+                        <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaTv })'" />
+                    }else{
+
+                   
+                    <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaTv })'" />
+                   
+                    <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaTv })'" />
+                    }
             </td>
         </tr>
 }

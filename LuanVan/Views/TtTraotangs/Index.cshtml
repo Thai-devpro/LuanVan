@@ -1,4 +1,6 @@
-﻿@model IEnumerable<LuanVan.Data.TtTraotang>
+﻿@using LuanVan.Data;
+@using Microsoft.EntityFrameworkCore;
+@model IEnumerable<LuanVan.Data.TtTraotang>
 
 @{
     ViewData["Title"] = "Index";
@@ -53,17 +55,73 @@
 <h1>Danh sách trao tặng của tổ chức</h1>
 
 
+<style>
+    h1 {
+        font-family: Arial, sans-serif;
+        font-size: 24px;
+    }
+
+    /* Thiết lập màu nền và khoảng cách cho thẻ p */
+    p {
+        background-color: #f2f2f2;
+        padding: 10px;
+    }
+
+    /* Thiết lập kiểu cho bảng */
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+    }
+
+        /* Thiết lập màu nền và kiểu cho tiêu đề bảng */
+        .table thead {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Thiết lập màu nền và kiểu cho từng hàng trong bảng */
+        .table tr {
+            background-color: #ffffff;
+        }
+
+    .table-heading {
+        text-align: center;
+    }
+    /* Thiết lập kiểu cho các ô trong bảng */
+    .table td, .table th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+
+    /* Thiết lập kiểu cho các liên kết */
+    a {
+        color: #337ab7;
+        text-decoration: none;
+    }
+
+        /* Thiết lập kiểu cho liên kết khi rê chuột vào */
+        a:hover {
+            text-decoration: underline;
+        }
+
+    .btn {
+        align-items: center;
+        margin: 5px;
+    }
+</style>
+
+
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                Ảnh trao tặng
+                Nơi tặng
             </th>
             <th>
                 Chiến dịch
-            </th>
-            <th>
-                Nơi trao tặng
             </th>
             <th>
                 Hiện vật
@@ -71,16 +129,20 @@
             <th>
                 Số lượng
             </th>
-            <th>
-                Trị giá
-            </th>
+            <th>Giá trị ước tính</th>
             <th>
                 Ngày tặng
             </th>
+            <th>
+                Hình ảnh trao tặng
+            </th>
+
 
             <th>
                 Người chịu trách nhiệm
             </th>
+
+           
         </tr>
     </thead>
     <tbody>
@@ -88,35 +150,83 @@
         {
             <tr>
                 <td>
-                    <img src="@Url.Content("~/Content/images/traotang/"+item.AnhTt)" width="120" height="100" style=" border-radius:15px; border-style:outset " />
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.ManoiNavigation.Diachi)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
+                    @if (item.MaCd == null)
+                    {
+                        <span>Kho hiện vật</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
+                    }
+
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SoluongTt) <a style="color:black"> @item.MaHvNavigation.Donvitinh</a>
+                    @if (item.MaHv == null)
+                    {
+                        <span>Hiện vât đã nhận của chiến dịch</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
+                    }
+
                 </td>
                 <td>
-                    @(item.MaHvNavigation.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
+                    @if (item.MaHv != null)
+                    {
+                        <span>
+                            @Html.DisplayFor(modelItem => item.SoluongTt) <a style="color:black"> @item.MaHvNavigation.Donvitinh</a>
+                        </span>
+                    }
+                    else
+                    {
+                        <span>Tất cả</span>
+                    }
+                </td>
+                <td>
+                    @if (item.MaHv != null)
+                    {
+                        @(item.MaHvNavigation.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
+                    }
+                    else if (item.MaCd != null)
+                    {
+                        NienluancosoContext db = new NienluancosoContext();
+
+                        var tongqg = 0;
+
+                        var listChienDich = db.TtQuyengopHienvats.Include(t => t.MaHvNavigation).Where(t => t.MaCd == item.MaCd).ToList();
+
+                        @foreach (var item2 in listChienDich)
+                        {
+                            if (item2.TrangthaiHv.Trim() == "Đã nhận" || item2.TrangthaiHv.Trim() == "Đã tặng")
+                            {
+                                tongqg += (item2.MaHvNavigation.Gia) * (item2.SoluongQg);
+                            }
+                        }
+
+
+                        <b>  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
+
+                    }
+
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Ngaytang)
+                </td>
+                <td>
+                    <img src="@Url.Content("~/Content/images/traotang/"+item.AnhTt)" width="100" height="80" style="margin-left:10px; border-radius:15px; border-style:outset " />
                 </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
                 </td>
 
-
-
+               
             </tr>
         }
     </tbody>
 </table>
+
