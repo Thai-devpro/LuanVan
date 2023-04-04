@@ -1882,7 +1882,6 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Pages\" />
-    <Folder Include="wwwroot\Content\export\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />

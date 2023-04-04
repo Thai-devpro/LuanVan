@@ -77,34 +77,7 @@ namespace LuanVan.Areas.Admin.Controllers
             return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "BaoCaoChienDich.docx");
         }
 
-        //public IActionResult Export(string GridHtml)
-        //{
-        //    string path = Path.Combine(this._env.WebRootPath, "HTML");
-        //    if (!Directory.Exists(path))
-        //    {
-        //        Directory.CreateDirectory(path);
-        //    }
-
-        //    string input = Path.Combine(path, "html1.html");
-        //    string output = Path.Combine(path, "Grid.docx");
-        //    System.IO.File.WriteAllText(input, GridHtml);
-        //    DocumentCore documentCore = DocumentCore.Load(input);
-        //    documentCore.Save(output);
-        //    byte[] bytes = System.IO.File.ReadAllBytes(output);
-
-
-        //    var stream = new MemoryStream(bytes);
-        //    var cd = new System.Net.Mime.ContentDisposition
-        //    {
-        //        FileName = "Grid.doc",
-        //        Inline = false
-        //    };
-
-
-        //    return new FileStreamResult(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-
-
-        //}
+        
         public async Task<IActionResult> Index(string? SearchString)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)

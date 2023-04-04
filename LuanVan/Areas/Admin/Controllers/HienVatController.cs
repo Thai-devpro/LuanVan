@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuanVan.Data;
+using SautinSoft.Document;
 
 namespace LuanVan.Areas.Admin.Controllers
 {
@@ -18,7 +19,26 @@ namespace LuanVan.Areas.Admin.Controllers
         {
             _context = context;
         }
+        [HttpPost]
+        public IActionResult Export(string GridHtml)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "HTML");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
 
+            string input = Path.Combine(path, "html1.html");
+            string output = Path.Combine(path, "BaoCaoChienDich.docx");
+            System.IO.File.WriteAllText(input, GridHtml);
+            DocumentCore documentCore = DocumentCore.Load(input);
+            documentCore.Save(output);
+            byte[] bytes = System.IO.File.ReadAllBytes(output);
+
+            Directory.Delete(path, true);
+
+            return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "BaoCaoKhoHienVat.docx");
+        }
         // GET: Admin/HienVat
         public async Task<IActionResult> Index(int? maLoai)
         {

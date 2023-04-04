@@ -10,6 +10,7 @@
         width: 100%;
         font-size: 16px;
         text-align: center;
+        cellpadding="5"; cellspacing="0"; style="border: 1px; solid #ccc;font-size: 9pt;
     }
 
     th, td {
@@ -34,19 +35,7 @@
         background-color: #EFEFEF;
     }
 
-    a {
-        color: #007BFF;
-        text-decoration: none;
-    }
 
-    .btn {
-        padding: 10px;
-        border-radius: 5px;
-        border: none;
-        font-size: 16px;
-        color: #FFFFFF;
-        cursor: pointer;
-    }
 
     .btn-primary {
         background-color: #007BFF;
@@ -63,74 +52,100 @@
         .btn-primary:hover, .btn-secondary:hover, .btn-danger:hover {
             opacity: 0.8;
         }
+
+
+    }
 </style>
-<h1>Danh sách hiện vật</h1>
-<form asp-action="Index" method="get" class="form-inline">
-    <select name="maLoai" class="form-control" asp-items="@ViewBag.MaLoai" onchange="this.form.submit()"></select>
-</form>
-<br />
-<p>
-    <a class="btn-success" asp-action="Create">Thêm mới</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-              Loại hiện vật
-            </th>
-            <th>
-                Tên hiện vật
-            </th>
-            <th>
-                Số lượng còn
-            </th>
-            <th>
-               Đơn vị tính
-            </th>
-           <th>Giá</th>
-            <th>
-                Tổng giá trị ước tính
-            </th>
-            
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaLoaiNavigation.DienGiai)
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenHv)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.Soluongcon)
-            </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Donvitinh)
-                </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Gia) <a style="color:black">VNĐ</a>
-            </td>
-            <td>
-                    @( item.Gia *  item.Soluongcon) <a style="color:black">VNĐ</a>
-            </td>
-            
-            <td>
-                    @if (item.TtTraotangs.Count > 0 || item.TtQuyengopHienvats.Count > 0)
-                    {
-                        <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaHv})'" />
-                    }
-                    else
-                    {
-                        <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaHv })'" />
-                        @*<input type = "button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaCd })'" />*@
-                        <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaHv})'" />
-                    }
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+
+
+
+
+       <div>
+  <input type="button" style="width:90px" class="btn btn-success" value="Thêm mới" onclick="location.href='@Url.Action("Create")'" />
+  <form asp-action="Export" method="post" enctype="multipart/form-data" style="display: inline-block; margin-left: 10px;">
+    <input type="hidden" name="GridHtml" />
+    <input type="submit" value="Xuất File" id="btnSubmit" class="btn btn-secondary" />
+  </form>
+</div>
+    <br />
+    <div>
+            <form asp-action="Index" method="get" class="form-inline">
+                <select name="maLoai" class="form-control" asp-items="@ViewBag.MaLoai" onchange="this.form.submit()"></select>
+            </form>
+        </div>
+    <div id="Grid">
+    <h1>Thông Tin Kho Hiện Vật</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Loại hiện vật
+                </th>
+                <th>
+                    Tên hiện vật
+                </th>
+                <th>
+                    Số lượng còn
+                </th>
+                <th>
+                    Đơn vị tính
+                </th>
+                <th>Giá</th>
+                <th>
+                    Tổng giá 
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                        <tr>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.MaLoaiNavigation.DienGiai)
+                            </td>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.TenHv)
+                            </td>
+
+                            <td>
+                        @Html.DisplayFor(modelItem => item.Soluongcon)
+                            </td>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.Donvitinh)
+                            </td>
+                            <td>
+                        @Html.DisplayFor(modelItem => item.Gia) <a style="color:black">VNĐ</a>
+                            </td>
+                            <td>
+                        @(item.Gia * item.Soluongcon) <a style="color:black">VNĐ</a>
+                            </td>
+
+                            <td>
+                        @if (item.TtTraotangs.Count > 0 || item.TtQuyengopHienvats.Count > 0)
+                        {
+                                            <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaHv})'" />
+                        }
+                        else
+                        {
+                                            <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaHv })'" />
+                            @*<input type = "button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaCd })'" />*@
+                                            <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaHv})'" />
+                        }
+                            </td>
+                        </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#btnSubmit").click(function () {
+            $("input[name='GridHtml']").val($("#Grid").html());
+        });
+    });
+</script>
