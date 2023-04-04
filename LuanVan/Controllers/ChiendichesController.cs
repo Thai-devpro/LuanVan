@@ -19,8 +19,13 @@ namespace LuanVan.Controllers
         }
 
         // GET: Chiendiches
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? SearchString)
         {
+            if(SearchString != null)
+            {
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Where(c => c.TenCd.Contains(SearchString));
+                return View(await nienluancosoContext2.ToListAsync());
+            }
             var nienluancosoContext = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation);
             return View(await nienluancosoContext.ToListAsync());
         }
@@ -34,9 +39,11 @@ namespace LuanVan.Controllers
             }
 
             var chiendich = await _context.Chiendiches
-                .Include(c => c.MaNoiNavigation)
-                .Include(c => c.MaTvNavigation)
-                .FirstOrDefaultAsync(m => m.MaCd == id);
+                 .Include(c => c.MaNoiNavigation)
+                 .Include(c => c.MaTvNavigation)
+                 .Include(c => c.TtQuyengopHienvats)
+                 .Include(c => c.TtTraotangs)
+                 .FirstOrDefaultAsync(m => m.MaCd == id);
             if (chiendich == null)
             {
                 return NotFound();

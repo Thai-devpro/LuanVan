@@ -91,7 +91,7 @@ public partial class NienluancosoContext : DbContext
 
             entity.Property(e => e.MaCn).HasColumnName("MA_CN");
             entity.Property(e => e.TenCn)
-                .HasMaxLength(10)
+                .HasMaxLength(255)
                 .IsFixedLength()
                 .HasColumnName("TEN_CN");
         });
@@ -213,19 +213,20 @@ public partial class NienluancosoContext : DbContext
 
         modelBuilder.Entity<Quyen>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("QUYEN");
+            entity.HasKey(e => e.MaQuyen);
 
+            entity.ToTable("QUYEN");
+
+            entity.Property(e => e.MaQuyen).HasColumnName("MA_QUYEN");
             entity.Property(e => e.MaCn).HasColumnName("MA_CN");
             entity.Property(e => e.MaCv).HasColumnName("MA_CV");
 
-            entity.HasOne(d => d.MaCnNavigation).WithMany()
+            entity.HasOne(d => d.MaCnNavigation).WithMany(p => p.Quyens)
                 .HasForeignKey(d => d.MaCn)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_QUYEN_CHUCNANG");
 
-            entity.HasOne(d => d.MaCvNavigation).WithMany()
+            entity.HasOne(d => d.MaCvNavigation).WithMany(p => p.Quyens)
                 .HasForeignKey(d => d.MaCv)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_QUYEN_CHUCVU");
@@ -282,6 +283,7 @@ public partial class NienluancosoContext : DbContext
 
             entity.HasOne(d => d.MaCvNavigation).WithMany(p => p.Thanhviens)
                 .HasForeignKey(d => d.MaCv)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_THANHVIEN_CHUCVU");
         });
 

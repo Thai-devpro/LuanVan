@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuanVan.Data;
 using System.Data;
+using System.IO;
+using SautinSoft.Document;
+using System.Text;
+
 
 namespace LuanVan.Areas.Admin.Controllers
 {
@@ -14,18 +19,107 @@ namespace LuanVan.Areas.Admin.Controllers
     public class ChiendichesController : Controller
     {
         private readonly NienluancosoContext _context;
+       
 
-        public ChiendichesController(NienluancosoContext context)
+        public ChiendichesController(NienluancosoContext context )
         {
             _context = context;
+           
         }
-
-    
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Export(int? id)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 1 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
+            }
+            if (id == null || _context.Chiendiches == null)
+            {
+                return NotFound();
+            }
+
+            var chiendich = await _context.Chiendiches
+                .Include(c => c.MaNoiNavigation)
+                .Include(c => c.MaTvNavigation)
+                .Include(c => c.TtQuyengopHienvats)
+                .Include(c => c.TtTraotangs)
+                .FirstOrDefaultAsync(m => m.MaCd == id);
+            if (chiendich == null)
+            {
+                return NotFound();
+            }
+
+            return View(chiendich);
+        }
+        [HttpPost]
+        public IActionResult Export(string GridHtml)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "HTML");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string input = Path.Combine(path, "html1.html");
+            string output = Path.Combine(path, "BaoCaoChienDich.docx");
+            System.IO.File.WriteAllText(input, GridHtml);
+            DocumentCore documentCore = DocumentCore.Load(input);
+            documentCore.Save(output);
+            byte[] bytes = System.IO.File.ReadAllBytes(output);
+
+            Directory.Delete(path, true);
+
+            return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "BaoCaoChienDich.docx");
+        }
+
+        //public IActionResult Export(string GridHtml)
+        //{
+        //    string path = Path.Combine(this._env.WebRootPath, "HTML");
+        //    if (!Directory.Exists(path))
+        //    {
+        //        Directory.CreateDirectory(path);
+        //    }
+
+        //    string input = Path.Combine(path, "html1.html");
+        //    string output = Path.Combine(path, "Grid.docx");
+        //    System.IO.File.WriteAllText(input, GridHtml);
+        //    DocumentCore documentCore = DocumentCore.Load(input);
+        //    documentCore.Save(output);
+        //    byte[] bytes = System.IO.File.ReadAllBytes(output);
+
+
+        //    var stream = new MemoryStream(bytes);
+        //    var cd = new System.Net.Mime.ContentDisposition
+        //    {
+        //        FileName = "Grid.doc",
+        //        Inline = false
+        //    };
+
+
+        //    return new FileStreamResult(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+
+
+        //}
+        public async Task<IActionResult> Index(string? SearchString)
+        {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 1 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
+            }
+            if (SearchString != null)
+            {
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(c => c.TenCd.Contains(SearchString));
+                return View(await nienluancosoContext2.ToListAsync());
             }
             var nienluancosoContext = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats);
             return View(await nienluancosoContext.ToListAsync());
@@ -37,6 +131,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 1 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.Chiendiches == null)
             {
@@ -64,10 +163,15 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return RedirectToAction("Login", "ThanhVien");
             }
+            var count = _context.Quyens.Where(c => c.MaCn == 1 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
+            }
             if (id != null)
             {
                 var Noihotros = _context.Noihotros.Where(n => n.Manoi == id).ToList();
-                
+
                 ViewData["MaNoi"] = new SelectList(Noihotros, "Manoi", "Diachi");
             }
             else
@@ -94,7 +198,7 @@ namespace LuanVan.Areas.Admin.Controllers
                 if (chiendich.MaNoi == 0)
                     chiendich.MaNoi = null;
 
-                
+
                 //Upload file
                 var fileName = Path.GetFileName(file.FileName);
 
@@ -121,8 +225,8 @@ namespace LuanVan.Areas.Admin.Controllers
                 }
                 if (chiendich.AnhCd == null)
                 {
-                   
-                   
+
+
                     ViewData["MaNoi"] = new SelectList(Noihotros, "Manoi", "Diachi", chiendich.MaNoi);
 
                     ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", chiendich.MaTv);
@@ -134,7 +238,7 @@ namespace LuanVan.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-           
+
             ViewData["MaNoi"] = new SelectList(Noihotros, "Manoi", "Diachi", chiendich.MaNoi);
 
             ViewData["MaTv"] = new SelectList(_context.Thanhviens, "MaTv", "TenTv", chiendich.MaTv);
@@ -147,6 +251,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 1 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.Chiendiches == null)
             {
@@ -274,7 +383,7 @@ namespace LuanVan.Areas.Admin.Controllers
                     throw;
                 }
             }
-           
+
         }
 
         // GET: Admin/Chiendiches/Delete/5
@@ -283,6 +392,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 1 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.Chiendiches == null)
             {
@@ -311,8 +425,8 @@ namespace LuanVan.Areas.Admin.Controllers
                 return Problem("Entity set 'NienluancosoContext.Chiendiches'  is null.");
             }
 
-           
-            
+
+
             var chiendich = await _context.Chiendiches.FindAsync(id);
             if (chiendich != null)
             {

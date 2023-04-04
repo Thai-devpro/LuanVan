@@ -65,8 +65,13 @@
 <p class="create-link">
     <a class="btn btn-primary" asp-action="Create">Tạo Chiến Dịch Mới</a>
 </p>
-
-<table class="table">
+<form asp-action="index" method="get" class="form-inline">
+    <p style="font-size:20px"><i class='bx bx-search-alt'></i>Nhập tên chiến dịch: </p>
+    @* <p >@Html.TextBox("SearchString", "", new { @class = "form-control" })</p>*@
+    <p><input type="text" name="SearchString" /></p>
+    <p><input type="submit" class="btn-success" value="Tìm kiếm" /></p>
+</form>
+<table class="table" >
     <thead>
         <tr>
             <th>
@@ -147,6 +152,7 @@
                     }else if (item.TtQuyengopHienvats.Count > 0 || item.TtTraotangs.Count > 0)
                     {
                         <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaCd })'" />
+
                         <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaCd })'" />
                     }
                     else

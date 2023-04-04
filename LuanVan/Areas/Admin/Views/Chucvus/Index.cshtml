@@ -1,36 +1,117 @@
-﻿@model IEnumerable<LuanVan.Data.Chucvu>
-
+﻿@using LuanVan.Data;
+@model IEnumerable<LuanVan.Data.Chucvu>
+@using Microsoft.EntityFrameworkCore;
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+<style>
+    h1 {
+        font-family: Arial, sans-serif;
+        font-size: 24px;
+    }
 
-<h1>Index</h1>
+    /* Thiết lập màu nền và khoảng cách cho thẻ p */
+    p {
+        background-color: #f2f2f2;
+        padding: 10px;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TenCv)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TenCv)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaCv">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaCv">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaCv">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    /* Thiết lập kiểu cho bảng */
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+    }
+
+        /* Thiết lập màu nền và kiểu cho tiêu đề bảng */
+        .table thead {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Thiết lập màu nền và kiểu cho từng hàng trong bảng */
+        .table tr {
+            background-color: #ffffff;
+        }
+
+    .table-heading {
+        text-align: center;
+    }
+    /* Thiết lập kiểu cho các ô trong bảng */
+    .table td, .table th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+
+    /* Thiết lập kiểu cho các liên kết */
+    a {
+        color: #337ab7;
+        text-decoration: none;
+    }
+
+        /* Thiết lập kiểu cho liên kết khi rê chuột vào */
+        a:hover {
+            text-decoration: underline;
+        }
+
+    .btn {
+        align-items: center;
+        margin: 5px;
+        text-align:center;
+    }
+</style>
+
+    <h1>Danh sách chức vụ</h1>
+
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Thêm mới</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Tên chức vụ
+                </th>
+                <th>
+                  Quyền
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenCv)
+                    </td>
+                <td style="text-align: left">@if(item.Quyens.Count > 0)
+                    {
+                        NienluancosoContext db = new NienluancosoContext();
+                        var q = db.Quyens.Include(cn => cn.MaCnNavigation).Where(cn => cn.MaCv == item.MaCv);
+                        foreach(var q1 in q)
+                        {
+                            <span style="font-weight:bold">
+                            <i>*</i>@q1.MaCnNavigation.TenCn
+                            </span>
+                            <br />
+                        }
+                    }
+                    
+                    </td>
+                    <td style="width:110; text-align: left" >
+                    <input type="button" style="width:100px;" class="btn btn-success" value="Phân quyền" onclick="location.href='@Url.Action("ThemQuyen", new { id = item.MaCv})' "  />
+                    <input type="button" style="width:100px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaCv })'" />
+                    @if(item.Thanhviens.Count <= 0){
+                        <input type="button" style="width:100px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaCv })'" />
+                    }
+                   
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

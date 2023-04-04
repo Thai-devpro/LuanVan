@@ -1,0 +1,972 @@
+
+   
+    <h1>Thông tin chi tiết</h1>
+
+    <div>
+        <h4>Chiến Dịch</h4>
+        <hr>
+        <dl class="row">
+            <dt class="col-sm-2">
+                Tên chiến dịch:
+            </dt>
+            <dd class="col-sm-10">
+                Quỹ tình thương 2022                              
+            </dd>
+            <dt class="col-sm-2">
+                Ngày bắt đầu:
+            </dt>
+            <dd class="col-sm-10">
+                10/13/2022 12:00:00 AM
+            </dd>
+            <dt class="col-sm-2">
+                Ngày kết thúc:
+            </dt>
+            <dd class="col-sm-10">
+                10/30/2022 12:00:00 AM
+            </dd>
+            <dt class="col-sm-2">
+                Nội dung:
+            </dt>
+            <dd class="col-sm-10">
+                Nhằm tạo dựng thói quen tiết kiệm, phát huy nội lực và khẳng định phụ nữ nghèo cũng có thể tiết kiệm, mỗi thành viên để dành ra 1.000đ mỗi ngày và mỗi lần vay vốn của Quỹ đều trích lại 5% để xây dựng nguồn vốn tự có của mỗi người                                                                                                                                                                                                                                                                               
+            </dd>
+            <dt class="col-sm-2">
+                Ảnh:
+            </dt>
+            <dd class="col-sm-10">
+                <img src="/Content/images/chiendich/anh4.jpg                                                                                                                                                                                                                                                       " width="100" height="80" style="margin-left:10px; border-radius:15px; border-style:outset ">
+            </dd>
+            <dt class="col-sm-2">
+                Nơi hỗ trợ
+            </dt>
+            <dd class="col-sm-10">
+                    <a>Không có</a>
+            </dd>
+            <dt class="col-sm-2">
+                Người chịu trách nhiệm
+            </dt>
+            <dd class="col-sm-10">
+                Lâm Quốc Thái                                     
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='/Admin/Chiendiches/Edit/3'">
+        <input type="button" style="width:110px" class="btn btn-secondary" value="Danh sách" onclick="location.href='/Admin/Chiendiches/index'">
+       
+    </div>
+    <br>
+    <div>
+        <form method="post" enctype="multipart/form-data" action="/Admin/Chiendiches/Export">
+            <label for="folderPath">Folder Path:</label>
+            <input type="text" id="folderPath" name="FolderPath">
+            <input type="hidden" name="GridHtml">
+            <input type="submit" value="Export" class="btnSubmit">
+        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Mgzug9MAX9AmMJXpw5NDipDPoj_Ug9MNor0qztUbUzwcgwqupdabJZWnklKxB7eahaRPXvwqt6MR3MTMtnp9axXRozl63N-iU5sueHz5-fD2WD56digML07aM0YWxiqBBD04gJi13ZxPbA5ytpZJlo"></form>
+    </div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".btnSubmit").click(function () {
+                $("input[name='GridHtml']").val($("#Grid").html());
+            });
+        });
+    </script>
+
+    <br>
+    <div>
+
+
+    </div>
+
+    <hr>
+
+
+
+        <h4>Thông tin quyên góp của chiến dịch</h4>
+        <b>Tổng giá trị quyên góp đã nhận của chiến dịch:  2,900,000 VNĐ</b><table class="table">
+
+            <tbody><tr>
+                
+            </tr>
+            <tr>
+                <th>
+                    Mã quyên góp
+                </th>
+                <th>
+                    Hiện vật
+                </th>
+                <th>
+                    Số lượng
+                </th>
+                <th>
+                    Mạnh thường quân
+                </th>
+
+                <th>
+                    Ghi chú
+                </th>
+
+                <th>
+                    Trạng thái
+                </th>
+                <th>
+                    Ngày quyên góp
+                </th>
+                <th>
+                    Giá trị ước tính
+                </th>
+                <th>Người nhận</th>
+            </tr>
+                <tr>
+                    <td>
+                        6
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        3 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Nguyễn văn Thanh                                  
+                    </td>
+
+                    <td>
+                        3 thùng mì                                                                                                                                                                                                                                                     
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        4/10/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        15
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        23 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        23 thùng mì                                                                                                                                                                                                                                                    
+                    </td>
+
+                    <td>
+                        Đã nhận   
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        2300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>
+                            Bùi Thị Xuân                                      
+                        </td>
+                </tr>
+                <tr>
+                    <td>
+                        16
+                    </td>
+                    <td>
+                        Sách giáo khoa                                    
+                    </td>
+                    <td>
+                        1 <a>Bộ        </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        1 bộ sách                                                                                                                                                                                                                                                      
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        160000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        17
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        2 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        3kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        200000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        18
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        3 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        19
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        3 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        20
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        2 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        200000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        21
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        23 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        2300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        22
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        23 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        2300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        23
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        23 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        2300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        24
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        23 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        2300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        25
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        23 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        2300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        26
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        23 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        2300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        27
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        4 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        400000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        28
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        3 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        1 bộ sách                                                                                                                                                                                                                                                      
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        29
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        23 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        2300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        30
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        3 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        31
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        3 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/30/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        300000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        35
+                    </td>
+                    <td>
+                        GẠO                                               
+                    </td>
+                    <td>
+                        2 <a>Kg        </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        10/31/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        20000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        37
+                    </td>
+                    <td>
+                        Xe lăn                                            
+                    </td>
+                    <td>
+                        10 <a>Chiếc     </a>
+                    </td>
+                    <td>
+                        Nguyễn Văn Đông                                   
+                    </td>
+
+                    <td>
+                        10 xe                                                                                                                                                                                                                                                          
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        11/1/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        20000000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        39
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        4 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        2kg gạo                                                                                                                                                                                                                                                        
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        11/3/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        400000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        40
+                    </td>
+                    <td>
+                        Viết                                              
+                    </td>
+                    <td>
+                        4 <a>Hộp       </a>
+                    </td>
+                    <td>
+                        Nguyễn văn Thanh                                  
+                    </td>
+
+                    <td>
+                        123 kg gạo                                                                                                                                                                                                                                                     
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        11/16/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        80000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        43
+                    </td>
+                    <td>
+                        Quần áo                                           
+                    </td>
+                    <td>
+                        3 <a>Bộ        </a>
+                    </td>
+                    <td>
+                        Nguyễn văn Thanh                                  
+                    </td>
+
+                    <td>
+                        3 bộ quần áo                                                                                                                                                                                                                                                   
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        11/18/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        270000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        45
+                    </td>
+                    <td>
+                        Quần áo                                           
+                    </td>
+                    <td>
+                        100 <a>Bộ        </a>
+                    </td>
+                    <td>
+                        Nguyễn Văn Đông                                   
+                    </td>
+
+                    <td>
+                        100 bộ quần áo  khoản 1tr đồng                                                                                                                                                                                                                                 
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        11/26/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        9000000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        46
+                    </td>
+                    <td>
+                        Sách giáo khoa                                    
+                    </td>
+                    <td>
+                        1 <a>Bộ        </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        1 bộ sách                                                                                                                                                                                                                                                      
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        11/27/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        160000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        47
+                    </td>
+                    <td>
+                        Quần áo                                           
+                    </td>
+                    <td>
+                        12 <a>Bộ        </a>
+                    </td>
+                    <td>
+                        Lâm Quốc Thái                                     
+                    </td>
+
+                    <td>
+                        12 bộ quần áo                                                                                                                                                                                                                                                  
+                    </td>
+
+                    <td>
+                        Chưa nhận 
+
+                    </td>
+                    <td>
+                        12/9/2022 12:00:00 AM
+                    </td>
+                    <td>
+                        1080000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>Chưa nhận</td>
+                </tr>
+                <tr>
+                    <td>
+                        50
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        1 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Le thi diem                                       
+                    </td>
+
+                    <td>
+                        1 Thùng mì                                                                                                                                                                                                                                                     
+                    </td>
+
+                    <td>
+                        Đã nhận   
+
+                    </td>
+                    <td>
+                        3/22/2023 12:00:00 AM
+                    </td>
+                    <td>
+                        100000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>
+                            Lâm Quốc Thái                                     
+                        </td>
+                </tr>
+                <tr>
+                    <td>
+                        51
+                    </td>
+                    <td>
+                        Mì                                                
+                    </td>
+                    <td>
+                        5 <a>Thùng     </a>
+                    </td>
+                    <td>
+                        Le thi diem                                       
+                    </td>
+
+                    <td>
+                        5 thùng mì                                                                                                                                                                                                                                                     
+                    </td>
+
+                    <td>
+                        Đã nhận   
+
+                    </td>
+                    <td>
+                        3/22/2023 12:00:00 AM
+                    </td>
+                    <td>
+                        500000 <a style="color:black">VNĐ</a>
+                    </td>
+                        <td>
+                            Nguyến Văn An                                     
+                        </td>
+                </tr>
+
+        </tbody></table>
+        <hr>
+
+

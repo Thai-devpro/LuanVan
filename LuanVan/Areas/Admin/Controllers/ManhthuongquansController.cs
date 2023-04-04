@@ -26,6 +26,11 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return RedirectToAction("Login", "ThanhVien");
             }
+            var count = _context.Quyens.Where(c => c.MaCn == 4 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
+            }
             return _context.Manhthuongquans != null ? 
                           View(await _context.Manhthuongquans.ToListAsync()) :
                           Problem("Entity set 'NienluancosoContext.Manhthuongquans'  is null.");
@@ -37,6 +42,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 4 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.Manhthuongquans == null)
             {
@@ -59,6 +69,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 4 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             return View();
         }
@@ -85,6 +100,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 4 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.Manhthuongquans == null)
             {
@@ -140,6 +160,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 4 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.Manhthuongquans == null)
             {

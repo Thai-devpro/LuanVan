@@ -26,7 +26,76 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return RedirectToAction("Login", "ThanhVien");
             }
-            return View(await _context.Chucvus.ToListAsync());
+            var count = _context.Quyens.Where(c => c.MaCn == 9 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
+            }
+            var chucvu = _context.Chucvus.Include(c => c.Quyens).Include(c => c.Thanhviens);
+
+           
+
+            return View(await chucvu.ToListAsync());
+
+          
+        }
+        public async Task<IActionResult> ThemQuyen(int id)
+        {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 9 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
+            }
+            var chucvu = _context.Chucvus.Find(id);
+            if (chucvu == null)
+            {
+                return NotFound();
+            }
+
+            var chucnangs = _context.Chucnangs.Include(c => c.Quyens);
+
+            HttpContext.Session.SetInt32("macv", chucvu.MaCv);
+
+            return View(await chucnangs.ToListAsync());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ThemQuyen(int id, int[] quyen)
+        {
+            var chucvu = _context.Chucvus.Find(id);
+            if (chucvu == null)
+            {
+                return NotFound();
+            }
+
+            // Xóa các quyền cũ
+            var quyens = _context.Quyens.Where(q => q.MaCv == id).ToList();
+            foreach (var q in quyens)
+            {
+                _context.Quyens.Remove(q);
+            }
+
+            // Thêm quyền mới
+            if (quyen != null)
+            {
+                foreach (var maCn in quyen)
+                {
+                    var chucnang = _context.Chucnangs.Find(maCn);
+                    if (chucnang != null)
+                    {
+                        var q = new Quyen { MaCv = id, MaCn = maCn };
+                        _context.Quyens.Add(q);
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Admin/Chucvus/Details/5
@@ -35,6 +104,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 9 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.Chucvus == null)
             {
@@ -57,6 +131,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 9 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             return View();
         }
@@ -83,6 +162,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 9 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.Chucvus == null)
             {
@@ -138,6 +222,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 9 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.Chucvus == null)
             {

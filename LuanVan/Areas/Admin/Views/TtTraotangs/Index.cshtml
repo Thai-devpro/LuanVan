@@ -178,9 +178,13 @@
                 </td>
 
                 <td>
-                    <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaTt })'" />
+                    @if (item.MaTv == Context.Session.GetInt32("idtv") || Context.Session.GetInt32("cvtv") == 1 || Context.Session.GetInt32("cvtv") == 10)
+                    {
+                        <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaTt })'" />
+
+                        <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaTt })'" />
+                    }
                    
-                    <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaTt })'" />
                 </td>
             </tr>
         }

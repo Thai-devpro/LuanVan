@@ -9,6 +9,8 @@ public partial class Quyen
 
     public int MaCn { get; set; }
 
+    public int MaQuyen { get; set; }
+
     public virtual Chucnang MaCnNavigation { get; set; } = null!;
 
     public virtual Chucvu MaCvNavigation { get; set; } = null!;

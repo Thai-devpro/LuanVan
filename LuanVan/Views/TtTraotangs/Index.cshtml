@@ -186,10 +186,13 @@
                         <span>Tất cả</span>
                     }
                 </td>
-                <td>
+                <td style="color:black;">
                     @if (item.MaHv != null)
                     {
-                        @(item.MaHvNavigation.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
+                        @Html.FormatValue(item.MaHvNavigation.Gia * item.SoluongTt, "{0:#,###}")
+
+                        <a>VNĐ</a>
+                        
                     }
                     else if (item.MaCd != null)
                     {
@@ -208,7 +211,7 @@
                         }
 
 
-                        <b>  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
+                        <a>  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</a>
 
                     }
 

@@ -21,11 +21,21 @@ namespace LuanVan.Areas.Admin.Controllers
         }
         
         // GET: Admin/TtQuyengopHienvats
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? SearchString)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 7 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
+            }
+            if(SearchString != null)
+            {
+                var nienluancosoContext2 = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation).Where(q => q.MaQghv == SearchString);
+                return View(await nienluancosoContext2.ToListAsync());
             }
             var nienluancosoContext = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation);
             return View(await nienluancosoContext.ToListAsync());
@@ -37,6 +47,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 7 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.TtQuyengopHienvats == null)
             {
@@ -62,6 +77,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 7 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             ViewData["MaCd"] = new SelectList(_context.Chiendiches, "MaCd", "MaCd");
             ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "MaHv");
@@ -95,6 +115,11 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return RedirectToAction("Login", "ThanhVien");
             }
+            var count = _context.Quyens.Where(c => c.MaCn == 7 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
+            }
             if (id == null || _context.TtQuyengopHienvats == null)
             {
                 return NotFound();
@@ -108,7 +133,7 @@ namespace LuanVan.Areas.Admin.Controllers
             ViewData["MaCd"] = new SelectList(_context.Chiendiches.Where(s => s.MaCd == ttQuyengopHienvat.MaCd), "MaCd", "TenCd");
             ViewData["MaHv"] = new SelectList(_context.HienVats.Where(s => s.MaHv == ttQuyengopHienvat.MaHv), "MaHv", "TenHv");
             ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans.Where(s => s.MaMtq == ttQuyengopHienvat.MaMtq), "MaMtq", "HotenMtq");
-            ViewData["MaTv"] = new SelectList(_context.Thanhviens.ToList(), "MaTv", "TenTv");
+            ViewData["MaTv"] = new SelectList(_context.Thanhviens.Where(t => t.MaTv == HttpContext.Session.GetInt32("idtv")), "MaTv", "TenTv");
             return View(ttQuyengopHienvat);
         }
 
@@ -194,6 +219,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 7 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.TtQuyengopHienvats == null)
             {

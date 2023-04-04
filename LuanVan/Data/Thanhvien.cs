@@ -19,11 +19,11 @@ public partial class Thanhvien
 
     public string? MatkhauTv { get; set; }
 
-    public int? MaCv { get; set; }
+    public int MaCv { get; set; }
 
     public virtual ICollection<Chiendich> Chiendiches { get; } = new List<Chiendich>();
 
-    public virtual Chucvu? MaCvNavigation { get; set; }
+    public virtual Chucvu MaCvNavigation { get; set; } = null!;
 
     public virtual ICollection<TtQuyengopHienvat> TtQuyengopHienvats { get; } = new List<TtQuyengopHienvat>();
 

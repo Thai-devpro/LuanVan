@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "ThemQuyen";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<LuanVan.Data.Chucnang>
+
+<h2>Thêm quyền truy cập chức năng</h2>
+
+<form asp-action="ThemQuyen">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        @foreach (var chucnang in Model)
+        {
+            <div>
+                <input type="checkbox" name="quyen" value="@chucnang.MaCn"
+                @(chucnang.Quyens.Any(q => q.MaCv == @Context.Session.GetInt32("macv")) ? "checked" : "")>
+                <label>@chucnang.TenCn</label>
+            </div>
+        }
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Cập nhật" class="btn btn-primary" />
+    </div>
+</form>

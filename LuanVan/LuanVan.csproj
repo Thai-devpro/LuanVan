@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\Content\Output\**" />
+    <Content Remove="wwwroot\Content\Output\**" />
+    <EmbeddedResource Remove="wwwroot\Content\Output\**" />
+    <None Remove="wwwroot\Content\Output\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\admin\css\sb-admin-2.css" />
     <Content Remove="wwwroot\admin\css\sb-admin-2.min.css" />
     <Content Remove="wwwroot\admin\img\undraw_posting_photo.svg" />
@@ -147,9 +154,7 @@
     <Content Remove="wwwroot\admin\vendor\chart.js\Chart.js" />
     <Content Remove="wwwroot\admin\vendor\chart.js\Chart.min.js" />
     <Content Remove="wwwroot\admin\vendor\datatables\dataTables.bootstrap4.css" />
-    <Content Remove="wwwroot\admin\vendor\datatables\dataTables.bootstrap4.js" />
     <Content Remove="wwwroot\admin\vendor\datatables\dataTables.bootstrap4.min.css" />
-    <Content Remove="wwwroot\admin\vendor\datatables\dataTables.bootstrap4.min.js" />
     <Content Remove="wwwroot\admin\vendor\datatables\jquery.dataTables.js" />
     <Content Remove="wwwroot\admin\vendor\datatables\jquery.dataTables.min.js" />
     <Content Remove="wwwroot\admin\vendor\fontawesome-free\attribution.js" />
@@ -1864,18 +1869,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.3">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
+    <PackageReference Include="sautinsoft.document" Version="5.8.1.26" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Pages\" />
+    <Folder Include="wwwroot\Content\export\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />
@@ -2030,9 +2037,7 @@
     <None Include="wwwroot\admin\vendor\chart.js\Chart.js" />
     <None Include="wwwroot\admin\vendor\chart.js\Chart.min.js" />
     <None Include="wwwroot\admin\vendor\datatables\dataTables.bootstrap4.css" />
-    <None Include="wwwroot\admin\vendor\datatables\dataTables.bootstrap4.js" />
     <None Include="wwwroot\admin\vendor\datatables\dataTables.bootstrap4.min.css" />
-    <None Include="wwwroot\admin\vendor\datatables\dataTables.bootstrap4.min.js" />
     <None Include="wwwroot\admin\vendor\datatables\jquery.dataTables.js" />
     <None Include="wwwroot\admin\vendor\datatables\jquery.dataTables.min.js" />
     <None Include="wwwroot\admin\vendor\fontawesome-free\attribution.js" />

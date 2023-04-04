@@ -8,4 +8,6 @@ public partial class Chucnang
     public int MaCn { get; set; }
 
     public string? TenCn { get; set; }
+
+    public virtual ICollection<Quyen> Quyens { get; } = new List<Quyen>();
 }

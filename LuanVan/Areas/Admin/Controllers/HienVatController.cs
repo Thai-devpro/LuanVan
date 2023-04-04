@@ -20,11 +20,26 @@ namespace LuanVan.Areas.Admin.Controllers
         }
 
         // GET: Admin/HienVat
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? maLoai)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 3 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
+            }
+          
+            var lhv = _context.LoaiHvs.ToList();
+            lhv.Insert(0, new LoaiHv { MaLoai = 0, DienGiai = "------------Không------------" });
+            ViewBag.MaLoai = new SelectList(lhv, "MaLoai", "DienGiai", maLoai);
+            if (maLoai != 0 && maLoai != null)
+            {
+                ViewBag.MaLoai = new SelectList(lhv, "MaLoai", "DienGiai", maLoai);
+                var nienluancosoContext2 = _context.HienVats.Include(h => h.MaLoaiNavigation).Include(h => h.TtQuyengopHienvats).Include(h => h.TtTraotangs).Where(h => h.MaLoai == maLoai);
+                return View(await nienluancosoContext2.ToListAsync());
             }
             var nienluancosoContext = _context.HienVats.Include(h => h.MaLoaiNavigation).Include(h => h.TtQuyengopHienvats).Include(h => h.TtTraotangs);
             return View(await nienluancosoContext.ToListAsync());
@@ -36,6 +51,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 3 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.HienVats == null)
             {
@@ -59,6 +79,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 3 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             ViewData["MaLoai"] = new SelectList(_context.LoaiHvs, "MaLoai", "DienGiai");
             return View();
@@ -115,6 +140,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 3 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.HienVats == null)
             {
@@ -200,6 +230,11 @@ namespace LuanVan.Areas.Admin.Controllers
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
                 return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 3 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
             }
             if (id == null || _context.HienVats == null)
             {

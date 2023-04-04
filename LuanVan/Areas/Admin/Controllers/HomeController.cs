@@ -13,6 +13,14 @@ namespace LuanVan.Areas.Admin.Controllers
             }
             return View();
         }
+        public IActionResult norole()
+        {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
+            return View();
+        }
        
     }
 }
