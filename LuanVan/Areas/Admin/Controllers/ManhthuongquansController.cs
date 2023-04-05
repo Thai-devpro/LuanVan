@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuanVan.Data;
+using SautinSoft.Document;
 
 namespace LuanVan.Areas.Admin.Controllers
 {
@@ -18,9 +19,28 @@ namespace LuanVan.Areas.Admin.Controllers
         {
             _context = context;
         }
+        [HttpPost]
+        public IActionResult Export(string GridHtml)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "HTML");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
 
+            string input = Path.Combine(path, "html1.html");
+            string output = Path.Combine(path, "BaoCaoChienDich.docx");
+            System.IO.File.WriteAllText(input, GridHtml);
+            DocumentCore documentCore = DocumentCore.Load(input);
+            documentCore.Save(output);
+            byte[] bytes = System.IO.File.ReadAllBytes(output);
+
+            Directory.Delete(path, true);
+
+            return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "DanhSachNguoiDung.docx");
+        }
         // GET: Admin/Manhthuongquans
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime? tu, DateTime? den)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
@@ -31,7 +51,24 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return RedirectToAction("norole", "Home");
             }
-            return _context.Manhthuongquans != null ? 
+            if (tu != null && den != null)
+            {
+                var nienluancosoContext2 = _context.Manhthuongquans
+    .Select(m => new
+    {
+        Manhthuongquan = m,
+        TotalQuyengopHienvat = m.TtQuyengopHienvats.Count(q => q.NgayQg >= tu && q.NgayQg <= den)
+    })
+    .OrderByDescending(m => m.TotalQuyengopHienvat)
+    .Select(m => m.Manhthuongquan)
+    .ToList();
+
+                ViewBag.TuNgay = tu.Value.ToString("dd-MM-yyyy");
+                ViewBag.DenNgay = den.Value.ToString("dd-MM-yyyy");
+                return View(nienluancosoContext2);
+            }
+
+            return _context.Manhthuongquans != null ?
                           View(await _context.Manhthuongquans.ToListAsync()) :
                           Problem("Entity set 'NienluancosoContext.Manhthuongquans'  is null.");
         }
@@ -199,14 +236,14 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 _context.Manhthuongquans.Remove(manhthuongquan);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ManhthuongquanExists(int id)
         {
-          return (_context.Manhthuongquans?.Any(e => e.MaMtq == id)).GetValueOrDefault();
+            return (_context.Manhthuongquans?.Any(e => e.MaMtq == id)).GetValueOrDefault();
         }
     }
 }

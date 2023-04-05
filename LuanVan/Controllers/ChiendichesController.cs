@@ -19,11 +19,54 @@ namespace LuanVan.Controllers
         }
 
         // GET: Chiendiches
-        public async Task<IActionResult> Index(string? SearchString)
+        public async Task<IActionResult> Index(string? SearchString, DateTime? tu, DateTime? den, string? noiht)
         {
-            if(SearchString != null)
+            if (tu != null && den != null && SearchString != null && noiht != null)
             {
-                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Where(c => c.TenCd.Contains(SearchString));
+               var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(q => q.Ngaybatdau > tu && q.Ngayketthuc < den && q.TenCd.Contains(SearchString) && q.MaNoiNavigation.Diachi.Contains(noiht));
+
+                if (nienluancosoContext2.Count() == 0)
+                {
+                    ViewBag.tb = "Không tìm thấy chiến dịch có tên: " + SearchString.ToString() + "Từ ngày: " + tu.Value.ToString("dd-MM-yyyy") + "Đến: " + den.Value.ToString("dd-MM-yyyy") + " hỗ trợ cho địa chỉ: " + noiht.ToString();
+                }
+                else
+                {
+                    ViewBag.tb = "Đã tìm thấy chiến dịch có tên: " + SearchString.ToString() + " Từ ngày:" + tu.Value.ToString("dd-MM-yyyy") + " đến:" + den.Value.ToString("dd-MM-yyyy") + " hỗ trợ cho địa chỉ: " + noiht.ToString();
+                }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (SearchString != null)
+            {
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(c => c.TenCd.Contains(SearchString));
+                if (nienluancosoContext2.Count() == 0)
+                {
+                    ViewBag.tb = "Không tìm thấy chiến dịch có tên : " + SearchString.ToString();
+                }
+                else
+                {
+                    ViewBag.tb = "Đã tìm thấy chiến dịch có tên : " + SearchString.ToString();
+                }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (noiht != null)
+            {
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(c => c.MaNoiNavigation.Diachi.Contains(noiht));
+                if (nienluancosoContext2.Count() == 0)
+                {
+                    ViewBag.tb = "Không tìm thấy chiến dịch có địa chỉ nơi hỗ trợ: " + noiht.ToString();
+                }
+                else
+                {
+                    ViewBag.tb = "Đã tìm thấy chiến dịch có địa chỉ nơi hỗ trợ: " + noiht.ToString();
+                }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tu != null && den != null)
+            {
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(q => q.Ngaybatdau > tu && q.Ngayketthuc < den);
+
+                ViewBag.TuNgay = tu.Value.ToString("dd-MM-yyyy");
+                ViewBag.DenNgay = den.Value.ToString("dd-MM-yyyy");
                 return View(await nienluancosoContext2.ToListAsync());
             }
             var nienluancosoContext = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation);

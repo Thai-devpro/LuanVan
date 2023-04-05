@@ -41,25 +41,39 @@
 <br />
 <table style="width: 1330px; font-family: 'Roboto', sans-serif;">
     <tr style="width: 100%;">
-        <td style="width: 50%;">
+        <td style="width: 30%;">
             <p style="font-size:30px; "><i class='bx bx-list-ul'></i> Chiến dịch đang diễn ra</p>
         </td>
-        <td style="width: 50%;     text-align: right;">
+        <td style="width: 70%;     text-align: right;">
             <div class="container-1">
                 @using (Html.BeginForm())
                 {
                     <div class="rowseach">
-                        <form>
-                            <p style="font-size:20px"><i class='bx bx-search-alt'></i>Tìm chiến dịch: </p>
-                            <p >@Html.TextBox("SearchString", "", new { @class = "form-control" })</p>
+                        <form asp-action="index" method="get" class="form-inline">
+
+                            <p><input type="text" name="SearchString" placeholder="Nhập tên chiến dịch" /></p>
+                            <p>Từ: <input type="date" name="tu" /></p>
+                            <p>Đến: <input type="date" name="den" /></p>
+
+                            <p><input type="text" name="noiht" placeholder="Nhập nơi hỗ trợ" /></p>
                             <p><input type="submit" class="btn" value="Tìm kiếm" /></p>
+
                         </form>
+
                     </div>
                 }
             </div>
         </td>
     </tr>
 </table>
+@if (ViewBag.tb != null)
+{
+    <h3>@ViewBag.tb</h3>
+}
+@if (ViewBag.TuNgay != null && ViewBag.DenNgay != null)
+{
+    <h3>Danh sách chiến dịch từ ngày @ViewBag.TuNgay đến ngày @ViewBag.DenNgay</h3>
+}
 <br>
 <div style="font-family: 'Roboto', sans-serif;">
     @foreach (var item in Model)

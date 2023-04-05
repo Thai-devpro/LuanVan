@@ -20,8 +20,43 @@ namespace LuanVan.Controllers
         }
 
         // GET: TtQuyengopHienvats
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? SearchString, DateTime? tu, DateTime? den)
         {
+            if (tu != null && den != null && SearchString != null)
+            {
+                var nienluancosoContext2 = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation).Where(q => q.NgayQg > tu && q.NgayQg < den && q.MaMtqNavigation.HotenMtq.Contains(SearchString));
+
+                if (nienluancosoContext2.Count() == 0)
+                {
+                    ViewBag.tb = "Không tìm thấy quyên góp của: " + SearchString.ToString() + "Từ ngày: " + tu.Value.ToString("dd-MM-yyyy") + "Đến: " + den.Value.ToString("dd-MM-yyyy");
+                }
+                else
+                {
+                    ViewBag.tb = "Đã tìm thấy quyên góp của: " + SearchString.ToString() + " Từ ngày:" + tu.Value.ToString("dd-MM-yyyy") + " đến:" + den.Value.ToString("dd-MM-yyyy");
+                }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (SearchString != null)
+            {
+                var nienluancosoContext2 = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation).Where(q => q.MaMtqNavigation.HotenMtq.Contains(SearchString));
+                if (nienluancosoContext2.Count() == 0)
+                {
+                    ViewBag.tb = "Không tìm thấy quyên góp của: " + SearchString.ToString();
+                }
+                else
+                {
+                    ViewBag.tb = "Đã tìm thấy quyên góp của: " + SearchString.ToString();
+                }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tu != null && den != null)
+            {
+                var nienluancosoContext2 = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation).Where(q => q.NgayQg > tu && q.NgayQg < den);
+
+                ViewBag.TuNgay = tu.Value.ToString("dd-MM-yyyy");
+                ViewBag.DenNgay = den.Value.ToString("dd-MM-yyyy");
+                return View(await nienluancosoContext2.ToListAsync());
+            }
             var nienluancosoContext = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation);
             return View(await nienluancosoContext.ToListAsync());
         }

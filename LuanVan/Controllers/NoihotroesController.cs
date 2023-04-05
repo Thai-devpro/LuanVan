@@ -20,8 +20,21 @@ namespace LuanVan.Controllers
         }
 
         // GET: Noihotroes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? SearchString)
         {
+            if (SearchString != null)
+            {
+                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).Where(c => c.Diachi.Contains(SearchString));
+                if (nienluancosoContext2.Count() == 0)
+                {
+                    ViewBag.tb = "Không tìm thấy đề xuất hỗ trợ có địa chỉ : " + SearchString.ToString();
+                }
+                else
+                {
+                    ViewBag.tb = "Đã tìm thấy đề xuất hỗ trợ có địa chỉ : " + SearchString.ToString();
+                }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
             var nienluancosoContext = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches);
             return View(await nienluancosoContext.ToListAsync());
         }
@@ -34,8 +47,11 @@ namespace LuanVan.Controllers
                 return NotFound();
             }
 
-            var noihotro = await _context.Noihotros.Include(n => n.MaMtqNavigation)
-                .FirstOrDefaultAsync(m => m.Manoi == id);
+            var noihotro = await _context.Noihotros
+                 .Include(n => n.MaMtqNavigation)
+                 .Include(n => n.TtTraotangs)
+                 .Include(n => n.Chiendiches)
+                 .FirstOrDefaultAsync(n => n.Manoi == id);
             if (noihotro == null)
             {
                 return NotFound();

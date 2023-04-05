@@ -1,56 +1,339 @@
-﻿@model LuanVan.Data.Noihotro
+﻿@using LuanVan.Data;
+@using Microsoft.EntityFrameworkCore;
+@model LuanVan.Data.Noihotro
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<style>
+    h1 {
+      
+        font-weight: bold;
+   
+    }
+
+    .table {
+        margin: 20px 0;
+        padding: 0;
+        border-collapse: collapse;
+    }
+
+        .table th, .table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+            .table th:nth-child(1),
+            .table td:nth-child(1) {
+                text-align: center;
+            }
+
+            .table th:nth-child(2),
+            .table td:nth-child(2),
+            .table th:nth-child(3),
+            .table td:nth-child(3),
+            .table th:nth-child(4),
+            .table td:nth-child(4),
+            .table th:nth-child(7),
+            .table td:nth-child(7),
+            .table th:nth-child(8),
+            .table td:nth-child(8) {
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+        .table img {
+            display: block;
+            margin: 0 auto;
+            border-radius: 50%;
+        }
+</style>
+<br />
+<h1>Chi tiết</h1>
 
 <div>
-    <h4>Noihotro</h4>
+    <h4>Nơi hỗ trợ</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Diachi)
+        <dt class="col-sm-2">
+            Người đề xuất
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Diachi)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tinhtrang)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaMtqNavigation.HotenMtq)
+        <dt class="col-sm-2">
+
+            Địa chỉ
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tinhtrang)
+        <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Diachi)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Canhotro)
+        <dt class="col-sm-2">
+            Tình trạng
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Canhotro)
+        <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Tinhtrang)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TrangthaiNht)
+        <dt class="col-sm-2">
+            Cần hỗ trợ
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TrangthaiNht)
+        <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Canhotro)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AnhNth)
+        <dt class="col-sm-2">
+            Trạng thái
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AnhNth)
+        <dd class="col-sm-10">
+                @if (Model.TtTraotangs.Count > 0 && Model.Chiendiches.Count > 0)
+                {
+                <span class="text-danger">Đã mở chiến dịch và trao tặng</span>
+                }
+                else if (Model.Chiendiches.Count > 0)
+                {
+                <span class="text-danger">Đã mở chiến dịch</span>
+                }
+                else if (Model.TtTraotangs.Count > 0)
+                {
+                <span class="text-danger">Đã có hỗ trợ</span>
+
+
+                }
+                else
+                {
+                <span>@Html.DisplayFor(modelItem => Model.TrangthaiNht)</span>
+                }
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaMtqNavigation)
+        <dt class="col-sm-2">
+            Hình ảnh
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaMtqNavigation.MaMtq)
+        <dd class="col-sm-10">
+            <img src="@Url.Content("~/Content/images/noihotro/"+Model.AnhNth)" width="120" height="100" style=" border-radius:15px; border-style:outset " />
         </dd>
-        
+
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Manoi">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+    <input type="button" style="width:110px" class="btn btn-secondary" value="Về danh sách" onclick="location.href='@Url.Action("index")'" />
+   
 </div>
+
+
+
+@if (Model.Chiendiches.Count > 0)
+{
+    <hr />
+    NienluancosoContext db = new NienluancosoContext();
+    var listChienDich = db.Chiendiches.Include(t => t.MaTvNavigation).Where(t => t.MaNoi == Model.Manoi).ToList();
+    <h4>Thông tin chiến dịch của nơi hỗ trợ</h4>
+    <table class="table">
+
+        <tr>
+            <th>
+                Ảnh
+            </th>
+            <th>
+                Tên chiến dịch
+            </th>
+
+            <th>
+                Ngày bắt đầu
+            </th>
+            <th>
+                Ngày kết thúc
+            </th>
+            <th>
+                Nội dung
+            </th>
+
+
+            <th>
+                Người chịu trách nhiệm
+            </th>
+
+        </tr>
+
+
+        @foreach (var item in listChienDich)
+        {
+            <tr>
+                <td>
+                    <img src="@Url.Content("~/Content/images/chiendich/"+item.AnhCd)" width="100" height="80" style="margin-left:10px; border-radius:15px; border-style:outset " />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenCd)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ngaybatdau)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ngayketthuc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NoidungCd)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+}
+@if (Model.TtTraotangs.Count > 0)
+{
+    NienluancosoContext db = new NienluancosoContext();
+    var tongtt = 0;
+    var listtraotang = db.TtTraotangs.AsNoTracking().Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(t => t.Manoi == Model.Manoi);
+    <hr />
+    <h4>Thông tin trao tặng của nơi hỗ trợ</h4>
+    @foreach (var item in listtraotang)
+    {
+
+
+        if (item.MaHv != null)
+        {
+            tongtt += (item.MaHvNavigation.Gia) * (item.SoluongTt);
+        }
+        else if (item.MaCd != null)
+        {
+            NienluancosoContext db3 = new NienluancosoContext();
+            var listChienDich = db3.TtQuyengopHienvats.AsNoTracking().Include(t => t.MaHvNavigation).Where(t => t.MaCd == item.MaCd).ToList();
+
+            @foreach (var item2 in listChienDich)
+            {
+                if (item2.TrangthaiHv.Trim() == "Đã nhận" || item2.TrangthaiHv.Trim() == "Đã tặng")
+                {
+                    tongtt += (item2.MaHvNavigation.Gia) * (item2.SoluongQg);
+                }
+            }
+        }
+
+    }
+
+    <tr>
+        <b>Tổng giá trị các lượt trao tặng cho nơi cần hỗ trợ:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
+    </tr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Nơi tặng
+                </th>
+                <th>
+                    Chiến dịch
+                </th>
+                <th>
+                    Hiện vật
+                </th>
+                <th>
+                    Số lượng
+                </th>
+                <th>Giá trị ước tính</th>
+                <th>
+                    Ngày tặng
+                </th>
+                <th>
+                    Hình ảnh trao tặng
+                </th>
+
+
+                <th>
+                    Người chịu trách nhiệm
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in listtraotang)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ManoiNavigation.Diachi)
+                    </td>
+                    <td>
+                        @if (item.MaCd == null)
+                        {
+                            <span>Kho hiện vật</span>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
+                        }
+
+                    </td>
+                    <td>
+                        @if (item.MaHv == null)
+                        {
+                            <span>Hiện vât đã nhận của chiến dịch</span>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
+                        }
+
+                    </td>
+                    <td>
+                        @if (item.MaHv != null)
+                        {
+                            <span>
+                                @Html.DisplayFor(modelItem => item.SoluongTt) <a style="color:black"> @item.MaHvNavigation.Donvitinh</a>
+                            </span>
+                        }
+                        else
+                        {
+                            <span>Tất cả</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.MaHv != null)
+                        {
+                            @(item.MaHvNavigation.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
+                        }
+                        else if (item.MaCd != null)
+                        {
+
+
+                            var tongqg = 0;
+                            NienluancosoContext db2 = new NienluancosoContext();
+                            var listChienDich = db2.TtQuyengopHienvats.AsNoTracking().Include(t => t.MaHvNavigation).Where(t => t.MaCd == item.MaCd).ToList();
+
+                            @foreach (var item2 in listChienDich)
+                            {
+                                if (item2.TrangthaiHv.Trim() == "Đã nhận" || item2.TrangthaiHv.Trim() == "Đã tặng")
+                                {
+                                    tongqg += (item2.MaHvNavigation.Gia) * (item2.SoluongQg);
+                                }
+                            }
+
+
+                            <b>  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
+
+                        }
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ngaytang)
+                    </td>
+                    <td>
+                        <img src="@Url.Content("~/Content/images/traotang/"+item.AnhTt)" width="100" height="80" style="margin-left:10px; border-radius:15px; border-style:outset " />
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
+                    </td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}

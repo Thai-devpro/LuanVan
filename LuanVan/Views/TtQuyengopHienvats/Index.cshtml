@@ -7,7 +7,7 @@
 <style>
     h1 {
         font-family: Arial, sans-serif;
-        font-size: 24px;
+ 
     }
 
     /* Thiết lập màu nền và khoảng cách cho thẻ p */
@@ -19,7 +19,7 @@
     /* Thiết lập kiểu cho bảng */
     .table {
         border-collapse: collapse;
-        width: 100%;
+        width: 1330px;
         text-align: center;
     }
 
@@ -56,14 +56,48 @@
         }
 
     .btn {
-        align-items: center;
-        margin: 5px;
+        background-color: #2487ce;
+        color: aliceblue;
+    }
+
+        .btn:hover {
+            box-shadow: 0px 0px 5px 5px #789;
+            background-color: aliceblue;
+            color: #2487ce;
+        }
+
+    .rowseach p {
+        display: inline-block;
+        margin-right: 10px;
     }
 </style>
 <br />
+
 <h1>Thông tin quyên góp hiện vật</h1>
+@using (Html.BeginForm())
+{
+    <div class="rowseach">
+        <form asp-action="index" method="get" class="form-inline">
+            <p style="font-size:20px"><i class='bx bx-search-alt'></i>Nhập tên người đăng ký: </p>
+            <p><input type="text" name="SearchString" /></p>
+            <p>Từ: <input type="date" name="tu" /></p>
+            <p>Đến: <input type="date" name="den" /></p>
+
+            <p><input type="submit" class="btn" value="Tìm kiếm" /></p>
+
+        </form>
+
+    </div>
+}
 <hr />
-<h2>@ViewBag.thongbao</h2>
+@if (ViewBag.tb != null)
+{
+    <p>@ViewBag.tb</p>
+}
+@if (ViewBag.TuNgay != null && ViewBag.DenNgay != null)
+{
+    <p>Danh sách quyên góp từ ngày @ViewBag.TuNgay đến ngày @ViewBag.DenNgay</p>
+}
 <table class="table">
     <thead>
         <tr>
