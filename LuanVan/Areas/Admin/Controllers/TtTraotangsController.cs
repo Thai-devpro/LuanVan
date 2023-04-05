@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuanVan.Data;
+using SautinSoft.Document;
 
 namespace LuanVan.Areas.Admin.Controllers
 {
@@ -18,9 +19,28 @@ namespace LuanVan.Areas.Admin.Controllers
         {
             _context = context;
         }
+        [HttpPost]
+        public IActionResult Export(string GridHtml)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "HTML");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
 
+            string input = Path.Combine(path, "html1.html");
+            string output = Path.Combine(path, "BaoCaoChienDich.docx");
+            System.IO.File.WriteAllText(input, GridHtml);
+            DocumentCore documentCore = DocumentCore.Load(input);
+            documentCore.Save(output);
+            byte[] bytes = System.IO.File.ReadAllBytes(output);
+
+            Directory.Delete(path, true);
+
+            return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "BaoCaoTraoTang.docx");
+        }
         // GET: Admin/TtTraotangs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? SearchString, DateTime? tu, DateTime? den)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
@@ -30,6 +50,27 @@ namespace LuanVan.Areas.Admin.Controllers
             if (count == 0)
             {
                 return RedirectToAction("norole", "Home");
+            }
+            if (SearchString != null)
+            {
+                var nienluancosoContext2 = _context.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(q => q.ManoiNavigation.Diachi.Contains(SearchString));
+                if (nienluancosoContext2.Count() == 0)
+                {
+                    ViewBag.tb = "Không tìm thấy trao tặng có địa chỉ : " + SearchString.ToString();
+                }
+                else
+                {
+                    ViewBag.tb = "Đã tìm thấy trao tặng có địa chỉ : " + SearchString.ToString();
+                }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tu != null && den != null)
+            {
+                var nienluancosoContext2 = _context.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(q => q.Ngaytang > tu && q.Ngaytang < den);
+
+                ViewBag.TuNgay = tu.Value.ToString("dd-MM-yyyy");
+                ViewBag.DenNgay = den.Value.ToString("dd-MM-yyyy");
+                return View(await nienluancosoContext2.ToListAsync());
             }
             var nienluancosoContext = _context.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation);
             return View(await nienluancosoContext.ToListAsync());

@@ -78,7 +78,7 @@ namespace LuanVan.Areas.Admin.Controllers
         }
 
         
-        public async Task<IActionResult> Index(string? SearchString)
+        public async Task<IActionResult> Index(string? SearchString, DateTime? tu, DateTime? den, string? noiht)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
@@ -92,6 +92,34 @@ namespace LuanVan.Areas.Admin.Controllers
             if (SearchString != null)
             {
                 var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(c => c.TenCd.Contains(SearchString));
+                if (nienluancosoContext2.Count() == 0)
+                {
+                    ViewBag.tb = "Không tìm thấy chiến dịch có tên : " + SearchString.ToString();
+                }
+                else {
+                    ViewBag.tb = "Đã tìm thấy chiến dịch có tên : " + SearchString.ToString();
+                }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (noiht != null)
+            {
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(c => c.MaNoiNavigation.Diachi.Contains(noiht));
+                if (nienluancosoContext2.Count() == 0)
+                {
+                    ViewBag.tb = "Không tìm thấy chiến dịch có địa chỉ nơi hỗ trợ: " + noiht.ToString();
+                }
+                else
+                {
+                    ViewBag.tb = "Đã tìm thấy chiến dịch có địa chỉ nơi hỗ trợ: " + noiht.ToString();
+                }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tu != null && den != null)
+            {
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(q => q.Ngaybatdau > tu && q.Ngayketthuc < den);
+
+                ViewBag.TuNgay = tu.Value.ToString("dd-MM-yyyy");
+                ViewBag.DenNgay = den.Value.ToString("dd-MM-yyyy");
                 return View(await nienluancosoContext2.ToListAsync());
             }
             var nienluancosoContext = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats);
@@ -143,9 +171,9 @@ namespace LuanVan.Areas.Admin.Controllers
             }
             if (id != null)
             {
-                var Noihotros = _context.Noihotros.Where(n => n.Manoi == id).ToList();
+                
 
-                ViewData["MaNoi"] = new SelectList(Noihotros, "Manoi", "Diachi");
+                ViewData["MaNoi"] = new SelectList(_context.Noihotros.Where(n => n.Manoi == id), "Manoi", "Diachi");
             }
             else
             {

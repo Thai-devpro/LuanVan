@@ -131,7 +131,7 @@
                     </dd>
                     
                     <dt class="col-sm-2">
-                        Nơi hỗ trợ
+                        Nơi hỗ trợ:
                     </dt>
                     <dd class="col-sm-10">
                         @if (Model.MaNoi != null)
@@ -145,7 +145,7 @@
                         }
                     </dd>
                     <dt class="col-sm-2">
-                        Người chịu trách nhiệm
+                        Người chịu trách nhiệm:
                     </dt>
                     <dd class="col-sm-10">
                         @Html.DisplayFor(model => model.MaTvNavigation.TenTv)
@@ -166,7 +166,8 @@
             @if (Model.TtQuyengopHienvats.Count > 0)
             {
                 NienluancosoContext db = new NienluancosoContext();
-                <h4>Thông tin quyên góp của chiến dịch</h4>
+                <h2>Thông tin quyên góp của chiến dịch</h2>
+                <br />
                 var tongqg = 0;
 
                 var listChienDich = db.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.MaMtqNavigation).Where(t => t.MaCd == Model.MaCd).ToList();

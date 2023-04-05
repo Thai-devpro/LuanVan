@@ -53,7 +53,7 @@ namespace LuanVan.Areas.Admin.Controllers
             }
           
             var lhv = _context.LoaiHvs.ToList();
-            lhv.Insert(0, new LoaiHv { MaLoai = 0, DienGiai = "------------Không------------" });
+            lhv.Insert(0, new LoaiHv { MaLoai = 0, DienGiai = "------------Tất Cả------------" });
             ViewBag.MaLoai = new SelectList(lhv, "MaLoai", "DienGiai", maLoai);
             if (maLoai != 0 && maLoai != null)
             {

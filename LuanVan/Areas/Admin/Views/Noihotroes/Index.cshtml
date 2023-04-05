@@ -59,9 +59,31 @@
         align-items: center;
         margin: 5px;
     }
-</style>
-<h1>Danh sách đề xuất hỗ trợ</h1>
 
+    .rowseach p {
+        display: inline-block;
+        margin-right: 10px;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    <div class="rowseach">
+        <form asp-action="index" method="get" class="form-inline">
+
+            <p><input type="text" name="SearchString" placeholder="Nhập tên Địa chỉ" /></p>
+           
+            
+            <p><input type="submit" class="btn-success" value="Tìm kiếm" /></p>
+
+        </form>
+       
+    </div>
+}
+<h1>Danh sách đề xuất hỗ trợ</h1>
+@if (ViewBag.tb != null)
+{
+    <p>@ViewBag.tb</p>
+}
 
 <table class="table">
     <thead>

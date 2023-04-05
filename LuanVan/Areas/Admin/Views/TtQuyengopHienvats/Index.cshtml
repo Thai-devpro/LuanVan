@@ -65,108 +65,132 @@
         margin-right: 10px;
     }
 </style>
-<h1>Danh sách quyên góp</h1>
 
-                @using (Html.BeginForm())
-                {
-                    <div class="rowseach">
-                        <form asp-action="index" method="get" class="form-inline">
-                            <p style="font-size:20px"><i class='bx bx-search-alt'></i>Nhập mã quyên góp: </p>
-                           @* <p >@Html.TextBox("SearchString", "", new { @class = "form-control" })</p>*@
+
+@using (Html.BeginForm())
+{
+    <div class="rowseach">
+        <form asp-action="index" method="get" class="form-inline">
+            <p style="font-size:20px"><i class='bx bx-search-alt'></i>Nhập mã quyên góp: </p>
             <p><input type="number" name="SearchString" /></p>
-                            <p><input type="submit" class="btn-success" value="Tìm kiếm" /></p>
-                        </form>
-                    </div>
-                }
-          
+            <p>Từ: <input type="date" name="tu" /></p>
+            <p>Đến: <input type="date" name="den" /></p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Mã quyên góp
-            </th>
-            <th>
-                Mạnh thường quân
-            </th>
-            <th>
-                Chiến dịch
-            </th>
-            <th>
-                Hiện vật
-            </th>
-            <th>
-                Số lượng
-            </th>
-            <th>
-                Giá trị ước tính
-            </th>
-            <th>
-                Ngày quyên góp
-            </th>
-            <th>
-                Ghi chú
-            </th>
-            <th>
-                Trạng thái
-            </th>
+            <p><input type="submit" class="btn-success" value="Tìm kiếm" /></p>
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+        </form>
+        <form asp-action="Export" method="post" enctype="multipart/form-data" style="display: inline-block; margin-left: 10px;">
+            <input type="hidden" name="GridHtml" />
+            <input type="submit" value="Xuất File" id="btnSubmit" class="btn btn-secondary" />
+        </form>
+    </div>
+}
+<div id="Grid">
+    <h1>Danh sách quyên góp</h1>
+    @if (ViewBag.tb != null)
+    {
+        <p>@ViewBag.tb</p>
+    }
+    @if (ViewBag.TuNgay != null && ViewBag.DenNgay != null)
+    {
+        <p>Danh sách quyên góp từ ngày @ViewBag.TuNgay đến ngày @ViewBag.DenNgay</p>
+    }
+    <table class="table">
+        <thead>
             <tr>
-                <td>
+                <th>
+                    Mã quyên góp
+                </th>
+                <th>
+                    Mạnh thường quân
+                </th>
+                <th>
+                    Chiến dịch
+                </th>
+                <th>
+                    Hiện vật
+                </th>
+                <th>
+                    Số lượng
+                </th>
+                <th>
+                    Giá trị ước tính
+                </th>
+                <th>
+                    Ngày quyên góp
+                </th>
+                <th>
+                    Ghi chú
+                </th>
+                <th>
+                    Trạng thái
+                </th>
 
-                    @Html.DisplayFor(modelItem => item.MaQghv)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaMtqNavigation.HotenMtq)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SoluongQg)<a style="color:black"> @item.MaHvNavigation.Donvitinh</a>
-                </td>
-                <td>
-                    @(item.MaHvNavigation.Gia * item.SoluongQg) <a style="color:black">VNĐ</a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NgayQg)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ghichu)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.TrangthaiHv)
-                    <br>
-                    @if (item.TrangthaiHv.Trim() == "Đã nhận")
-                    {
-                        <a>Người nhận: </a>
-
-                        <a style="font-weight:bold">@Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)</a>
-                    }
-
-                </td>
-
-                <td align="right" width="100px">
-
-                    @if(item.TrangthaiHv.Trim() == "Chưa nhận" || item.MaTv == Context.Session.GetInt32("idtv"))
-                    {
-                        <input type="button" style="width:90px;" class="btn btn-primary" value="Cập nhật" onclick="location.href='@Url.Action("Edit", new { id = item.MaQghv })'" />
-                    }
-
-                        
-
-                </td>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+
+                        @Html.DisplayFor(modelItem => item.MaQghv)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaMtqNavigation.HotenMtq)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SoluongQg)<a style="color:black"> @item.MaHvNavigation.Donvitinh</a>
+                    </td>
+                    <td>
+                        @(item.MaHvNavigation.Gia * item.SoluongQg) <a style="color:black">VNĐ</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NgayQg)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ghichu)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TrangthaiHv)
+                        <br>
+                        @if (item.TrangthaiHv.Trim() == "Đã nhận")
+                        {
+                            <a>Người nhận: </a>
+
+                            <a style="font-weight:bold">@Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)</a>
+                        }
+
+                    </td>
+
+                    <td align="right" width="100px">
+
+                        @if (item.TrangthaiHv.Trim() == "Chưa nhận" || item.MaTv == Context.Session.GetInt32("idtv"))
+                        {
+                            <input type="button" style="width:90px;" class="btn btn-primary" value="Cập nhật" onclick="location.href='@Url.Action("Edit", new { id = item.MaQghv })'" />
+                        }
+
+
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#btnSubmit").click(function () {
+            $("input[name='GridHtml']").val($("#Grid").html());
+        });
+    });
+</script>

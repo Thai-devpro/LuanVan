@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuanVan.Data;
+using SautinSoft.Document;
 
 namespace LuanVan.Areas.Admin.Controllers
 {
@@ -18,9 +19,57 @@ namespace LuanVan.Areas.Admin.Controllers
         {
             _context = context;
         }
+        [HttpGet]
+        public async Task<IActionResult> Export(int? id)
+        {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 1 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
+            }
+            if (id == null || _context.Chiendiches == null)
+            {
+                return NotFound();
+            }
 
+            var noihotro = await _context.Noihotros
+                .Include(n => n.MaMtqNavigation)
+                .Include(n => n.TtTraotangs)
+                .Include(n => n.Chiendiches)
+                .FirstOrDefaultAsync(n => n.Manoi == id);
+            if (noihotro == null)
+            {
+                return NotFound();
+            }
+
+            return View(noihotro);
+        }
+        [HttpPost]
+        public IActionResult Export(string GridHtml)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "HTML");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string input = Path.Combine(path, "html1.html");
+            string output = Path.Combine(path, "BaoCaoChienDich.docx");
+            System.IO.File.WriteAllText(input, GridHtml);
+            DocumentCore documentCore = DocumentCore.Load(input);
+            documentCore.Save(output);
+            byte[] bytes = System.IO.File.ReadAllBytes(output);
+
+            Directory.Delete(path, true);
+
+            return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "BaoCaoNoiHoTro.docx");
+        }
         // GET: Admin/Noihotroes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? SearchString)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
@@ -31,6 +80,19 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return RedirectToAction("norole", "Home");
             }
+            if (SearchString != null)
+            {
+                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).Where(c => c.Diachi.Contains(SearchString));
+                if (nienluancosoContext2.Count() == 0)
+                {
+                    ViewBag.tb = "Không tìm thấy đề xuất hỗ trợ có địa chỉ : " + SearchString.ToString();
+                }
+                else
+                {
+                    ViewBag.tb = "Đã tìm thấy đề xuất hỗ trợ có địa chỉ : " + SearchString.ToString();
+                }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
             var nienluancosoContext = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches);
             return View(await nienluancosoContext.ToListAsync());
         }
@@ -38,6 +100,15 @@ namespace LuanVan.Areas.Admin.Controllers
         // GET: Admin/Noihotroes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 5 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
+            }
             if (id == null || _context.Noihotros == null)
             {
                 return NotFound();

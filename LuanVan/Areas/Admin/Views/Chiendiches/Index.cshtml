@@ -7,7 +7,7 @@
 <style>
     h1 {
         font-family: Arial, sans-serif;
-        font-size: 24px;
+      
     }
 
     /* Thiết lập màu nền và khoảng cách cho thẻ p */
@@ -59,18 +59,44 @@
         align-items: center;
         margin: 5px;
     }
+
+    .rowseach p {
+        display: inline-block;
+        margin-right: 10px;
+    }
 </style>
 <h1 class="page-title">Quản Lý Chiến Dịch</h1>
 
 <p class="create-link">
     <a class="btn btn-primary" asp-action="Create">Tạo Chiến Dịch Mới</a>
 </p>
-<form asp-action="index" method="get" class="form-inline">
-    <p style="font-size:20px"><i class='bx bx-search-alt'></i>Nhập tên chiến dịch: </p>
-    @* <p >@Html.TextBox("SearchString", "", new { @class = "form-control" })</p>*@
-    <p><input type="text" name="SearchString" /></p>
-    <p><input type="submit" class="btn-success" value="Tìm kiếm" /></p>
-</form>
+@using (Html.BeginForm())
+{
+    <div class="rowseach">
+        <form asp-action="index" method="get" class="form-inline">
+        
+            <p><input type="text" name="SearchString" placeholder="Nhập tên chiến dịch" /></p>
+            <p>Từ: <input type="date" name="tu" /></p>
+            <p>Đến: <input type="date" name="den" /></p>
+          
+            <p><input type="text" name="noiht" placeholder="Nhập nơi hỗ trợ" /></p>
+            <p><input type="submit" class="btn-success" value="Tìm kiếm" /></p>
+
+        </form>
+        @*<form asp-action="Export" method="post" enctype="multipart/form-data" style="display: inline-block; margin-left: 10px;">
+            <input type="hidden" name="GridHtml" />
+            <input type="submit" value="Xuất File" id="btnSubmit" class="btn btn-secondary" />
+        </form>*@
+    </div>
+}
+@if (ViewBag.tb != null)
+{
+    <p>@ViewBag.tb</p>
+}
+@if (ViewBag.TuNgay != null && ViewBag.DenNgay != null)
+{
+    <p>Danh sách chiến dịch từ ngày @ViewBag.TuNgay đến ngày @ViewBag.DenNgay</p>
+}
 <table class="table" >
     <thead>
         <tr>
