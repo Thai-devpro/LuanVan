@@ -10,9 +10,15 @@ public partial class Chiendich
     public string TenCd { get; set; } = null!;
 
     public DateTime Ngaybatdau { get; set; }
-
+    public string NgaybatdauFormatted
+    {
+        get { return Ngaybatdau.ToString("dd/MM/yyyy"); }
+    }
     public DateTime Ngayketthuc { get; set; }
-
+    public string NgayKetThucFormatted
+    {
+        get { return Ngayketthuc.ToString("dd/MM/yyyy"); }
+    }
     public string NoidungCd { get; set; } = null!;
 
     public string? AnhCd { get; set; }

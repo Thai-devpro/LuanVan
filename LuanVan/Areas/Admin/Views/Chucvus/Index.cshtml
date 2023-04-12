@@ -106,7 +106,7 @@
                     <td style="width:110; text-align: left" >
                     <input type="button" style="width:100px;" class="btn btn-success" value="Phân quyền" onclick="location.href='@Url.Action("ThemQuyen", new { id = item.MaCv})' "  />
                     <input type="button" style="width:100px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaCv })'" />
-                    @if(item.Thanhviens.Count <= 0){
+                    @if(item.Quyens.Count <= 0 && item.Thanhviens.Count <=0){
                         <input type="button" style="width:100px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaCv })'" />
                     }
                    
