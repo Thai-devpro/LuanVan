@@ -138,7 +138,7 @@ namespace LuanVan.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var hv = _context.LoaiHvs.FirstOrDefault(t => t.DienGiai == loaiHv.DienGiai);
-                if (hv != null )
+                if (hv != null && hv.MaLoai != loaiHv.MaLoai)
                 {
                     ModelState.AddModelError("DienGiai", "Loại hiện vật đã tồn tại!");
                     return View(loaiHv);

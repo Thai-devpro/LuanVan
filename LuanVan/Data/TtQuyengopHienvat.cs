@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace LuanVan.Data;
 
@@ -15,6 +16,7 @@ public partial class TtQuyengopHienvat
 
     public string? Ghichu { get; set; }
 
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Vui lòng nhập số lượng!")]
     public int SoluongQg { get; set; }
 
     public string TrangthaiHv { get; set; } = null!;

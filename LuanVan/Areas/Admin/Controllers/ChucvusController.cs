@@ -149,6 +149,12 @@ namespace LuanVan.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var cv = _context.Chucvus.FirstOrDefault(t => t.TenCv == chucvu.TenCv);
+                if (cv != null)
+                {
+                    ModelState.AddModelError("DienGiai", "chức vụ đã tồn tại!");
+                    return View(chucvu);
+                }
                 _context.Add(chucvu);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -195,6 +201,12 @@ namespace LuanVan.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                var cv = _context.Chucvus.FirstOrDefault(t => t.TenCv == chucvu.TenCv);
+                if (cv != null && cv.MaCv != chucvu.MaCv)
+                {
+                    ModelState.AddModelError("DienGiai", "chức vụ đã tồn tại!");
+                    return View(chucvu);
+                }
                 try
                 {
                     _context.Update(chucvu);

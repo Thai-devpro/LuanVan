@@ -71,12 +71,13 @@
     <input type="button" style="width:110px" class="btn btn-secondary" value="Danh sách" onclick="location.href='@Url.Action("index")'" />
 
 </div>
-<hr />
+
 
 
 
 @if (Model.TtQuyengopHienvats.Count > 0)
 {
+    <hr />
     NienluancosoContext db = new NienluancosoContext();
     <h4>Thông tin quyên góp của chiến dịch</h4>
     var tongqg = 0;
@@ -171,12 +172,13 @@
         }
 
     </table>
-    <hr />
+  
 }
 
 
 @if (Model.TtTraotangs.Count > 0 && Model.MaNoi == null)
 {
+    <hr />
     NienluancosoContext db = new NienluancosoContext();
 
     <h4>Thông tin trao tặng của chiến dịch</h4>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<LuanVan.Data.Thanhvien>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h1>Danh sách thành viên của tổ chức</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+              Họ và tên
+            </th>
+            <th>
+                Giới tính
+            </th>
+            <th>
+                Địa chỉ
+            </th>
+            <th>
+               Số điện thoại
+            </th>
+            <th>
+                Email
+            </th>
+           
+            <th>
+               Chức vụ
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenTv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GioitinhTv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiachiTv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SdtTv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailTv)
+            </td>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.MaCvNavigation.TenCv)
+            </td>
+            
+        </tr>
+}
+    </tbody>
+</table>

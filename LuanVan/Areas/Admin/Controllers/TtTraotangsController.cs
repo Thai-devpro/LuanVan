@@ -122,7 +122,7 @@ namespace LuanVan.Areas.Admin.Controllers
             if (manoi != null)
             {
                 
-                var cd3 = _context.Chiendiches.Where(c => c.MaNoi == manoi && c.Ngayketthuc < DateTime.Now).ToList();
+                var cd3 = _context.Chiendiches.Include(c => c.TtTraotangs).Where(c => c.MaNoi == manoi && c.Ngayketthuc < DateTime.Now && c.TtTraotangs.Count == 0).ToList();
                 cd3.Insert(0, new Chiendich { MaCd = 0, TenCd = "---KHÔNG---" });
                 ViewData["MaCd"] = new SelectList(cd3, "MaCd", "TenCd");
                 ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv");

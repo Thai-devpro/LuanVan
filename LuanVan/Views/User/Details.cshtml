@@ -21,7 +21,13 @@
            Giới tính
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GioitinhMtq)
+            @if(Model.GioitinhMtq.Trim() != "Nam")
+            {
+                <a>Nữ</a>
+            }else{
+                @Html.DisplayFor(model => model.GioitinhMtq)
+            }
+            
         </dd>
         <dt class = "col-sm-2">
             Đơn vị/tổ chức

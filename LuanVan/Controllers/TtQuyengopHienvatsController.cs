@@ -110,9 +110,10 @@ namespace LuanVan.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MaQghv,MaHv,MaMtq,MaCd,Ghichu,SoluongQg,TrangthaiHv,NgayQg")] TtQuyengopHienvat ttQuyengopHienvat)
         {
-            if (ttQuyengopHienvat.SoluongQg == null || ttQuyengopHienvat.SoluongQg <= 0)
+           
+            if (ttQuyengopHienvat.SoluongQg <= 0)
             {
-                ModelState.AddModelError("SoLuongQg", "Vui lòng điền số lượng ?");
+                ModelState.AddModelError("SoluongQg", "Vui lòng điền số lượng ?");
                 ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv");
 
 

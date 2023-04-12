@@ -83,6 +83,14 @@
             .btn {
                 align-items: center;
                 margin: 5px;
+                
+            }
+            .A4{
+                width: 210mm;
+                height: 297mm;
+                margin: 0 auto;
+                border-style:solid;
+                border-width:thin;
             }
         </style>
         <div>
@@ -97,7 +105,7 @@
                 <input type="submit" value="Xuất File" id="btnSubmit" class="btn btn-success" />
             </form>
         </div>
-        <div id="Grid">
+        <div id="Grid" class="A4">
 
             <h1>Báo Cáo Quyên Góp</h1>
 
@@ -159,12 +167,13 @@
         
             
 
-            <hr />
+           
 
 
 
             @if (Model.TtQuyengopHienvats.Count > 0)
             {
+                <hr />
                 NienluancosoContext db = new NienluancosoContext();
                 <h2>Thông tin quyên góp của chiến dịch</h2>
                 <br />
@@ -260,11 +269,11 @@
                     }
 
                 </table>
-                <hr />
+               
             }
 
 
-            @if (Model.TtTraotangs.Count > 0 && Model.MaNoi == null)
+           @* @if (Model.TtTraotangs.Count > 0 && Model.MaNoi == null)
             {
                 NienluancosoContext db = new NienluancosoContext();
 
@@ -350,7 +359,7 @@
                     }
 
                 </table>
-            }
+            }*@
         </div>
 
        
