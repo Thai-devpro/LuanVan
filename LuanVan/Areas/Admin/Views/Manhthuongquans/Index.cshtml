@@ -1,4 +1,6 @@
-﻿@model IEnumerable<LuanVan.Data.Manhthuongquan>
+﻿@using LuanVan.Data;
+@using Microsoft.EntityFrameworkCore;
+@model IEnumerable<LuanVan.Data.Manhthuongquan>
 
 @{
     ViewData["Title"] = "Index";
@@ -119,16 +121,32 @@
     <tbody>
         @{
             var manhThuongQuanList = Model.ToList();
+         
         }
         @foreach (var item in manhThuongQuanList)
-        {
+            {
+                NienluancosoContext db = new NienluancosoContext();
+                var tong = 0;
+                @if (ViewBag.TuNgay != null && ViewBag.DenNgay != null)
+                {
+                    DateTime tu = (DateTime)ViewData["tu"];
+                    DateTime den = (DateTime)ViewData["den"];
+
+
+                    tong = db.TtQuyengopHienvats.Count(q => q.NgayQg >= tu && q.NgayQg <= den && q.MaMtq == item.MaMtq);
+                }else
+                {
+                    tong = db.TtQuyengopHienvats.Count(q => q.MaMtq == item.MaMtq);
+                }
+               
         <tr>
-                
+                   
+
                 <td>@{
                         var index = manhThuongQuanList.IndexOf(item) + 1;
                     } @index</td>
             <td>
-                @Html.DisplayFor(modelItem => item.HotenMtq)
+                @Html.DisplayFor(modelItem => item.HotenMtq) ( @tong lượt)
             </td>
             
             <td>

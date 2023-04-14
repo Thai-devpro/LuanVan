@@ -78,7 +78,7 @@ namespace LuanVan.Areas.Admin.Controllers
         }
 
         
-        public async Task<IActionResult> Index(string? SearchString, DateTime? tu, DateTime? den, string? noiht)
+        public async Task<IActionResult> Index(string? SearchString, DateTime? tu, DateTime? den, string? noiht, int? tt)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
@@ -89,6 +89,14 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return RedirectToAction("norole", "Home");
             }
+            List<SelectListItem> items = new List<SelectListItem>
+{
+    new SelectListItem { Value = "1", Text = "Danh sách tất cả chiến dịch" },
+    new SelectListItem { Value = "2", Text = "Danh sách chiến dịch đang diễn ra" },
+    new SelectListItem { Value = "3", Text = "Danh sách chiến dịch đã kết thúc" },
+     new SelectListItem { Value = "4", Text = "Danh sách chiến dịch chưa trao tặng" }
+};
+            ViewBag.tt = new SelectList(items, "Value", "Text", tt);
             if (tu != null && den != null && SearchString != null && noiht != null)
             {
                 var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(q => q.Ngaybatdau > tu && q.Ngayketthuc < den && q.TenCd.Contains(SearchString) && q.MaNoiNavigation.Diachi.Contains(noiht));
@@ -140,6 +148,40 @@ namespace LuanVan.Areas.Admin.Controllers
                 {
                     ViewBag.tb = "Đã tìm thấy chiến dịch Từ ngày: " + tu.Value.ToString("dd - MM - yyyy") + " đến: " + den.Value.ToString("dd - MM - yyyy");
                 }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tt == 1)
+            {
+
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats);
+
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tt == 2)
+            {
+
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(q => q.Ngayketthuc > DateTime.Now);
+
+
+
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tt == 3)
+            {
+
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(q => q.Ngayketthuc < DateTime.Now);
+
+
+
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tt == 4)
+            {
+
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(q => q.Ngayketthuc < DateTime.Now && q.TtTraotangs.Count ==0 && q.MaNoi != null);
+
+
+
                 return View(await nienluancosoContext2.ToListAsync());
             }
             var nienluancosoContext = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats);

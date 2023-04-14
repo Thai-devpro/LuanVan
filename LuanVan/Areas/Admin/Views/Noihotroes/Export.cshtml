@@ -228,15 +228,16 @@
     {
         NienluancosoContext db = new NienluancosoContext();
         var tongtt = 0;
-        var listtraotang = db.TtTraotangs.AsNoTracking().Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(t => t.Manoi == Model.Manoi);
+            var tong = 0;
+            var listtraotang = db.TtTraotangs.AsNoTracking().Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(t => t.Manoi == Model.Manoi);
         <hr />
         <h4>Thông tin trao tặng của nơi hỗ trợ</h4>
         <br />
         @foreach (var item in listtraotang)
         {
 
-
-            if (item.MaHv != null)
+                tong++;
+                if (item.MaHv != null)
             {
                 tongtt += (item.MaHvNavigation.Gia) * (item.SoluongTt);
             }
@@ -257,7 +258,7 @@
         }
 
         <tr>
-            <b>Tổng giá trị các lượt trao tặng cho nơi cần hỗ trợ:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
+                <b>Tổng số lượt trao tặng: @tong lượt, tổng giá trị trao tặng:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
         </tr>
         <table class="table">
             <thead>

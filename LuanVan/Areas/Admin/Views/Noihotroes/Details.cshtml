@@ -151,6 +151,7 @@
             <th>
                 Người chịu trách nhiệm
             </th>
+            <th></th>
 
         </tr>
 
@@ -179,7 +180,7 @@
                 <td>
                 @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
                 </td>
-
+                <td>   <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details","ChienDiches", new { id = item.MaCd })'" /></td>
             </tr>
     }
 
@@ -189,13 +190,14 @@
 {
     NienluancosoContext db = new NienluancosoContext();
     var tongtt = 0;
+    var tong = 0;
     var listtraotang = db.TtTraotangs.AsNoTracking().Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(t => t.Manoi == Model.Manoi);
     <hr />
     <h4>Thông tin trao tặng của nơi hỗ trợ</h4>
     @foreach (var item in listtraotang)
     {
-       
-        
+        tong++;
+
         if (item.MaHv != null)
         {
             tongtt += (item.MaHvNavigation.Gia) * (item.SoluongTt);
@@ -216,7 +218,7 @@
     }
 
     <tr>
-        <b>Tổng giá trị các lượt trao tặng cho nơi cần hỗ trợ:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
+        <b>Tổng các lượt trao tăng: @tong lượt, tổng giá trị các lượt trao tặng cho nơi cần hỗ trợ:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
     </tr>
     <table class="table">
         <thead>

@@ -87,8 +87,8 @@ namespace LuanVan.Controllers
             if (tt == 1)
             {
 
-                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation);
-               
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats);
+
                 return View(await nienluancosoContext2.ToListAsync());
             }
             if (tt == 2)

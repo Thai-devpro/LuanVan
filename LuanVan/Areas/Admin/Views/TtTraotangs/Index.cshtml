@@ -98,6 +98,48 @@
 {
     <p>Danh sách trao tặng từ ngày @ViewBag.TuNgay đến ngày @ViewBag.DenNgay</p>
 }
+    @if (Model != null)
+    {
+        NienluancosoContext db = new NienluancosoContext();
+        var tong = 0;
+       
+        var tongtt = 0;
+
+
+
+        @foreach (var item in Model)
+        {
+            tong++;
+            @if (item.MaHv != null)
+            {
+                tongtt += item.MaHvNavigation.Gia * item.SoluongTt;
+            }
+            else if (item.MaCd != null)
+            {
+ 
+              
+
+                var listChienDich = db.TtQuyengopHienvats.Include(t => t.MaHvNavigation).Where(t => t.MaCd == item.MaCd ).ToList();
+
+                @foreach (var item2 in listChienDich)
+                {
+                    if ( item2.TrangthaiHv.Trim() == "Đã tặng")
+                    {
+                        tongtt += (item2.MaHvNavigation.Gia) * (item2.SoluongQg);
+                    }
+                }
+
+            }
+               
+            
+        }
+        <br />
+        <table class="table">
+            <tr>
+                <b>Tổng số lượt trao tặng: @tong lượt, tổng giá trị trao tặng:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
+            </tr>
+        </table>
+    }
 <table class="table">
     <thead>
         <tr>
@@ -173,7 +215,8 @@
                 <td>
                     @if (item.MaHv != null)
                     {
-                        @(item.MaHvNavigation.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
+                       
+                            <b>  @Html.FormatValue(item.MaHvNavigation.Gia * item.SoluongTt, "{0:#,###}") VNĐ</b>
                     }
                     else if(item.MaCd != null)
                     {
@@ -209,7 +252,7 @@
                 </td>
 
                 <td>
-                    @if (item.MaTv == Context.Session.GetInt32("idtv") || Context.Session.GetInt32("cvtv") == 1 || Context.Session.GetInt32("cvtv") == 10)
+                    @if (item.MaTv == Context.Session.GetInt32("idtv") || Context.Session.GetInt32("cvtv") == 1 )
                     {
                         <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaTt })'" />
 

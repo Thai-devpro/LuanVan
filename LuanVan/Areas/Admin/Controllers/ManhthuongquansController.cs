@@ -65,12 +65,20 @@ namespace LuanVan.Areas.Admin.Controllers
 
                 ViewBag.TuNgay = tu.Value.ToString("dd-MM-yyyy");
                 ViewBag.DenNgay = den.Value.ToString("dd-MM-yyyy");
+                ViewData["tu"] = tu;
+                ViewData["den"] = den;
                 return View(nienluancosoContext2);
             }
-
-            return _context.Manhthuongquans != null ?
-                          View(await _context.Manhthuongquans.ToListAsync()) :
-                          Problem("Entity set 'NienluancosoContext.Manhthuongquans'  is null.");
+            var nienluancosoContext = _context.Manhthuongquans
+    .Select(m => new
+    {
+        Manhthuongquan = m,
+        TotalQuyengopHienvat = m.TtQuyengopHienvats.Count()
+    })
+    .OrderByDescending(m => m.TotalQuyengopHienvat)
+    .Select(m => m.Manhthuongquan)
+    .ToList();
+            return View(nienluancosoContext);
         }
 
         // GET: Admin/Manhthuongquans/Details/5

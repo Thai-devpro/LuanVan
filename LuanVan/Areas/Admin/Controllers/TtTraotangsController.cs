@@ -60,7 +60,7 @@ namespace LuanVan.Areas.Admin.Controllers
                 }
                 else
                 {
-                    ViewBag.tb = "Đã tìm thấy trao tặng có địa chỉ : " + SearchString.ToString();
+                    ViewBag.tb = "Danh sách trao tặng có địa chỉ : " + SearchString.ToString();
                 }
                 return View(await nienluancosoContext2.ToListAsync());
             }

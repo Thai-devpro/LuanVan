@@ -1,4 +1,6 @@
-﻿@model IEnumerable<LuanVan.Data.TtQuyengopHienvat>
+﻿@using LuanVan.Data;
+@using Microsoft.EntityFrameworkCore;
+@model IEnumerable<LuanVan.Data.TtQuyengopHienvat>
 
 @{
     ViewData["Title"] = "Index";
@@ -94,6 +96,31 @@
     @if (ViewBag.TuNgay != null && ViewBag.DenNgay != null)
     {
         <p>Danh sách quyên góp từ ngày @ViewBag.TuNgay đến ngày @ViewBag.DenNgay</p>
+    }
+    @if(Model != null)
+    {
+        NienluancosoContext db = new NienluancosoContext();
+        var tong = 0;
+        var tongnhan = 0;
+        var tongqg = 0;
+
+        
+       
+            @foreach (var item in Model)
+            {
+                tong++;
+                if (item.TrangthaiHv.Trim() == "Đã nhận" || item.TrangthaiHv.Trim() == "Đã tặng")
+                {
+                    tongqg += (item.MaHvNavigation.Gia) * (item.SoluongQg);
+                    tongnhan++;
+                }
+            }
+            <br />
+        <table class="table">
+            <tr>
+                <b>Tổng số lượng đăng ký quyên góp: @tong lượt, đã nhận: @tongnhan lượt, tổng giá trị quyên góp đã nhận:  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
+            </tr>
+        </table>
     }
     <table class="table">
         <thead>
