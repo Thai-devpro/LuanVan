@@ -102,7 +102,7 @@
             <th>
                 Họ tên
             </th>
-           
+           <th>Số lượt đăng ký quyên góp</th>
             <th>
                Giới tính
             </th>
@@ -146,8 +146,9 @@
                         var index = manhThuongQuanList.IndexOf(item) + 1;
                     } @index</td>
             <td>
-                @Html.DisplayFor(modelItem => item.HotenMtq) ( @tong lượt)
+                @Html.DisplayFor(modelItem => item.HotenMtq) 
             </td>
+                    <td>@tong lượt</td>
             
             <td>
                     @if(item.GioitinhMtq.Trim() != "Nam")
@@ -169,8 +170,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DiachiMtq)
             </td>
-           
-        </tr>
+                    <td>
+                        @if (item.TtQuyengopHienvats.Count <= 0 && item.Noihotros.Count  <= 0)
+                        {
+                            <input type="button" style="width:100px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaMtq })'" />
+                        }
+                    </td>
+                   
+                </tr>
 }
     </tbody>
 </table>

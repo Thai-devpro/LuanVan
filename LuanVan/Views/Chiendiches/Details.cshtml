@@ -80,20 +80,26 @@
     <hr />
     NienluancosoContext db = new NienluancosoContext();
     <h4>Thông tin quyên góp của chiến dịch</h4>
+    var tong = 0;
+    var tongnhan = 0;
     var tongqg = 0;
+
 
     var listChienDich = db.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.MaMtqNavigation).Where(t => t.MaCd == Model.MaCd).ToList();
     <table class="table">
         @foreach (var item in listChienDich)
         {
+            tong++;
             if (item.TrangthaiHv.Trim() == "Đã nhận" || item.TrangthaiHv.Trim() == "Đã tặng")
             {
                 tongqg += (item.MaHvNavigation.Gia) * (item.SoluongQg);
+                tongnhan++;
             }
         }
 
         <tr>
-            <b>Tổng giá trị quyên góp đã nhận của chiến dịch:  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
+            <b>Tổng số lượng đăng ký quyên góp của chiến dịch: @tong lượt, đã nhận: @tongnhan lượt, tổng giá trị quyên góp đã nhận:  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
+
         </tr>
         <tr>
             <th>

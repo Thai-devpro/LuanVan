@@ -1882,6 +1882,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Pages\" />
+    <Folder Include="wwwroot\Content\images\chiendich\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />
@@ -3793,12 +3794,6 @@
     <None Include="wwwroot\assets\vendor\remixicon\remixicon.woff2" />
     <None Include="wwwroot\assets\vendor\swiper\swiper-bundle.min.js" />
     <None Include="wwwroot\assets\vendor\swiper\swiper-bundle.min.js.map" />
-    <None Include="wwwroot\Content\images\chiendich\anh1.jpg" />
-    <None Include="wwwroot\Content\images\chiendich\anh2.jpg" />
-    <None Include="wwwroot\Content\images\chiendich\anh3.jpg" />
-    <None Include="wwwroot\Content\images\chiendich\anh4.jpg" />
-    <None Include="wwwroot\Content\images\chiendich\anh9.jpg" />
-    <None Include="wwwroot\Content\images\chiendich\tải xuống.jpg" />
     <None Include="wwwroot\Content\images\noihotro\anh1.jpg" />
     <None Include="wwwroot\Content\images\noihotro\anh2.jpg" />
     <None Include="wwwroot\Content\images\noihotro\anh3.jpg" />

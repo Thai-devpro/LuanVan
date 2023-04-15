@@ -295,7 +295,7 @@
                     <td>
                         @if (item.MaHv != null)
                         {
-                            @(item.MaHvNavigation.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
+                            <b>  @Html.FormatValue(item.MaHvNavigation.Gia * item.SoluongTt, "{0:#,###}") VNĐ</b>
                         }
                         else if (item.MaCd != null)
                         {

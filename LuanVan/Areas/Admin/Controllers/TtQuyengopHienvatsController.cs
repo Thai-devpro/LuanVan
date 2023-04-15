@@ -59,6 +59,11 @@ namespace LuanVan.Areas.Admin.Controllers
                 {
                     ViewBag.tb = "Không tìm thấy quyên góp có mã : "+SearchString.ToString();
                 }
+                else
+                {
+                    ViewBag.tb = "Đã tìm thấy quyên góp có mã : " + SearchString.ToString();
+                }
+
                 return View(await nienluancosoContext2.ToListAsync());
             }
             if(tu != null && den != null)

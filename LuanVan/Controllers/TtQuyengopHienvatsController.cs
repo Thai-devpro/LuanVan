@@ -20,8 +20,19 @@ namespace LuanVan.Controllers
         }
 
         // GET: TtQuyengopHienvats
-        public async Task<IActionResult> Index(string? SearchString, DateTime? tu, DateTime? den)
+        public async Task<IActionResult> Index(string? SearchString, DateTime? tu, DateTime? den, int? tt)
         {
+            if (HttpContext.Session.GetInt32("idmtq") != null)
+            {
+                List<SelectListItem> items = new List<SelectListItem>
+{
+    new SelectListItem { Value = "1", Text = "Danh sách tất cả quyên góp" },
+    new SelectListItem { Value = "2", Text = "Danh sách quyên góp của bản thân" },
+
+};
+
+                ViewBag.tt = new SelectList(items, "Value", "Text", tt);
+            }
             if (tu != null && den != null && SearchString != null)
             {
                 var nienluancosoContext2 = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation).Where(q => q.NgayQg > tu && q.NgayQg < den && q.MaMtqNavigation.HotenMtq.Contains(SearchString));
@@ -55,6 +66,22 @@ namespace LuanVan.Controllers
 
                 ViewBag.TuNgay = tu.Value.ToString("dd-MM-yyyy");
                 ViewBag.DenNgay = den.Value.ToString("dd-MM-yyyy");
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tt == 1)
+            {
+
+                var nienluancosoContext2 = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation);
+
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tt == 2)
+            {
+
+                var nienluancosoContext2 = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation).Where(t => t.MaMtq == HttpContext.Session.GetInt32("idmtq"));
+
+
+
                 return View(await nienluancosoContext2.ToListAsync());
             }
             var nienluancosoContext = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation);

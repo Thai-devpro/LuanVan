@@ -31,7 +31,7 @@ namespace LuanVan.Areas.Admin.Controllers
             string input = Path.Combine(path, "html1.html");
             string output = Path.Combine(path, "BaoCaoChienDich.docx");
             System.IO.File.WriteAllText(input, GridHtml);
-            DocumentCore documentCore = DocumentCore.Load(input);
+            DocumentCore documentCore = DocumentCore.Load(input, new HtmlLoadOptions());
             documentCore.Save(output);
             byte[] bytes = System.IO.File.ReadAllBytes(output);
 

@@ -78,8 +78,12 @@
 {
     <div class="rowseach">
         <form asp-action="index" method="get" class="form-inline">
-            <p style="font-size:20px"><i class='bx bx-search-alt'></i>Nhập tên người đăng ký: </p>
-            <p><input type="text" name="SearchString" /></p>
+             @if(Context.Session.GetInt32("idmtq") != null)
+            {
+                <p> <select name="tt" class="form-control" asp-items="@ViewBag.tt" onchange="this.form.submit()"></select></p>
+            }
+           
+            <p><i class='bx bx-search-alt'></i>: <input type="text" name="SearchString" placeholder="Nhập tên người quyên góp" /></p>
             <p>Từ: <input type="date" name="tu" /></p>
             <p>Đến: <input type="date" name="den" /></p>
 

@@ -76,7 +76,11 @@
             <input type="button" style="width:120px;" class="btn btn-success" value="Thêm đề xuất" onclick="location.href='@Url.Action("Create")'" />
         </p>
         <form asp-action="index" method="get" class="form-inline">
-
+            @if(Context.Session.GetInt32("idmtq") != null)
+            {
+                <p> <select name="tt" class="form-control" asp-items="@ViewBag.tt" onchange="this.form.submit()"></select></p>
+            }
+          
             <p><input type="text" name="SearchString" placeholder="Nhập tên Địa chỉ" /></p>
 
 

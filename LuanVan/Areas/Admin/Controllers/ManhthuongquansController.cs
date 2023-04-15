@@ -69,7 +69,7 @@ namespace LuanVan.Areas.Admin.Controllers
                 ViewData["den"] = den;
                 return View(nienluancosoContext2);
             }
-            var nienluancosoContext = _context.Manhthuongquans
+            var nienluancosoContext = _context.Manhthuongquans.Include(m => m.TtQuyengopHienvats).Include(m => m.Noihotros)
     .Select(m => new
     {
         Manhthuongquan = m,

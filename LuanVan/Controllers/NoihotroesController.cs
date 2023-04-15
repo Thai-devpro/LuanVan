@@ -20,8 +20,20 @@ namespace LuanVan.Controllers
         }
 
         // GET: Noihotroes
-        public async Task<IActionResult> Index(string? SearchString)
+        public async Task<IActionResult> Index(string? SearchString, int? tt)
         {
+            if (HttpContext.Session.GetInt32("idmtq") != null)
+            {
+                List<SelectListItem> items = new List<SelectListItem>
+{
+    new SelectListItem { Value = "1", Text = "Danh sách tất cả đề xuất" },
+    new SelectListItem { Value = "2", Text = "Danh sách đề xuất của bản thân" },
+   
+};
+
+                ViewBag.tt = new SelectList(items, "Value", "Text", tt);
+            }
+           
             if (SearchString != null)
             {
                 var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).Where(c => c.Diachi.Contains(SearchString));
@@ -33,6 +45,22 @@ namespace LuanVan.Controllers
                 {
                     ViewBag.tb = "Đã tìm thấy đề xuất hỗ trợ có địa chỉ : " + SearchString.ToString();
                 }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tt == 1)
+            {
+
+                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches);
+
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tt == 2)
+            {
+
+                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).Where(n => n.MaMtq == HttpContext.Session.GetInt32("idmtq"));
+
+
+
                 return View(await nienluancosoContext2.ToListAsync());
             }
             var nienluancosoContext = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches);
