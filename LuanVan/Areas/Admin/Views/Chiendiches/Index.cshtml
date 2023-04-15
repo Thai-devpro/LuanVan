@@ -63,6 +63,7 @@
     .rowseach p {
         display: inline-block;
         margin-right: 10px;
+    
     }
 </style>
 <h1 class="page-title">Quản Lý Chiến Dịch</h1>
@@ -75,13 +76,13 @@
     <div class="rowseach">
         <form asp-action="index" method="get" class="form-inline">
             <p>  <select name="tt" class="form-control" asp-items="@ViewBag.tt" onchange="this.form.submit()"></select></p>
-          
-            <p><input type="text" name="SearchString" placeholder="Nhập tên chiến dịch" /></p>
+
+            <p style="width:175px"><input type="text" style="width:170px" name="SearchString" placeholder="Nhập tên chiến dịch" /></p>
             <p>Từ: <input type="date" name="tu" /></p>
             <p>Đến: <input type="date" name="den" /></p>
-          
-            <p><input type="text" name="noiht" placeholder="Nhập nơi hỗ trợ" /></p>
-            <p><input type="submit" class="btn-success" value="Tìm kiếm" /></p>
+
+            <p style="width:175px"><input type="text" style="width:170px" name="noiht" placeholder="Nhập nơi hỗ trợ" /></p>
+            <p style="width:81px"><input type="submit" class="btn-success" value="Tìm kiếm" /></p>
 
         </form>
         

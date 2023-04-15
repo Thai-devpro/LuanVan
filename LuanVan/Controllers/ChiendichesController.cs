@@ -19,7 +19,7 @@ namespace LuanVan.Controllers
         }
 
         // GET: Chiendiches
-        public async Task<IActionResult> Index(string? SearchString, DateTime? tu, DateTime? den, string? noiht, int? tt)
+        public async Task<IActionResult> Index(string? SearchString, DateTime? tu, DateTime? den, string? noiht, int tt =2)
         {
             List<SelectListItem> items = new List<SelectListItem>
 {

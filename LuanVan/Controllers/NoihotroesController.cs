@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuanVan.Data;
 using System.Data;
+using X.PagedList;
 
 namespace LuanVan.Controllers
 {
@@ -20,8 +21,10 @@ namespace LuanVan.Controllers
         }
 
         // GET: Noihotroes
-        public async Task<IActionResult> Index(string? SearchString, int? tt)
+        public async Task<IActionResult> Index(string? SearchString, int? tt , int page = 1)
         {
+            page = page < 1 ? 1 : page;
+            int pagesize = 5;
             if (HttpContext.Session.GetInt32("idmtq") != null)
             {
                 List<SelectListItem> items = new List<SelectListItem>
@@ -36,7 +39,7 @@ namespace LuanVan.Controllers
            
             if (SearchString != null)
             {
-                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).Where(c => c.Diachi.Contains(SearchString));
+                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).Where(c => c.Diachi.Contains(SearchString)).ToPagedList();
                 if (nienluancosoContext2.Count() == 0)
                 {
                     ViewBag.tb = "Không tìm thấy đề xuất hỗ trợ có địa chỉ : " + SearchString.ToString();
@@ -45,26 +48,27 @@ namespace LuanVan.Controllers
                 {
                     ViewBag.tb = "Đã tìm thấy đề xuất hỗ trợ có địa chỉ : " + SearchString.ToString();
                 }
-                return View(await nienluancosoContext2.ToListAsync());
+                return View( nienluancosoContext2);
             }
             if (tt == 1)
             {
 
-                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches);
+                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).ToPagedList(page, pagesize);
 
-                return View(await nienluancosoContext2.ToListAsync());
+                return View(nienluancosoContext2);
             }
             if (tt == 2)
             {
 
-                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).Where(n => n.MaMtq == HttpContext.Session.GetInt32("idmtq"));
+                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).Where(n => n.MaMtq == HttpContext.Session.GetInt32("idmtq")).ToPagedList();
 
 
 
-                return View(await nienluancosoContext2.ToListAsync());
+                return View( nienluancosoContext2);
             }
-            var nienluancosoContext = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches);
-            return View(await nienluancosoContext.ToListAsync());
+           
+            var nienluancosoContext = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).ToPagedList(page,pagesize);
+            return View( nienluancosoContext);
         }
 
         // GET: Noihotroes/Details/5

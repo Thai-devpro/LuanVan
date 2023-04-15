@@ -1,5 +1,5 @@
-﻿@model IEnumerable<LuanVan.Data.Noihotro>
-
+﻿@model X.PagedList.IPagedList<LuanVan.Data.Noihotro>
+@using X.PagedList.Mvc.Core
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,7 +10,7 @@
 <style>
     h1 {
         font-family: Arial, sans-serif;
-    
+    font-size:35px;
     }
 
     /* Thiết lập màu nền và khoảng cách cho thẻ p */
@@ -67,6 +67,15 @@
         display: inline-block;
         margin-right: 10px;
     }
+
+    
+    .pagination-container li {
+        font-size: 25px;
+        margin-left: 10px;
+        margin-right: 10px;
+        
+    }
+    
 </style>
 <h1>Danh sách đề xuất hỗ trợ</h1>
 @using (Html.BeginForm())
@@ -81,7 +90,7 @@
                 <p> <select name="tt" class="form-control" asp-items="@ViewBag.tt" onchange="this.form.submit()"></select></p>
             }
           
-            <p><input type="text" name="SearchString" placeholder="Nhập tên Địa chỉ" /></p>
+            <p><input type="text" name="SearchString" placeholder="Nhập địa chỉ" /></p>
 
 
             <p><input type="submit" class="btn btn-primary" value="Tìm kiếm" /></p>
@@ -182,9 +191,12 @@
                     {
                         <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.Manoi })'" />
                     }
-
                     </td>
             </tr>
-        }
+        }    
     </tbody>
 </table>
+<div>
+    @Html.PagedListPager(Model,page=>Url.Action("index","Noihotroes", new{page = page}))
+</div>
+
