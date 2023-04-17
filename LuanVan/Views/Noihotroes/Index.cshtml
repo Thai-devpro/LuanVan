@@ -24,6 +24,8 @@
         border-collapse: collapse;
         width: 1330px;
         text-align: center;
+        color: #6c757d;
+        background-color: #f1f3f5;
     }
 
         /* Thiết lập màu nền và kiểu cho tiêu đề bảng */
@@ -104,7 +106,31 @@
 {
     <p>@ViewBag.tb</p>
 }
+@*@if (Model != null)
+{
+    //NienluancosoContext db = new NienluancosoContext();
+    var tong = 0;
+    var tongnhan = 0;
+    var tongqg = 0;
 
+
+
+    @foreach (var item in Model)
+    {
+        tong++;
+        if (item.TrangthaiNht.Trim() == "Đã duyệt")
+        {
+            //tongqg += (item.MaHvNavigation.Gia) * (item.SoluongQg);
+            tongnhan++;
+        }
+    }
+    <br />
+    <table class="table">
+        <tr>
+            <b>Tổng số lượt đề xuất nơi hỗ trợ: @tong lượt, đã duyệt: @tongnhan nơi, tổng giá trị quyên góp đã nhận:  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
+        </tr>
+    </table>
+}*@
 <table class="table">
     <thead>
         <tr>

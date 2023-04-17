@@ -79,20 +79,32 @@
     <table class="table">
         <thead>
             <tr>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Loại hiện vật
                 </th>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Tên hiện vật
                 </th>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Số lượng còn
                 </th>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Đơn vị tính
                 </th>
-                <th>Giá</th>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">Giá</th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Tổng giá 
                 </th>
 
@@ -103,27 +115,39 @@
             @foreach (var item in Model)
             {
                         <tr>
-                            <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @Html.DisplayFor(modelItem => item.MaLoaiNavigation.DienGiai)
                             </td>
-                            <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @Html.DisplayFor(modelItem => item.TenHv)
                             </td>
 
-                            <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @Html.DisplayFor(modelItem => item.Soluongcon)
                             </td>
-                            <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @Html.DisplayFor(modelItem => item.Donvitinh)
                             </td>
-                            <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @Html.DisplayFor(modelItem => item.Gia) <a style="color:black">VNĐ</a>
                             </td>
-                            <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @(item.Gia * item.Soluongcon) <a style="color:black">VNĐ</a>
                             </td>
 
-                            <td>
+                    <td >
                         @if (item.TtTraotangs.Count > 0 || item.TtQuyengopHienvats.Count > 0)
                         {
                                             <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaHv})'" />

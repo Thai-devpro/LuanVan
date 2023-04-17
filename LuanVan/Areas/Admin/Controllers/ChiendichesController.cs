@@ -99,7 +99,7 @@ namespace LuanVan.Areas.Admin.Controllers
             ViewBag.tt = new SelectList(items, "Value", "Text", tt);
             if (tu != null && den != null && SearchString != null && noiht != null)
             {
-                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(q => q.Ngaybatdau > tu && q.Ngayketthuc < den && q.TenCd.Contains(SearchString) && q.MaNoiNavigation.Diachi.Contains(noiht));
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(q => q.Ngaybatdau >= tu && q.Ngayketthuc <= den && q.TenCd.Contains(SearchString) && q.MaNoiNavigation.Diachi.Contains(noiht));
 
                 if (nienluancosoContext2.Count() == 0)
                 {
@@ -138,7 +138,7 @@ namespace LuanVan.Areas.Admin.Controllers
             }
             if (tu != null && den != null)
             {
-                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(q => q.Ngaybatdau > tu && q.Ngayketthuc < den);
+                var nienluancosoContext2 = _context.Chiendiches.Include(c => c.MaNoiNavigation).Include(c => c.MaTvNavigation).Include(c => c.TtTraotangs).Include(c => c.TtQuyengopHienvats).Where(q => q.Ngaybatdau >= tu && q.Ngayketthuc <= den);
 
                 if (nienluancosoContext2.Count() == 0)
                 {

@@ -35,7 +35,7 @@ namespace LuanVan.Controllers
             }
             if (tu != null && den != null && SearchString != null)
             {
-                var nienluancosoContext2 = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation).Where(q => q.NgayQg > tu && q.NgayQg < den && q.MaMtqNavigation.HotenMtq.Contains(SearchString));
+                var nienluancosoContext2 = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation).Where(q => q.NgayQg >= tu && q.NgayQg <= den && q.MaMtqNavigation.HotenMtq.Contains(SearchString));
 
                 if (nienluancosoContext2.Count() == 0)
                 {
@@ -62,7 +62,7 @@ namespace LuanVan.Controllers
             }
             if (tu != null && den != null)
             {
-                var nienluancosoContext2 = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation).Where(q => q.NgayQg > tu && q.NgayQg < den);
+                var nienluancosoContext2 = _context.TtQuyengopHienvats.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaMtqNavigation).Include(t => t.MaTvNavigation).Where(q => q.NgayQg >= tu && q.NgayQg <= den);
 
                 ViewBag.TuNgay = tu.Value.ToString("dd-MM-yyyy");
                 ViewBag.DenNgay = den.Value.ToString("dd-MM-yyyy");

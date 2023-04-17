@@ -88,7 +88,7 @@
     </div>
 }
 <div id="Grid">
-    <h1>Danh sách quyên góp</h1>
+   
     @if (ViewBag.tb != null)
     {
         <p>@ViewBag.tb</p>
@@ -97,59 +97,80 @@
     {
         <p>Danh sách quyên góp từ ngày @ViewBag.TuNgay đến ngày @ViewBag.DenNgay</p>
     }
-    @if(Model != null)
+    @if (Model != null)
     {
         NienluancosoContext db = new NienluancosoContext();
         var tong = 0;
         var tongnhan = 0;
         var tongqg = 0;
 
-        
-       
-            @foreach (var item in Model)
+
+
+        @foreach (var item in Model)
+        {
+            tong++;
+            if (item.TrangthaiHv.Trim() == "Đã nhận" || item.TrangthaiHv.Trim() == "Đã tặng")
             {
-                tong++;
-                if (item.TrangthaiHv.Trim() == "Đã nhận" || item.TrangthaiHv.Trim() == "Đã tặng")
-                {
-                    tongqg += (item.MaHvNavigation.Gia) * (item.SoluongQg);
-                    tongnhan++;
-                }
+                tongqg += (item.MaHvNavigation.Gia) * (item.SoluongQg);
+                tongnhan++;
             }
-            <br />
-        <table class="table">
-            <tr>
-                <b>Tổng số lượng đăng ký quyên góp: @tong lượt, đã nhận: @tongnhan lượt, tổng giá trị quyên góp đã nhận:  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
-            </tr>
-        </table>
+        }
+        <h1>Danh sách quyên góp</h1>
+<br />
+        
+          
+                <b>Tổng số lượng đăng ký quyên góp: @tong lượt, đã nhận: @tongnhan lượt</b>
+   <br />
+                <b>Tổng giá trị quyên góp đã nhận:  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
+           
+       
     }
     <table class="table">
         <thead>
             <tr>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Mã quyên góp
                 </th>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Mạnh thường quân
                 </th>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Chiến dịch
                 </th>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Hiện vật
                 </th>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Số lượng
                 </th>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Giá trị ước tính
                 </th>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Ngày quyên góp
                 </th>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Ghi chú
                 </th>
-                <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     Trạng thái
                 </th>
 
@@ -160,33 +181,51 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
 
                         @Html.DisplayFor(modelItem => item.MaQghv)
                     </td>
-                    <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @Html.DisplayFor(modelItem => item.MaMtqNavigation.HotenMtq)
                     </td>
-                    <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
                     </td>
-                    <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
                     </td>
-                    <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @Html.DisplayFor(modelItem => item.SoluongQg)<a style="color:black"> @item.MaHvNavigation.Donvitinh</a>
                     </td>
-                    <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @(item.MaHvNavigation.Gia * item.SoluongQg) <a style="color:black">VNĐ</a>
                     </td>
-                    <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @Html.DisplayFor(modelItem => item.NgayQg)
                     </td>
-                    <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @Html.DisplayFor(modelItem => item.Ghichu)
                     </td>
 
-                    <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         @Html.DisplayFor(modelItem => item.TrangthaiHv)
                         <br>
                         @if (item.TrangthaiHv.Trim() == "Đã nhận")
@@ -200,7 +239,7 @@
 
                     <td align="right" width="100px">
 
-                        @if (item.TrangthaiHv.Trim() == "Chưa nhận" || item.MaTv == Context.Session.GetInt32("idtv"))
+                        @if (item.TrangthaiHv.Trim() == "Chưa nhận" || item.MaTv == Context.Session.GetInt32("idtv") && item.TrangthaiHv.Trim() != "Đã tặng")
                         {
                             <input type="button" style="width:90px;" class="btn btn-primary" value="Cập nhật" onclick="location.href='@Url.Action("Edit", new { id = item.MaQghv })'" />
                         }

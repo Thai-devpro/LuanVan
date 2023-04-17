@@ -98,34 +98,50 @@
 <table class="table">
     <thead>
         <tr>
-            <th>STT</th>
-            <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">STT</th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                 Họ tên
             </th>
-           <th>Số lượt đăng ký quyên góp</th>
-            <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">Số lượt đăng ký quyên góp</th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                Giới tính
             </th>
-            <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                 Đơn vị/tổ chức
             </th>
-            <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                Số điện thoại
             </th>
-            <th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                Địa chỉ
             </th>
-            <th></th>
+            
         </tr>
     </thead>
     <tbody>
         @{
             var manhThuongQuanList = Model.ToList();
+                NienluancosoContext db = new NienluancosoContext();
          
         }
         @foreach (var item in manhThuongQuanList)
             {
-                NienluancosoContext db = new NienluancosoContext();
+               
+                
                 var tong = 0;
                 @if (ViewBag.TuNgay != null && ViewBag.DenNgay != null)
                 {
@@ -142,15 +158,26 @@
         <tr>
                    
 
-                <td>@{
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        @{
                         var index = manhThuongQuanList.IndexOf(item) + 1;
                     } @index</td>
-            <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                 @Html.DisplayFor(modelItem => item.HotenMtq) 
             </td>
-                    <td>@tong lượt</td>
-            
-            <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        @tong lượt
+                    </td>
+
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                     @if(item.GioitinhMtq.Trim() != "Nam")
                     {
                         <span>Nữ</span>
@@ -161,21 +188,22 @@
                     }
                    
             </td>
-            <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                 @Html.DisplayFor(modelItem => item.DonviTochucMtq)
             </td>
-            <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                 @Html.DisplayFor(modelItem => item.SdtMtq)
             </td>
-            <td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                 @Html.DisplayFor(modelItem => item.DiachiMtq)
             </td>
-                    <td>
-                        @if (item.TtQuyengopHienvats.Count <= 0 && item.Noihotros.Count  <= 0)
-                        {
-                            <input type="button" style="width:100px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaMtq })'" />
-                        }
-                    </td>
+                    
                    
                 </tr>
 }

@@ -23,7 +23,7 @@ namespace LuanVan.Controllers
         {
             if (tu != null && den != null && SearchString != null)
             {
-                var nienluancosoContext2 = _context.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(q => q.Ngaytang > tu && q.Ngaytang < den && q.ManoiNavigation.Diachi.Contains(SearchString));
+                var nienluancosoContext2 = _context.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(q => q.Ngaytang >= tu && q.Ngaytang <= den && q.ManoiNavigation.Diachi.Contains(SearchString));
 
                 if (nienluancosoContext2.Count() == 0)
                 {
@@ -50,7 +50,7 @@ namespace LuanVan.Controllers
             }
             if (tu != null && den != null)
             {
-                var nienluancosoContext2 = _context.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(q => q.Ngaytang > tu && q.Ngaytang < den);
+                var nienluancosoContext2 = _context.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(q => q.Ngaytang >= tu && q.Ngaytang <= den);
 
                 ViewBag.TuNgay = tu.Value.ToString("dd-MM-yyyy");
                 ViewBag.DenNgay = den.Value.ToString("dd-MM-yyyy");

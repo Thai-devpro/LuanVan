@@ -96,6 +96,47 @@
 @if (ViewBag.TuNgay != null && ViewBag.DenNgay != null)
 {
     <p>Danh sách trao tặng từ ngày @ViewBag.TuNgay đến ngày @ViewBag.DenNgay</p>
+}@if (Model != null)
+{
+    NienluancosoContext db = new NienluancosoContext();
+    var tong = 0;
+
+    var tongtt = 0;
+
+
+
+    @foreach (var item in Model)
+    {
+        tong++;
+        @if (item.MaHv != null)
+        {
+            tongtt += item.MaHvNavigation.Gia * item.SoluongTt;
+        }
+        else if (item.MaCd != null)
+        {
+
+
+
+            var listChienDich = db.TtQuyengopHienvats.Include(t => t.MaHvNavigation).Where(t => t.MaCd == item.MaCd).ToList();
+
+            @foreach (var item2 in listChienDich)
+            {
+                if (item2.TrangthaiHv.Trim() == "Đã tặng")
+                {
+                    tongtt += (item2.MaHvNavigation.Gia) * (item2.SoluongQg);
+                }
+            }
+
+        }
+
+
+    }
+    <br />
+    <table class="table">
+        <tr>
+            <b>Tổng số lượt trao tặng: @tong lượt, tổng giá trị trao tặng:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
+        </tr>
+    </table>
 }
 <table class="table">
     <thead>

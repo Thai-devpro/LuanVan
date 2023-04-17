@@ -24,7 +24,7 @@ namespace LuanVan.Controllers
         public async Task<IActionResult> Index(string? SearchString, int? tt , int page = 1)
         {
             page = page < 1 ? 1 : page;
-            int pagesize = 5;
+            int pagesize = 3;
             if (HttpContext.Session.GetInt32("idmtq") != null)
             {
                 List<SelectListItem> items = new List<SelectListItem>

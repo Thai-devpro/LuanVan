@@ -153,6 +153,7 @@
             <th>
                 Người chịu trách nhiệm
             </th>
+            <th></th>
 
         </tr>
 
@@ -181,7 +182,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
                 </td>
-
+                <td>   <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details","ChienDiches", new { id = item.MaCd })'" /></td>
             </tr>
         }
 

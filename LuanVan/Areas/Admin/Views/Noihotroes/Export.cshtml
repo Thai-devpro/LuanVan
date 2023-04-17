@@ -92,6 +92,12 @@
             margin: 0 auto;
             border-style: solid;
             border-width: thin;
+            /* border-radius: 25px;*/
+            padding: 15px;
+            font-size: 16px;
+            color: #6c757d;
+            background-color: #f1f3f5;
+            border: none;
         }
     </style>
     <div>
@@ -103,275 +109,324 @@
         </form>
     </div>
     <div id="Grid" class="A4">
-    <h1>Báo cáo</h1>
+        <h1 style="text-align:center">Báo cáo</h1>
 
-    <div>
-        <h2>Nơi hỗ trợ</h2>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                Người đề xuất
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MaMtqNavigation.HotenMtq)
-            <dt class="col-sm-2">
+        <div>
+            <h2 style="text-align:center">Nơi hỗ trợ</h2>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Người đề xuất
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.MaMtqNavigation.HotenMtq)
+                <dt class="col-sm-2">
 
-                Địa chỉ
-            </dt>
-            <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Diachi)
-            </dd>
-            <dt class="col-sm-2">
-                Tình trạng
-            </dt>
-            <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Tinhtrang)
-            </dd>
-            <dt class="col-sm-2">
-                Cần hỗ trợ
-            </dt>
-            <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Canhotro)
-            </dd>
-            <dt class="col-sm-2">
-                Trạng thái
-            </dt>
-            <dd class="col-sm-10">
-                    @if (Model.TtTraotangs.Count > 0 && Model.Chiendiches.Count > 0)
-                    {
-                    <span class="text-danger">Đã mở chiến dịch và trao tặng</span>
-                    }
-                    else if (Model.Chiendiches.Count > 0)
-                    {
-                    <span class="text-danger">Đã mở chiến dịch</span>
-                    }
-                    else if (Model.TtTraotangs.Count > 0)
-                    {
-                    <span class="text-danger">Đã có hỗ trợ</span>
-
-
-                    }
-                    else
-                    {
-                    <span>@Html.DisplayFor(modelItem => Model.TrangthaiNht)</span>
-                    }
-            </dd>
-            
-
-        </dl>
-    </div>
-   
+                    Địa chỉ
+                </dt>
+                <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Diachi)
+                </dd>
+                <dt class="col-sm-2">
+                    Tình trạng
+                </dt>
+                <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Tinhtrang)
+                </dd>
+                <dt class="col-sm-2">
+                    Cần hỗ trợ
+                </dt>
+                <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Canhotro)
+                </dd>
+                <dt class="col-sm-2">
+                    Trạng thái
+                </dt>
+                <dd class="col-sm-10">
+                        @if (Model.TtTraotangs.Count > 0 && Model.Chiendiches.Count > 0)
+                        {
+                        <span class="text-danger">Đã mở chiến dịch và trao tặng</span>
+                        }
+                        else if (Model.Chiendiches.Count > 0)
+                        {
+                        <span class="text-danger">Đã mở chiến dịch</span>
+                        }
+                        else if (Model.TtTraotangs.Count > 0)
+                        {
+                        <span class="text-danger">Đã có hỗ trợ</span>
 
 
-
-    @if (Model.Chiendiches.Count > 0)
-    {
-        <hr />
-        NienluancosoContext db = new NienluancosoContext();
-        var listChienDich = db.Chiendiches.Include(t => t.MaTvNavigation).Where(t => t.MaNoi == Model.Manoi).ToList();
-        <h4>Thông tin chiến dịch của nơi hỗ trợ</h4>
-        <table class="table">
-
-            <tr>
-               
-                <th>
-                    Tên chiến dịch
-                </th>
-
-                <th>
-                    Ngày bắt đầu
-                </th>
-                <th>
-                    Ngày kết thúc
-                </th>
-                <th>
-                    Nội dung
-                </th>
+                        }
+                        else
+                        {
+                        <span>@Html.DisplayFor(modelItem => Model.TrangthaiNht)</span>
+                        }
+                </dd>
 
 
-                <th>
-                    Người chịu trách nhiệm
-                </th>
-
-            </tr>
+            </dl>
+        </div>
 
 
-            @foreach (var item in listChienDich)
-            {
-                <tr>
-                   
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TenCd)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Ngaybatdau)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Ngayketthuc)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NoidungCd)
-                    </td>
 
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
-                    </td>
-
-                </tr>
-            }
-
-        </table>
-    }
-    @if (Model.TtTraotangs.Count > 0)
-    {
-        NienluancosoContext db = new NienluancosoContext();
-        var tongtt = 0;
-            var tong = 0;
-            var listtraotang = db.TtTraotangs.AsNoTracking().Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(t => t.Manoi == Model.Manoi);
-        <hr />
-        <h4>Thông tin trao tặng của nơi hỗ trợ</h4>
-        <br />
-        @foreach (var item in listtraotang)
+        @if (Model.Chiendiches.Count > 0)
         {
+            <hr />
+            NienluancosoContext db = new NienluancosoContext();
+            var listChienDich = db.Chiendiches.Include(t => t.MaTvNavigation).Where(t => t.MaNoi == Model.Manoi).ToList();
+            <h4>Thông tin chiến dịch của nơi hỗ trợ</h4>
+            <table class="table">
 
-                tong++;
-                if (item.MaHv != null)
-            {
-                tongtt += (item.MaHvNavigation.Gia) * (item.SoluongTt);
-            }
-            else if (item.MaCd != null)
-            {
-                NienluancosoContext db3 = new NienluancosoContext();
-                var listChienDich = db3.TtQuyengopHienvats.AsNoTracking().Include(t => t.MaHvNavigation).Where(t => t.MaCd == item.MaCd).ToList();
-
-                @foreach (var item2 in listChienDich)
-                {
-                    if (item2.TrangthaiHv.Trim() == "Đã nhận" || item2.TrangthaiHv.Trim() == "Đã tặng")
-                    {
-                        tongtt += (item2.MaHvNavigation.Gia) * (item2.SoluongQg);
-                    }
-                }
-            }
-
-        }
-
-        <tr>
-                <b>Tổng số lượt trao tặng: @tong lượt, tổng giá trị trao tặng:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
-        </tr>
-        <table class="table">
-            <thead>
                 <tr>
-                    <th>
-                        Nơi tặng
+
+                    <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        Tên chiến dịch
                     </th>
-                    <th>
-                        Chiến dịch
+
+                    <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        Ngày bắt đầu
                     </th>
-                    <th>
-                        Hiện vật
+                    <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        Ngày kết thúc
                     </th>
-                    <th>
-                        Số lượng
+                    <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        Nội dung
                     </th>
-                    <th>Giá trị ước tính</th>
-                    <th>
-                        Ngày tặng
-                    </th>
-                  
 
 
-                    <th>
+                    <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                         Người chịu trách nhiệm
                     </th>
 
-
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in listtraotang)
+
+
+                @foreach (var item in listChienDich)
                 {
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ManoiNavigation.Diachi)
+
+                        <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                            @Html.DisplayFor(modelItem => item.TenCd)
+                        </td >
+
+                        <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                            @Html.DisplayFor(modelItem => item.Ngaybatdau)
                         </td>
-                        <td>
-                            @if (item.MaCd == null)
-                            {
-                                <span>Kho hiện vật</span>
-                            }
-                            else
-                            {
-                                @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
-                            }
-
+                        <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                            @Html.DisplayFor(modelItem => item.Ngayketthuc)
                         </td>
-                        <td>
-                            @if (item.MaHv == null)
-                            {
-                                <span>Hiện vât đã nhận của chiến dịch</span>
-                            }
-                            else
-                            {
-                                @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
-                            }
-
+                        <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                            @Html.DisplayFor(modelItem => item.NoidungCd)
                         </td>
-                        <td>
-                            @if (item.MaHv != null)
-                            {
-                                <span>
-                                    @Html.DisplayFor(modelItem => item.SoluongTt) <a style="color:black"> @item.MaHvNavigation.Donvitinh</a>
-                                </span>
-                            }
-                            else
-                            {
-                                <span>Tất cả</span>
-                            }
-                        </td>
-                        <td>
-                            @if (item.MaHv != null)
-                            {
-                                @(item.MaHvNavigation.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
-                            }
-                            else if (item.MaCd != null)
-                            {
 
 
-                                var tongqg = 0;
-                                NienluancosoContext db2 = new NienluancosoContext();
-                                var listChienDich = db2.TtQuyengopHienvats.AsNoTracking().Include(t => t.MaHvNavigation).Where(t => t.MaCd == item.MaCd).ToList();
-
-                                @foreach (var item2 in listChienDich)
-                                {
-                                    if (item2.TrangthaiHv.Trim() == "Đã nhận" || item2.TrangthaiHv.Trim() == "Đã tặng")
-                                    {
-                                        tongqg += (item2.MaHvNavigation.Gia) * (item2.SoluongQg);
-                                    }
-                                }
-
-
-                                <b>  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
-
-                            }
-
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Ngaytang)
-                        </td>
-                        
-
-                        <td>
+                        <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
                             @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
                         </td>
 
-
                     </tr>
                 }
-            </tbody>
-        </table>
-    }
+
+            </table>
+        }
+        @if (Model.TtTraotangs.Count > 0)
+        {
+            NienluancosoContext db = new NienluancosoContext();
+            var tongtt = 0;
+            var tong = 0;
+            var listtraotang = db.TtTraotangs.AsNoTracking().Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(t => t.Manoi == Model.Manoi);
+            <hr />
+
+
+            @foreach (var item in listtraotang)
+            {
+
+                tong++;
+                if (item.MaHv != null)
+                {
+                    tongtt += (item.MaHvNavigation.Gia) * (item.SoluongTt);
+                }
+                else if (item.MaCd != null)
+                {
+                    NienluancosoContext db3 = new NienluancosoContext();
+                    var listChienDich = db3.TtQuyengopHienvats.AsNoTracking().Include(t => t.MaHvNavigation).Where(t => t.MaCd == item.MaCd).ToList();
+
+                    @foreach (var item2 in listChienDich)
+                    {
+                        if (item2.TrangthaiHv.Trim() == "Đã nhận" || item2.TrangthaiHv.Trim() == "Đã tặng")
+                        {
+                            tongtt += (item2.MaHvNavigation.Gia) * (item2.SoluongQg);
+                        }
+                    }
+                }
+
+            }
+            <table class="table">
+                <tr>
+                    <h4>Thông tin trao tặng của nơi hỗ trợ</h4>
+                    <b>Tổng số lượt trao tặng: @tong lượt, tổng giá trị trao tặng:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
+                </tr>
+
+                <thead>
+                    <tr>
+                        <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                            Nơi tặng
+                        </th>
+                        <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                            Chiến dịch
+                        </th>
+                        <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                            Hiện vật
+                        </th>
+                        <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                            Số lượng
+                        </th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        <th>Giá trị ước tính</th>
+                        <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                            Ngày tặng
+                        </th>
+
+
+
+                        <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                            Người chịu trách nhiệm
+                        </th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in listtraotang)
+                    {
+                        <tr>
+                            <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                                @Html.DisplayFor(modelItem => item.ManoiNavigation.Diachi)
+                            </td>
+                            <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                                @if (item.MaCd == null)
+                                {
+                                    <span>Kho hiện vật</span>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
+                                }
+
+                            </td>
+                            <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                                @if (item.MaHv == null)
+                                {
+                                    <span>Hiện vât đã nhận của chiến dịch</span>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
+                                }
+
+                            </td>
+                            <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                                @if (item.MaHv != null)
+                                {
+                                    <span>
+                                        @Html.DisplayFor(modelItem => item.SoluongTt) <a style="color:black"> @item.MaHvNavigation.Donvitinh</a>
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>Tất cả</span>
+                                }
+                            </td>
+                            <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                                @if (item.MaHv != null)
+                                {
+                                    @(item.MaHvNavigation.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
+                                }
+                                else if (item.MaCd != null)
+                                {
+
+
+                                    var tongqg = 0;
+                                    NienluancosoContext db2 = new NienluancosoContext();
+                                    var listChienDich = db2.TtQuyengopHienvats.AsNoTracking().Include(t => t.MaHvNavigation).Where(t => t.MaCd == item.MaCd).ToList();
+
+                                    @foreach (var item2 in listChienDich)
+                                    {
+                                        if (item2.TrangthaiHv.Trim() == "Đã nhận" || item2.TrangthaiHv.Trim() == "Đã tặng")
+                                        {
+                                            tongqg += (item2.MaHvNavigation.Gia) * (item2.SoluongQg);
+                                        }
+                                    }
+
+
+                                    <b>  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
+
+                                }
+
+                            </td>
+                            <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                                @Html.DisplayFor(modelItem => item.Ngaytang)
+                            </td>
+
+
+                            <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                                @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
+                            </td>
+
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     </div>
 </body>
 </html>
