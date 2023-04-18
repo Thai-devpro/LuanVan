@@ -51,6 +51,19 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return RedirectToAction("norole", "Home");
             }
+            if (SearchString != null && tu != null && den != null)
+            {
+                var nienluancosoContext2 = _context.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(q => q.ManoiNavigation.Diachi.Contains(SearchString) && q.Ngaytang >= tu && q.Ngaytang <= den);
+                if (nienluancosoContext2.Count() == 0)
+                {
+                    ViewBag.tb = "Không tìm thấy trao tặng có địa chỉ: " + SearchString.ToString() + "Từ ngày: " + tu.Value.ToString("dd-MM-yyyy") + "Đến: " + den.Value.ToString("dd-MM-yyyy");
+                }
+                else
+                {
+                    ViewBag.tb = "Đã tìm thấy  trao tặng có địa chỉ: " + SearchString.ToString() + " Từ ngày:" + tu.Value.ToString("dd-MM-yyyy") + " đến:" + den.Value.ToString("dd-MM-yyyy");
+                }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
             if (SearchString != null)
             {
                 var nienluancosoContext2 = _context.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(q => q.ManoiNavigation.Diachi.Contains(SearchString));

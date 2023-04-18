@@ -21,7 +21,11 @@ public partial class TtQuyengopHienvat
 
     public string TrangthaiHv { get; set; } = null!;
 
-    public DateTime? NgayQg { get; set; }
+    public DateTime NgayQg { get; set; }
+    public string NgayQgFormatted
+    {
+        get { return NgayQg.ToString("dd/MM/yyyy"); }
+    }
 
     public int? MaTv { get; set; }
 

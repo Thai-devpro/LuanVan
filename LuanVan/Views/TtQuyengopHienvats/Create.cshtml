@@ -121,8 +121,10 @@
                             <th>
                                 Giá ước lượng/1 đơn vị tính
                             </th>
-
-                            <th></th>
+                            
+                            <th> 
+                            Số lượng còn trong kho
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -139,7 +141,9 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Gia) VNĐ
                                 </td>
-
+                                <td>
+                                        @Html.DisplayFor(modelItem => item.Soluongcon)  @Html.DisplayFor(modelItem => item.Donvitinh)
+                                </td>
 
                             </tr>
                         }

@@ -126,8 +126,7 @@ namespace LuanVan.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MaTv,TenTv,GioitinhTv,DiachiTv,SdtTv,EmailTv,MatkhauTv,MaCv")] Thanhvien thanhvien)
         {
-            if (ModelState.IsValid)
-            {
+            
                 if (string.IsNullOrEmpty(thanhvien.TenTv) == true)
                 {
                     ModelState.AddModelError("TenTv", "Vui lòng nhập họ tên!");
@@ -155,17 +154,14 @@ namespace LuanVan.Areas.Admin.Controllers
                     return View(thanhvien);
                 }
                 string regex2 = @"^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";
-                if (thanhvien.EmailTv == null || !Regex.IsMatch(thanhvien.EmailTv.ToString(), regex2))
+                if (thanhvien.EmailTv == null || !Regex.IsMatch(thanhvien.EmailTv.ToString().Trim(), regex2))
                 {
                     ModelState.AddModelError("EmailTv", "Vui lòng nhập email chính xác!");
                     ViewData["MaCv"] = new SelectList(_context.Chucvus, "MaCv", "TenCv", thanhvien.MaCv);
                     return View(thanhvien);
                 }
 
-                
-
-                
-                if (string.IsNullOrEmpty(thanhvien.MatkhauTv) == true ||thanhvien.MatkhauTv.Length < 5 || thanhvien.MatkhauTv.Length > 9)
+                if (string.IsNullOrEmpty(thanhvien.MatkhauTv.Trim()) == true ||thanhvien.MatkhauTv.Trim().Length < 4 || thanhvien.MatkhauTv.Trim().Length > 9)
                 {
                     ModelState.AddModelError("MatkhauTv", "Vui lòng nhập mật khẩu từ 5 đến 10 ký tự!");
                     ViewData["MaCv"] = new SelectList(_context.Chucvus, "MaCv", "TenCv", thanhvien.MaCv);
@@ -174,9 +170,7 @@ namespace LuanVan.Areas.Admin.Controllers
                 _context.Add(thanhvien);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["MaCv"] = new SelectList(_context.Chucvus, "MaCv", "TenCv", thanhvien.MaCv);
-            return View(thanhvien);
+           
         }
 
         // GET: Admin/Thanhvien/Edit/5
@@ -358,7 +352,12 @@ namespace LuanVan.Areas.Admin.Controllers
                 return View(thanhvien);
             }
 
-
+            if (string.IsNullOrEmpty(thanhvien.MatkhauTv.Trim()) == true || thanhvien.MatkhauTv.Trim().Length < 4 || thanhvien.MatkhauTv.Trim().Length > 9)
+            {
+                ModelState.AddModelError("MatkhauTv", "Vui lòng nhập mật khẩu từ 5 đến 10 ký tự!");
+                ViewData["MaCv"] = new SelectList(_context.Chucvus, "MaCv", "TenCv", thanhvien.MaCv);
+                return View(thanhvien);
+            }
 
 
 
