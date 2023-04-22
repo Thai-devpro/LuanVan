@@ -59,6 +59,7 @@ namespace LuanVan.Areas.Admin.Controllers
             var chucnangs = _context.Chucnangs.Include(c => c.Quyens);
 
             HttpContext.Session.SetInt32("macv", chucvu.MaCv);
+            HttpContext.Session.SetString("tencv", chucvu.TenCv);
 
             return View(await chucnangs.ToListAsync());
         }

@@ -65,21 +65,21 @@
         margin-right: 10px;
     }
 </style>
+<h1>Danh sách đề xuất hỗ trợ</h1>
 @using (Html.BeginForm())
 {
     <div class="rowseach">
         <form asp-action="index" method="get" class="form-inline">
-
+            <p>  <select name="tt" class="form-control" asp-items="@ViewBag.tt" onchange="this.form.submit()"></select></p>
             <p><input type="text" name="SearchString" placeholder="Nhập tên Địa chỉ" /></p>
-           
-            
+          
             <p><input type="submit" class="btn-success" value="Tìm kiếm" /></p>
 
         </form>
        
     </div>
 }
-<h1>Danh sách đề xuất hỗ trợ</h1>
+
 @if (ViewBag.tb != null)
 {
     <p>@ViewBag.tb</p>

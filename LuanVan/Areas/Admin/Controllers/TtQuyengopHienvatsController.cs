@@ -228,9 +228,16 @@ namespace LuanVan.Areas.Admin.Controllers
                     await _context.SaveChangesAsync();
                     ttQuyengopHienvat.MaTv = null;
                 }
-                      
-                    
-                    _context.Update(ttQuyengopHienvat);
+
+                if (ttQuyengopHienvat.TrangthaiHv == "Đã nhận" && ttqg.TrangthaiHv.Trim() == "Đã nhận" && cd.MaNoi == null && ttQuyengopHienvat.SoluongQg != ttqg.SoluongQg)
+                {
+
+                    var hv = _context.HienVats.FirstOrDefault(od => od.MaHv == ttQuyengopHienvat.MaHv);
+                    hv.Soluongcon += ttQuyengopHienvat.SoluongQg;
+                    hv.Soluongcon -= ttqg.SoluongQg;
+                    await _context.SaveChangesAsync();
+                }
+                _context.Update(ttQuyengopHienvat);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

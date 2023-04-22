@@ -69,7 +69,7 @@ namespace LuanVan.Areas.Admin.Controllers
             return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "BaoCaoNoiHoTro.docx");
         }
         // GET: Admin/Noihotroes
-        public async Task<IActionResult> Index(string? SearchString)
+        public async Task<IActionResult> Index(string? SearchString, int? tt)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)
             {
@@ -80,6 +80,14 @@ namespace LuanVan.Areas.Admin.Controllers
             {
                 return RedirectToAction("norole", "Home");
             }
+            List<SelectListItem> items = new List<SelectListItem>
+{
+    new SelectListItem { Value = "1", Text = "Danh sách tất cả đề xuất" },
+    new SelectListItem { Value = "2", Text = "Danh sách đề xuất chưa duyệt" },
+    new SelectListItem { Value = "3", Text = "Danh sách đề xuất đã duyệt" },
+     new SelectListItem { Value = "4", Text = "Danh sách đã có hỗ trợ hoặc có chiến dịch" }
+};
+            ViewBag.tt = new SelectList(items, "Value", "Text", tt);
             if (SearchString != null)
             {
                 var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).Where(c => c.Diachi.Contains(SearchString));
@@ -91,6 +99,40 @@ namespace LuanVan.Areas.Admin.Controllers
                 {
                     ViewBag.tb = "Đã tìm thấy đề xuất hỗ trợ có địa chỉ : " + SearchString.ToString();
                 }
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tt == 1)
+            {
+
+                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches);
+
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tt == 2)
+            {
+
+                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).Where(n => n.TrangthaiNht.Trim() == "Chưa duyệt");
+
+
+
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tt == 3)
+            {
+
+                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).Where(n => n.TrangthaiNht.Trim() == "Đã duyệt");
+
+
+
+                return View(await nienluancosoContext2.ToListAsync());
+            }
+            if (tt == 4)
+            {
+
+                var nienluancosoContext2 = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches).Where(n => n.Chiendiches.Count > 0 || n.TtTraotangs.Count >0);
+
+
+
                 return View(await nienluancosoContext2.ToListAsync());
             }
             var nienluancosoContext = _context.Noihotros.Include(n => n.MaMtqNavigation).Include(n => n.TtTraotangs).Include(n => n.Chiendiches);
