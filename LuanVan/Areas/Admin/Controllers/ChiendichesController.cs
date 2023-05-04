@@ -11,6 +11,7 @@ using System.Data;
 using System.IO;
 using SautinSoft.Document;
 using System.Text;
+using Microsoft.Extensions.Options;
 
 
 namespace LuanVan.Areas.Admin.Controllers
@@ -69,7 +70,9 @@ namespace LuanVan.Areas.Admin.Controllers
             string output = Path.Combine(path, "BaoCaoChienDich.docx");
             System.IO.File.WriteAllText(input, GridHtml);
             DocumentCore documentCore = DocumentCore.Load(input);
+          
             documentCore.Save(output);
+            
             byte[] bytes = System.IO.File.ReadAllBytes(output);
 
             Directory.Delete(path, true);

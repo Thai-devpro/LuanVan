@@ -109,10 +109,10 @@
         </form>
     </div>
     <div id="Grid" class="A4">
-        <h1 style="text-align:center">Báo cáo</h1>
+        <h1 style="text-align:center">Thiện Nguyện Online</h1>
 
         <div>
-            <h2 style="text-align:center">Nơi hỗ trợ</h2>
+            <h2 style="text-align:center">Báo cáo nơi hỗ trợ</h2>
             <hr />
             <dl class="row">
                 <dt class="col-sm-2">
@@ -427,6 +427,36 @@
                 </tbody>
             </table>
         }
+        <div style="padding-top: 10px">
+                <table width="100%">
+                    <tr style="width:100%">
+                        <td width="30%" style="text-align:center; font-size:20px"> 
+                            <br />
+                            Người lập báo cáo<br />
+                            <i>(ký tên)</i>
+                            <br />
+                            <br />
+                             <br />
+                            <br />
+                            @Context.Session.GetString("tktv")
+                        </td>
+                        <td width="25%">
+                            
+                        </td>
+                        <td width="40%" style="text-align:center; font-size:20px">
+                            <span> Cần Thơ, ngày @DateTime.Now.Day, tháng @DateTime.Now.Month, năm  @DateTime.Now.Year    </span> <br />
+                            Xác nhận của tổ chức<br />
+                            <i>(ký và ghi rõ họ tên)</i>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            
+                        </td>
+                    </tr>
+                   
+                </table>
+            </div>
     </div>
 </body>
 </html>

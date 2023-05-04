@@ -171,12 +171,14 @@ namespace LuanVan.Controllers
             {
                 return NotFound();
             }
-
+            if (HttpContext.Session.GetInt32("idmtq") == null)
+                return RedirectToAction("Register", "User");
             var noihotro = await _context.Noihotros.FindAsync(id);
             if (noihotro == null)
             {
                 return NotFound();
             }
+            
             ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans.Where(s => s.MaMtq == HttpContext.Session.GetInt32("idmtq")), "MaMtq", "HotenMtq");
 
             return View(noihotro);
@@ -271,7 +273,8 @@ namespace LuanVan.Controllers
             {
                 return NotFound();
             }
-
+            if (HttpContext.Session.GetInt32("idmtq") == null)
+                return RedirectToAction("Register", "User");
             var noihotro = await _context.Noihotros.Include(n => n.MaMtqNavigation)
                 .FirstOrDefaultAsync(m => m.Manoi == id);
             if (noihotro == null)

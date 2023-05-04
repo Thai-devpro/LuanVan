@@ -14,7 +14,8 @@
 <style>
     h1 {
         font-family: Arial, sans-serif;
-        font-size: 24px;
+        font-size: 29px;
+        text-align: center;
     }
 
     /* Thiết lập màu nền và khoảng cách cho thẻ p */
@@ -74,7 +75,8 @@
 </style>
 
 <br />
-<h1>Danh sách trao tặng của tổ chức</h1>
+<h1>Danh Sách Trao Tặng Của Tổ Chức</h1>
+<br />
 @using (Html.BeginForm())
 {
     <div class="rowseach">
@@ -134,9 +136,12 @@
 
     }
     <br />
-    <table class="table">
-        <tr>
-            <b>Tổng số lượt trao tặng: @tong lượt, tổng giá trị trao tặng:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
+    
+    <table width="100%">
+        <tr style="text-align:center">
+            <td width="45%"><b style="font-size:20px">Tổng số lượt trao tặng: @tong lượt</b></td>
+            <td width="10%"></td>
+            <td width="45%"><b style="font-size:20px">Tổng giá trị trao tặng:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b></td>
         </tr>
     </table>
 }

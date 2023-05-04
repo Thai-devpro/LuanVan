@@ -202,10 +202,10 @@ namespace LuanVan.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                var cv = _context.Chucvus.FirstOrDefault(t => t.TenCv == chucvu.TenCv);
+                var cv = _context.Chucvus.AsNoTracking().FirstOrDefault(t => t.TenCv == chucvu.TenCv.Trim());
                 if (cv != null && cv.MaCv != chucvu.MaCv)
                 {
-                    ModelState.AddModelError("DienGiai", "chức vụ đã tồn tại!");
+                    ModelState.AddModelError("TenCv", "chức vụ đã tồn tại!");
                     return View(chucvu);
                 }
                 try

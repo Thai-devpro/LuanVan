@@ -100,6 +100,7 @@ namespace LuanVan.Controllers
                 .Include(t => t.MaCdNavigation)
                 .Include(t => t.MaHvNavigation)
                 .Include(t => t.MaMtqNavigation)
+                .Include(t => t.MaTvNavigation)
                 .FirstOrDefaultAsync(m => m.MaQghv == id);
             if (ttQuyengopHienvat == null)
             {
@@ -182,11 +183,17 @@ namespace LuanVan.Controllers
             {
                 return NotFound();
             }
-
+            if (HttpContext.Session.GetInt32("idmtq") == null)
+                return RedirectToAction("Register", "User");
             var ttQuyengopHienvat = await _context.TtQuyengopHienvats.FindAsync(id);
             if (ttQuyengopHienvat == null)
             {
                 return NotFound();
+            }
+            if(ttQuyengopHienvat.MaMtq != HttpContext.Session.GetInt32("idmtq") || ttQuyengopHienvat.TrangthaiHv.Trim() == "Đã nhận" || ttQuyengopHienvat.TrangthaiHv.Trim() == "Đã tặng")
+            {
+               
+               return RedirectToAction("index","TtQuyengopHienvats");
             }
             ViewData["MaCd"] = new SelectList(_context.Chiendiches, "MaCd", "TenCd", ttQuyengopHienvat.MaCd);
             ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv", ttQuyengopHienvat.MaHv);
@@ -258,7 +265,8 @@ namespace LuanVan.Controllers
             {
                 return NotFound();
             }
-
+            if (HttpContext.Session.GetInt32("idmtq") == null)
+                return RedirectToAction("Register", "User");
             var ttQuyengopHienvat = await _context.TtQuyengopHienvats
                 .Include(t => t.MaCdNavigation)
                 .Include(t => t.MaHvNavigation)
@@ -268,7 +276,11 @@ namespace LuanVan.Controllers
             {
                 return NotFound();
             }
+            if (ttQuyengopHienvat.MaMtq != HttpContext.Session.GetInt32("idmtq") || ttQuyengopHienvat.TrangthaiHv.Trim() == "Đã nhận" || ttQuyengopHienvat.TrangthaiHv.Trim() == "Đã tặng")
+            {
 
+                return RedirectToAction("index", "TtQuyengopHienvats");
+            }
             return View(ttQuyengopHienvat);
         }
 

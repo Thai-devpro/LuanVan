@@ -8,7 +8,8 @@
 <style>
     h1 {
         font-family: Arial, sans-serif;
- 
+ font-size:29px;
+ text-align:center;
     }
 
     /* Thiết lập màu nền và khoảng cách cho thẻ p */
@@ -79,7 +80,8 @@
 </style>
 <br />
 
-<h1>Thông tin quyên góp hiện vật</h1>
+<h1>Thông Tin Quyên Góp Hiện Vật</h1>
+<br />
 @using (Html.BeginForm())
 {
     <div class="rowseach">
@@ -126,15 +128,22 @@
             tongnhan++;
         }
     }
- 
+
+    <table width="100%">
+        <tr style="text-align:center">
+            <td width="45%"><b style="font-size:20px">Tổng số lượng đăng ký quyên góp: @tong lượt, đã nhận: @tongnhan lượt</b></td>
+            <td width="10%"></td>
+            <td width="45%"><b style="font-size:20px">Tổng giá trị quyên góp đã nhận:  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b></td>
+        </tr>
+    </table>
+
    
-  
-            <b>Tổng số lượng đăng ký quyên góp: @tong lượt, đã nhận: @tongnhan lượt, tổng giá trị quyên góp đã nhận:  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
-      
-  
+
+
 }
 <table class="table">
     <thead>
+        
         <tr>
             <th>
                 Mạnh thường quân
@@ -207,9 +216,10 @@
                     @if (item.MaMtqNavigation.MaMtq == Context.Session.GetInt32("idmtq") && item.TrangthaiHv.Trim() == "Chưa nhận")
                     {
                         <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.MaQghv })'" />
-                        <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaQghv })'" />
+                        <input type="button" style="width:90px; padding-top:5px; padding-bottom:5px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaQghv })'" />
 
                     }
+                    <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaQghv })'" />
                 </td>
             </tr>
         }

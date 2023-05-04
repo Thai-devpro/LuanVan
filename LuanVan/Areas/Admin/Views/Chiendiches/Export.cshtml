@@ -90,6 +90,7 @@
                 background-color: #f1f3f5;
                 border: none;
             }
+            
         </style>
         <div>
 
@@ -107,11 +108,14 @@
 
             <h1 style="font-family: Arial, sans-serif;
                 text-align: center">
-                Báo Cáo Quyên Góp
+                Thiện Nguyện Online
             </h1>
 
             <div>
-                <h2>Chiến Dịch</h2>
+                <h2 style="font-family: Arial, sans-serif;
+                text-align: center">
+                    Báo Cáo Quyên Góp Của Chiến Dịch
+                </h2>
                 <hr />
                 <dl class="row">
                     <dt class="col-sm-2">
@@ -309,95 +313,39 @@
                 </table>
 
             }
+            <div style="padding-top: 10px">
+                <table width="100%">
+                    <tr style="width:100%">
+                        <td width="30%" style="text-align:center; font-size:20px"> 
+                            <br />
+                            Người lập báo cáo<br />
+                            <i>(ký tên)</i>
+                            <br />
+                            <br />
+                             <br />
+                            <br />
+                            @Context.Session.GetString("tktv")
+                        </td>
+                        <td width="25%">
+                            
+                        </td>
+                        <td width="40%" style="text-align:center; font-size:20px">
+                            <span> Cần Thơ, ngày @DateTime.Now.Day, tháng @DateTime.Now.Month, năm  @DateTime.Now.Year    </span> <br />
+                            Xác nhận của tổ chức<br />
+                            <i>(ký và ghi rõ họ tên)</i>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            
+                        </td>
+                    </tr>
+                   
+                </table>
+            </div>
 
 
-            @* @if (Model.TtTraotangs.Count > 0 && Model.MaNoi == null)
-            {
-            NienluancosoContext db = new NienluancosoContext();
-
-            <h4>Thông tin trao tặng của chiến dịch</h4>
-            var tongtt = 0;
-            var listtt = db.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(t => t.MaCd == Model.MaCd).ToList();
-
-            <table class="table" cellpadding="5" cellspacing="0" style="border: 1px solid #ccc;font-size: 9pt;">
-            @foreach (var item in listtt)
-            {
-            if (item.MaHv != null)
-            {
-            tongtt += (item.MaHvNavigation.Gia) * (item.SoluongTt);
-            }
-            }
-
-            <tr>
-            <b>Tổng giá trị trao tặng của chiến dịch:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
-            </tr>
-            <tr>
-
-            <th>
-            Nơi hỗ trợ
-            </th>
-            <th>
-            Chiến dịch
-            </th>
-            <th>
-            Hiện vật
-            </th>
-            <th>
-            Số lượng
-            </th>
-            <th>
-            Ngày tặng
-            </th>
-            <th>
-            Ảnh
-            </th>
-            <th>
-            Giá trị ước tính
-            </th>
-            <th>
-            Người chịu trách nhiệm
-            </th>
-            </tr>
-            @foreach (var item in listtt)
-            {
-            <tr>
-
-            <td>
-            @Html.DisplayFor(modelItem => item.ManoiNavigation.Diachi)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.SoluongTt) <a>@item.MaHvNavigation?.Donvitinh</a>
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.Ngaytang)
-            </td>
-            <td>
-            <img src="@Url.Content("~/Content/images/traotang/"+item.AnhTt)" width="45" />
-            </td>
-            <td>
-            @(item.MaHvNavigation?.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
-            </td>
-            @if (item.MaTvNavigation?.MaTv != null)
-            {
-            <td>
-            @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
-            </td>
-            }
-            else
-            {
-
-            }
-            </tr>
-            }
-
-            </table>
-            }*@
+           
         </div>
 
 

@@ -10,7 +10,8 @@
 <style>
     h1 {
         font-family: Arial, sans-serif;
-    font-size:35px;
+        font-size: 29px;
+        text-align: center;
     }
 
     /* Thiết lập màu nền và khoảng cách cho thẻ p */
@@ -79,7 +80,8 @@
     }
     
 </style>
-<h1>Danh sách đề xuất hỗ trợ</h1>
+<h1>Danh Sách Đề Xuất Hỗ Trợ</h1>
+<br />
 @using (Html.BeginForm())
 {
     <div class="rowseach">
@@ -104,33 +106,9 @@
 
 @if (ViewBag.tb != null)
 {
-    <p>@ViewBag.tb</p>
+    <p style="font-size:20px"><b>@ViewBag.tb</b></p>
 }
-@*@if (Model != null)
-{
-    //NienluancosoContext db = new NienluancosoContext();
-    var tong = 0;
-    var tongnhan = 0;
-    var tongqg = 0;
 
-
-
-    @foreach (var item in Model)
-    {
-        tong++;
-        if (item.TrangthaiNht.Trim() == "Đã duyệt")
-        {
-            //tongqg += (item.MaHvNavigation.Gia) * (item.SoluongQg);
-            tongnhan++;
-        }
-    }
-    <br />
-    <table class="table">
-        <tr>
-            <b>Tổng số lượt đề xuất nơi hỗ trợ: @tong lượt, đã duyệt: @tongnhan nơi, tổng giá trị quyên góp đã nhận:  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b>
-        </tr>
-    </table>
-}*@
 <table class="table">
     <thead>
         <tr>

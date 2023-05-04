@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuanVan.Data;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Http;
 
 namespace LuanVan.Areas.Admin.Controllers
 {
@@ -48,7 +49,7 @@ namespace LuanVan.Areas.Admin.Controllers
 
                 HttpContext.Session.SetString("tktv", ad.TenTv);
                 HttpContext.Session.SetInt32("idtv", ad.MaTv);
-                HttpContext.Session.SetInt32("cvtv", ad.MaCv);
+                HttpContext.Session.SetInt32("cvtv", ad.MaCv); 
                 return RedirectToAction("index", "Home");
             }
             else

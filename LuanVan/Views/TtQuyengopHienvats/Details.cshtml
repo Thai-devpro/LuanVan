@@ -5,57 +5,72 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <br />
-<h1>Details</h1>
+<h1>Chi tiết</h1>
 
 <div>
-    <h4>TtQuyengopHienvat</h4>
+    <h4>Đăng ký quyên góp</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            Mã đăng ký
+        </dt>
+
+        <dd class="col-sm-10">
+            <b style="font-size:29px">@Html.DisplayFor(model => model.MaQghv)</b>
+        </dd>
+        <dt class="col-sm-2">
+           Người đăng ký
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaMtqNavigation.HotenMtq)
+        </dd>
+        <dt class="col-sm-2">
+            Chiến dịch
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaCdNavigation.TenCd)
+        </dd>
+        <dt class="col-sm-2">
+           Hiện vật
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaHvNavigation.TenHv)
+        </dd>
+        <dt class="col-sm-2">
+            Số lượng
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SoluongQg) <a style="color:black"> @Model.MaHvNavigation.Donvitinh</a>
+        </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ghichu)
+          Ghi chú
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Ghichu)
         </dd>
+       
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoluongQg)
+           Trạng thái
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoluongQg)
+            @Html.DisplayFor(modelItem => Model.TrangthaiHv)
+            <br>
+            @if (Model.TrangthaiHv.Trim() == "Đã nhận")
+            {
+                <a>Người nhận: </a>
+
+                <a style="font-weight:bold">@Html.DisplayFor(modelItem => Model.MaTvNavigation.TenTv)</a>
+            }
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TrangthaiHv)
+           Ngày đăng ký
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TrangthaiHv)
+            @Html.DisplayFor(model => model.NgayQgFormatted)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NgayQg)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NgayQg)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaCdNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaCdNavigation.MaCd)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaHvNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaHvNavigation.MaHv)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaMtqNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaMtqNavigation.MaMtq)
-        </dd>
+       
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.MaQghv">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Về danh sách</a>
 </div>

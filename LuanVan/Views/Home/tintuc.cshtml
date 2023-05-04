@@ -1,0 +1,171 @@
+﻿@model IEnumerable<LuanVan.Data.HienVat>
+@{
+    ViewData["Title"] = "tintuc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 16px;
+        text-align: center;
+        cellpadding: "5";
+        cellspacing: "0";
+        style: "border: 1px; solid #ccc;font-size: 9pt";
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #F7F7F7;
+        font-weight: bold;
+    }
+
+    td {
+        background-color: #FFFFFF;
+    }
+
+    tr:nth-child(even) td {
+        background-color: #F2F2F2;
+    }
+
+    tr:hover td {
+        background-color: #EFEFEF;
+    }
+    h1{
+        text-align:center;
+    }
+
+    
+</style>
+<br />
+<br />
+
+
+
+    <h1>Thông Tin Kho Hiện Vật</h1>
+    <div style="width:18%; padding-bottom:10px; text-align:center">
+        <form asp-controller="Home" asp-action="tintuc" method="get" class="form-inline">
+            <select name="maLoai" class="form-control" asp-items="@ViewBag.MaLoai" onchange="this.form.submit()"></select>
+        </form>
+    </div>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                    Loại hiện vật
+                </th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                    Tên hiện vật
+                </th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                    Số lượng còn
+                </th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                    Đơn vị tính
+                </th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">Giá</th>
+                <th style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                    Tổng giá
+                </th>
+
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        @Html.DisplayFor(modelItem => item.MaLoaiNavigation.DienGiai)
+                    </td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        @Html.DisplayFor(modelItem => item.TenHv)
+                    </td>
+
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        @Html.DisplayFor(modelItem => item.Soluongcon)
+                    </td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        @Html.DisplayFor(modelItem => item.Donvitinh)
+                    </td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        @Html.DisplayFor(modelItem => item.Gia) <a style="color:black">VNĐ</a>
+                    </td>
+                    <td style=" border: 1px solid #dddddd;
+                text-align: center;
+                padding: 8px;">
+                        @(item.Gia * item.Soluongcon) <a style="color:black">VNĐ</a>
+                    </td>
+
+                    
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+<section id="counts" class="counts section-bg" style="width:1300px">
+      <div class="container">
+
+        <div class="row justify-content-end">
+
+          <div class="col-lg-3 col-md-5 col-6 d-md-flex align-items-md-stretch">
+            <div class="count-box">
+                    <span data-purecounter-start="0" data-purecounter-end="@ViewData["chiendich"]" data-purecounter-duration="2" class="purecounter"></span>
+              <p>Chiến dịch</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-5 col-6 d-md-flex align-items-md-stretch">
+            <div class="count-box">
+                    <span data-purecounter-start="0" data-purecounter-end="@ViewData["dexuat"]" data-purecounter-duration="2" class="purecounter"></span>
+              <p>Nơi đề xuất</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-5 col-6 d-md-flex align-items-md-stretch">
+            <div class="count-box">
+                    <span data-purecounter-start="0" data-purecounter-end="@ViewData["quyengop"]" data-purecounter-duration="2" class="purecounter"></span>
+              <p>Đăng ký quyên góp</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-5 col-6 d-md-flex align-items-md-stretch">
+            <div class="count-box">
+                    <span data-purecounter-start="0" data-purecounter-end="@ViewData["traotang"]" data-purecounter-duration="2" class="purecounter"></span>
+              <p>Trao tặng</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
