@@ -8,6 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using LuanVan.Data;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.CodeAnalysis.Scripting;
+using MailKit.Net.Smtp;
+using MailKit;
+using System.Net;
+using MimeKit;
 
 namespace LuanVan.Areas.Admin.Controllers
 {
@@ -15,6 +20,7 @@ namespace LuanVan.Areas.Admin.Controllers
     public class ThanhvienController : Controller
     {
         private readonly NienluancosoContext _context;
+      
 
         public ThanhvienController(NienluancosoContext context)
         {
@@ -162,18 +168,55 @@ namespace LuanVan.Areas.Admin.Controllers
                     return View(thanhvien);
                 }
 
-                if (string.IsNullOrEmpty(thanhvien.MatkhauTv.Trim()) == true ||thanhvien.MatkhauTv.Trim().Length < 4 || thanhvien.MatkhauTv.Trim().Length > 9)
-                {
-                    ModelState.AddModelError("MatkhauTv", "Vui lòng nhập mật khẩu từ 5 đến 10 ký tự!");
-                    ViewData["MaCv"] = new SelectList(_context.Chucvus, "MaCv", "TenCv", thanhvien.MaCv);
-                    return View(thanhvien);
-                }
-                _context.Add(thanhvien);
-                await _context.SaveChangesAsync();
+                //if (string.IsNullOrEmpty(thanhvien.MatkhauTv.Trim()) == true ||thanhvien.MatkhauTv.Trim().Length < 4 || thanhvien.MatkhauTv.Trim().Length > 9)
+                //{
+                //    ModelState.AddModelError("MatkhauTv", "Vui lòng nhập mật khẩu từ 5 đến 10 ký tự!");
+                //    ViewData["MaCv"] = new SelectList(_context.Chucvus, "MaCv", "TenCv", thanhvien.MaCv);
+                //    return View(thanhvien);
+                //}
+            var password = GenerateRandomPassword();
+            
+            thanhvien.MatkhauTv = password;
+            //send mail
+            //using (var client = new SmtpClient())
+            //{
+            //    client.Connect("smtp.gmail.com");
+            //    client.Authenticate("devthai3401@gmail.com", "01677403854Thai");
+            //    var bodybuilder = new BodyBuilder()
+            //    {
+
+            //    };
+            //}
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Thiện Nguyện Online", "ThienNguyenOnline@gmail.com"));
+            message.To.Add(new MailboxAddress("Thành Viên", thanhvien.EmailTv));
+            message.Subject = "Thông tin tài khoản thành viên";
+            message.Body = new TextPart("plain")
+            {
+                Text = $"Gửi {thanhvien.TenTv},\n\nTài khoản của bạn đã được tạo.\nSố điện thoại: {thanhvien.SdtTv}.\nMật khẩu: {password}"
+            };
+
+            using var client = new SmtpClient();
+            client.Connect("smtp.gmail.com");
+            client.Authenticate("devthai3401@gmail.com", "mfpcaknsbfmwrvzd");
+            client.Send(message);
+            client.Disconnect(true);
+
+            _context.Add(thanhvien);
+           
+           
+
+            await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
            
         }
-
+        private string GenerateRandomPassword()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, 8)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
         // GET: Admin/Thanhvien/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
