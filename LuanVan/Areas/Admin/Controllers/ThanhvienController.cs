@@ -168,12 +168,7 @@ namespace LuanVan.Areas.Admin.Controllers
                     return View(thanhvien);
                 }
 
-                //if (string.IsNullOrEmpty(thanhvien.MatkhauTv.Trim()) == true ||thanhvien.MatkhauTv.Trim().Length < 4 || thanhvien.MatkhauTv.Trim().Length > 9)
-                //{
-                //    ModelState.AddModelError("MatkhauTv", "Vui lòng nhập mật khẩu từ 5 đến 10 ký tự!");
-                //    ViewData["MaCv"] = new SelectList(_context.Chucvus, "MaCv", "TenCv", thanhvien.MaCv);
-                //    return View(thanhvien);
-                //}
+                
             var password = GenerateRandomPassword();
             
             thanhvien.MatkhauTv = password;

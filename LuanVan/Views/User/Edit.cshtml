@@ -52,6 +52,12 @@
             </div>
             <br />
             <div class="form-group">
+                <label asp-for="EmailMtq" class="control-label">Email(Có thể trống)</label>
+                <input asp-for="EmailMtq" class="form-control" />
+                <span asp-validation-for="EmailMtq" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
                 <label asp-for="MatkhauMtq" class="control-label">Mật khẩu</label>
                 <input asp-for="MatkhauMtq" class="form-control" />
                 <span asp-validation-for="MatkhauMtq" class="text-danger"></span>

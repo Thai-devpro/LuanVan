@@ -102,7 +102,7 @@ namespace LuanVan.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("MaMtq,HotenMtq,GioitinhMtq,DonviTochucMtq,SdtMtq,DiachiMtq,MatkhauMtq")] Manhthuongquan mtq)
+        public async Task<IActionResult> Register([Bind("MaMtq,HotenMtq,GioitinhMtq,DonviTochucMtq,SdtMtq,DiachiMtq,MatkhauMtq,EmailMtq")] Manhthuongquan mtq)
         {
             if (string.IsNullOrEmpty(mtq.HotenMtq) == true)
             {
@@ -131,6 +131,13 @@ namespace LuanVan.Controllers
             if (string.IsNullOrEmpty(mtq.DiachiMtq) == true)
             {
                 ModelState.AddModelError("DiachiMtq", "Vui lòng nhập địa chỉ!");
+                return View(mtq);
+            }
+            string regex2 = @"^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";
+            if (mtq.EmailMtq != null && !Regex.IsMatch(mtq.EmailMtq.ToString().Trim(), regex2))
+            {
+                ModelState.AddModelError("EmailMtq", "Vui lòng nhập email chính xác!");
+                ViewData["MaCv"] = new SelectList(_context.Chucvus, "MaCv", "TenCv", mtq.EmailMtq);
                 return View(mtq);
             }
             if (string.IsNullOrEmpty(mtq.MatkhauMtq) == true || mtq.MatkhauMtq.Length <5 || mtq.MatkhauMtq.Length >9)
@@ -191,7 +198,7 @@ namespace LuanVan.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaMtq,HotenMtq,GioitinhMtq,DonviTochucMtq,SdtMtq,DiachiMtq,MatkhauMtq")] Manhthuongquan mtq)
+        public async Task<IActionResult> Edit(int id, [Bind("MaMtq,HotenMtq,GioitinhMtq,DonviTochucMtq,SdtMtq,DiachiMtq,MatkhauMtq,EmailMtq")] Manhthuongquan mtq)
         {
             if (id != mtq.MaMtq)
             {
@@ -227,6 +234,13 @@ namespace LuanVan.Controllers
             if (string.IsNullOrEmpty(mtq.DiachiMtq) == true)
             {
                 ModelState.AddModelError("DiachiMtq", "Vui lòng nhập địa chỉ!");
+                return View(mtq);
+            }
+            string regex2 = @"^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";
+            if (mtq.EmailMtq != null && !Regex.IsMatch(mtq.EmailMtq.ToString().Trim(), regex2))
+            {
+                ModelState.AddModelError("EmailMtq", "Vui lòng nhập email chính xác!");
+                ViewData["MaCv"] = new SelectList(_context.Chucvus, "MaCv", "TenCv", mtq.EmailMtq);
                 return View(mtq);
             }
             if (string.IsNullOrEmpty(mtq.MatkhauMtq) == true || mtq.MatkhauMtq.Trim().Length < 5 || mtq.MatkhauMtq.Trim().Length > 9)

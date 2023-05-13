@@ -19,6 +19,8 @@ public partial class Manhthuongquan
 
     public string? MatkhauMtq { get; set; }
 
+    public string? EmailMtq { get; set; }
+
     public virtual ICollection<Noihotro> Noihotros { get; } = new List<Noihotro>();
 
     public virtual ICollection<TtQuyengopHienvat> TtQuyengopHienvats { get; } = new List<TtQuyengopHienvat>();

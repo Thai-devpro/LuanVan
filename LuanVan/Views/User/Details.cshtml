@@ -48,6 +48,20 @@
             @Html.DisplayFor(model => model.DiachiMtq)
         </dd>
         <dt class="col-sm-2">
+            Email
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.EmailMtq == null)
+            {
+                <a>Trống</a>
+            }
+            else
+            {
+                @Html.DisplayFor(model => model.EmailMtq)
+            }
+
+        </dd>
+        <dt class="col-sm-2">
             Mật khẩu
         </dt>
         <dd class="col-sm-10">

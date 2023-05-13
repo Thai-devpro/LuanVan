@@ -59,10 +59,10 @@ public partial class NienluancosoContext : DbContext
             entity.Property(e => e.MaNoi).HasColumnName("MA_NOI");
             entity.Property(e => e.MaTv).HasColumnName("MA_TV");
             entity.Property(e => e.Ngaybatdau)
-                .HasColumnType("datetime")
+                .HasColumnType("date")
                 .HasColumnName("NGAYBATDAU");
             entity.Property(e => e.Ngayketthuc)
-                .HasColumnType("datetime")
+                .HasColumnType("date")
                 .HasColumnName("NGAYKETTHUC");
             entity.Property(e => e.NoidungCd)
                 .HasMaxLength(500)
@@ -155,16 +155,19 @@ public partial class NienluancosoContext : DbContext
 
             entity.Property(e => e.MaMtq).HasColumnName("MA_MTQ");
             entity.Property(e => e.DiachiMtq)
-                .HasMaxLength(50)
+                .HasMaxLength(200)
                 .IsFixedLength()
                 .HasColumnName("DIACHI_MTQ");
             entity.Property(e => e.DonviTochucMtq)
                 .HasMaxLength(50)
                 .IsFixedLength()
                 .HasColumnName("DONVI/TOCHUC_MTQ");
+            entity.Property(e => e.EmailMtq)
+                .HasMaxLength(100)
+                .IsFixedLength()
+                .HasColumnName("EMAIL_MTQ");
             entity.Property(e => e.GioitinhMtq)
-                .HasMaxLength(5)
-                .IsUnicode(false)
+                .HasMaxLength(10)
                 .IsFixedLength()
                 .HasColumnName("GIOITINH_MTQ");
             entity.Property(e => e.HotenMtq)

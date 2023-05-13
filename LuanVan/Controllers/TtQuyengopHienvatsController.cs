@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LuanVan.Data;
 using Microsoft.AspNetCore.Authorization;
+using MailKit.Net.Smtp;
+using MailKit;
+using MimeKit;
 
 namespace LuanVan.Controllers
 {
@@ -111,23 +114,23 @@ namespace LuanVan.Controllers
         }
 
         // GET: TtQuyengopHienvats/Create
-        
+
         public IActionResult Create(int id)
         {
-            if(HttpContext.Session.GetInt32("idmtq")== null)
+            if (HttpContext.Session.GetInt32("idmtq") == null)
                 return RedirectToAction("Register", "User");
             else if (id != null)
-                {
-                    ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv");
-                
-      
-                    ViewData["MaCd"] = new SelectList(_context.Chiendiches.Where(s => s.MaCd == id), "MaCd", "TenCd");
+            {
+                ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv");
+
+
+                ViewData["MaCd"] = new SelectList(_context.Chiendiches.Where(s => s.MaCd == id), "MaCd", "TenCd");
                 ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans.Where(s => s.MaMtq == HttpContext.Session.GetInt32("idmtq")), "MaMtq", "HotenMtq");
-              
+
                 return View();
-                }
-           
-           
+            }
+
+
             return NotFound();
         }
 
@@ -138,7 +141,7 @@ namespace LuanVan.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MaQghv,MaHv,MaMtq,MaCd,Ghichu,SoluongQg,TrangthaiHv,NgayQg")] TtQuyengopHienvat ttQuyengopHienvat)
         {
-           
+
             if (ttQuyengopHienvat.SoluongQg <= 0)
             {
                 ModelState.AddModelError("SoluongQg", "Vui lòng điền số lượng ?");
@@ -149,9 +152,9 @@ namespace LuanVan.Controllers
                 ViewData["MaMtq"] = new SelectList(_context.Manhthuongquans.Where(s => s.MaMtq == HttpContext.Session.GetInt32("idmtq")), "MaMtq", "HotenMtq");
                 return View(ttQuyengopHienvat);
 
-                
+
             }
-            if (ttQuyengopHienvat.Ghichu == null )
+            if (ttQuyengopHienvat.Ghichu == null)
             {
                 ModelState.AddModelError("Ghichu", "Hãy viết gì đó cho chúng tôi");
                 ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv");
@@ -165,14 +168,72 @@ namespace LuanVan.Controllers
             }
             ttQuyengopHienvat.NgayQg = DateTime.Now;
             ttQuyengopHienvat.TrangthaiHv = "Chưa nhận";
+            Manhthuongquan mtq = _context.Manhthuongquans.AsNoTracking().FirstOrDefault(n => n.MaMtq.Equals(HttpContext.Session.GetInt32("idmtq")));
+            //send mail
+
+
+
             _context.Add(ttQuyengopHienvat);
             await _context.SaveChangesAsync();
-            return RedirectToAction("CamOn", new { id = ttQuyengopHienvat.MaQghv });
+            return RedirectToAction("CamOn", new
+            {
+                id = ttQuyengopHienvat.MaQghv
+            });
         }
 
         public async Task<IActionResult> CamOn(int id)
         {
-            var ttqg =  _context.TtQuyengopHienvats.Include(r => r.MaCdNavigation).Include(r => r.MaMtqNavigation).Include(r => r.MaHvNavigation).FirstOrDefault(s => s.MaQghv == id);
+            var ttqg = _context.TtQuyengopHienvats.Include(r => r.MaCdNavigation).Include(r => r.MaMtqNavigation).Include(r => r.MaHvNavigation).FirstOrDefault(s => s.MaQghv == id);
+            if (ttqg.MaMtqNavigation.EmailMtq != null)
+            {
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("Thiện Nguyện Online", "ThienNguyenOnline@gmail.com"));
+                message.To.Add(new MailboxAddress("Mạnh thường quân", ttqg.MaMtqNavigation.EmailMtq));
+                message.Subject = "Thư cảm ơn đăng ký quyên góp";
+                message.Body = new TextPart("plain")
+                {
+                    Text = $"Cảm ơn bạn đã quyên góp\n" +
+      
+       $"Xin hãy gửi kèm MÃ QUYÊN GÓP HIỆN VẬT: \"{ttqg.MaQghv}\" này cho chúng tôi\n" +
+      
+       $"Mã quyên góp hiện vật: " +
+       $"{ttqg.MaQghv}\n" +
+       
+       $"Mạnh thường quân: " +
+      
+       $"{ttqg.MaMtqNavigation.HotenMtq}\n" +
+       $"Chiến dịch: " +
+       $"{ttqg.MaCdNavigation.TenCd} \n" +
+       
+       $"Hiện vật: " +
+      
+       $"{ttqg.MaHvNavigation.TenHv} \n" +
+      
+       $"Số lượng: " +
+      
+       $"{ttqg.SoluongQg} " +
+       $"{ttqg.MaHvNavigation.Donvitinh}  \n" +
+       
+       $"Ghi chú: " +
+       
+       $"{ttqg.Ghichu}  \n" +
+       
+       $"Trạng thái: " +
+       
+       $"{ttqg.TrangthaiHv} \n" +
+      
+       $"Ngày quyên góp: " +
+      
+       $"{ttqg.NgayQgFormatted}\n"
+      
+                };
+
+                using var client = new SmtpClient();
+                client.Connect("smtp.gmail.com");
+                client.Authenticate("devthai3401@gmail.com", "mfpcaknsbfmwrvzd");
+                client.Send(message);
+                client.Disconnect(true);
+            }
             return View(ttqg);
         }
 
@@ -190,10 +251,10 @@ namespace LuanVan.Controllers
             {
                 return NotFound();
             }
-            if(ttQuyengopHienvat.MaMtq != HttpContext.Session.GetInt32("idmtq") || ttQuyengopHienvat.TrangthaiHv.Trim() == "Đã nhận" || ttQuyengopHienvat.TrangthaiHv.Trim() == "Đã tặng")
+            if (ttQuyengopHienvat.MaMtq != HttpContext.Session.GetInt32("idmtq") || ttQuyengopHienvat.TrangthaiHv.Trim() == "Đã nhận" || ttQuyengopHienvat.TrangthaiHv.Trim() == "Đã tặng")
             {
-               
-               return RedirectToAction("index","TtQuyengopHienvats");
+
+                return RedirectToAction("index", "TtQuyengopHienvats");
             }
             ViewData["MaCd"] = new SelectList(_context.Chiendiches, "MaCd", "TenCd", ttQuyengopHienvat.MaCd);
             ViewData["MaHv"] = new SelectList(_context.HienVats, "MaHv", "TenHv", ttQuyengopHienvat.MaHv);
@@ -236,26 +297,26 @@ namespace LuanVan.Controllers
 
 
             try
-                {
+            {
                 ttQuyengopHienvat.NgayQg = ttqg.NgayQg;
                 ttQuyengopHienvat.TrangthaiHv = "Chưa nhận";
                 _context.Update(ttQuyengopHienvat);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TtQuyengopHienvatExists(ttQuyengopHienvat.MaQghv))
                 {
-                    if (!TtQuyengopHienvatExists(ttQuyengopHienvat.MaQghv))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
-                return RedirectToAction(nameof(Index));
-            
-           
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
+
         }
 
         // GET: TtQuyengopHienvats/Delete/5
@@ -298,14 +359,14 @@ namespace LuanVan.Controllers
             {
                 _context.TtQuyengopHienvats.Remove(ttQuyengopHienvat);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TtQuyengopHienvatExists(int id)
         {
-          return _context.TtQuyengopHienvats.Any(e => e.MaQghv == id);
+            return _context.TtQuyengopHienvats.Any(e => e.MaQghv == id);
         }
     }
 }
