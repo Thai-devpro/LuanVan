@@ -10,7 +10,7 @@ public partial class Chiendich
     public string TenCd { get; set; } = null!;
 
     public DateTime Ngaybatdau { get; set; }
-    public string NgaybatdauFormatted
+
     {
         get { return Ngaybatdau.ToString("dd/MM/yyyy"); }
     }
