@@ -148,9 +148,11 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Nơi tặng
-            </th>
+            @if(Context.Session.GetInt32("idmtq") != null){
+                <th>
+                    Nơi tặng
+                </th>
+            }
             <th>
                 Chiến dịch
             </th>
@@ -180,9 +182,13 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ManoiNavigation.Diachi)
-                </td>
+                @if (Context.Session.GetInt32("idmtq") != null)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ManoiNavigation.Diachi)
+                    </td>
+                }
+                
                 <td>
                     @if (item.MaCd == null)
                     {
@@ -197,7 +203,7 @@
                 <td>
                     @if (item.MaHv == null)
                     {
-                        <span>Hiện vât đã nhận của chiến dịch</span>
+                        <span>Hiện vật đã nhận của chiến dịch</span>
                     }
                     else
                     {

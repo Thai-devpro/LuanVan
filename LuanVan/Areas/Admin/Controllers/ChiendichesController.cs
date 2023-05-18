@@ -12,7 +12,8 @@ using System.IO;
 using SautinSoft.Document;
 using System.Text;
 using Microsoft.Extensions.Options;
-
+using LuanVan.Areas.Admin.Models;
+using System.Drawing;
 
 namespace LuanVan.Areas.Admin.Controllers
 {
@@ -79,8 +80,62 @@ namespace LuanVan.Areas.Admin.Controllers
 
             return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "BaoCaoChienDich.docx");
         }
+       
+        public async Task<IActionResult> ThongKeCD(int? id)
+        {
+            if (HttpContext.Session.GetInt32("idtv") == null)
+            {
+                return RedirectToAction("Login", "ThanhVien");
+            }
+            var count = _context.Quyens.Where(c => c.MaCn == 1 && c.MaCv == HttpContext.Session.GetInt32("cvtv")).Count();
+            if (count == 0)
+            {
+                return RedirectToAction("norole", "Home");
+            }
+            if (id == null || _context.Chiendiches == null)
+            {
+                return NotFound();
+            }
+            var cd = _context.Chiendiches.AsNoTracking().FirstOrDefault(c => c.MaCd == id);
+            ViewBag.tencd = cd.TenCd;
 
-        
+            // Thống kê số lượt quyên góp theo năm và tháng
+            var campaignStats = _context.TtQuyengopHienvats
+                .Where(q => q.MaCd == id)
+                .GroupBy(q => new { q.NgayQg.Year, q.NgayQg.Month })
+                .Select(g => new { Year = g.Key.Year, Month = g.Key.Month, Total = g.Count() })
+                .ToList();
+
+            // Tạo bảng 2 chiều (12 tháng x các năm)
+            var table = new int[12, DateTime.Today.Year - campaignStats.Min(stats => stats.Year) + 1];
+
+            // Điền dữ liệu vào bảng
+            foreach (var stats in campaignStats)
+            {
+                int row = stats.Month - 1; // Chuyển đổi tháng thành chỉ số hàng (0-11)
+                int col = stats.Year - campaignStats.Min(s => s.Year); // Chuyển đổi năm thành chỉ số cột (0 trở đi)
+                table[row, col] = stats.Total;
+            }
+
+            // Sử dụng bảng để tạo dữ liệu cho view
+            var model = new List<YearlyCampaignStats>();
+            int startYear = campaignStats.Min(stats => stats.Year);
+            int endYear = DateTime.Today.Year;
+            for (int year = startYear; year <= endYear; year++)
+            {
+                var yearlyStats = new YearlyCampaignStats { Year = year, MonthlyStats = new int[12] };
+                for (int month = 1; month <= 12; month++)
+                {
+                    int row = month - 1;
+                    int col = year - startYear;
+                    int total = table[row, col];
+                    yearlyStats.MonthlyStats[row] = total;
+                }
+                model.Add(yearlyStats);
+            }
+
+            return View(model);
+        }
         public async Task<IActionResult> Index(string? SearchString, DateTime? tu, DateTime? den, string? noiht, int? tt)
         {
             if (HttpContext.Session.GetInt32("idtv") == null)

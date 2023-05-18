@@ -1,0 +1,104 @@
+﻿@using LuanVan.Areas.Admin.Models;
+@model List<YearlyCampaignStats>
+
+@{
+    ViewData["Title"] = "ThongKeCD";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Thống kê số lượt quyên góp cho chiến dịch @ViewBag.tencd </h2>
+@if (Model != null && Model.Count > 0)
+{
+    @foreach (var yearlyStats in Model)
+    {
+        <div>
+            <h3>Năm @yearlyStats.Year</h3>
+            <canvas id="myChart-@yearlyStats.Year"></canvas>
+        </div>
+       
+            
+            <script>
+                // Lấy dữ liệu từ Razor Model
+                var model = @Html.Raw(Json.Serialize(yearlyStats));
+
+                // Chuẩn bị dữ liệu cho biểu đồ
+                var months = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+
+
+                var dataset = {
+                label: 'Năm @yearlyStats.Year',
+                data: @Html.Raw(Json.Serialize(yearlyStats.MonthlyStats)),
+                backgroundColor: 'rgba(75, 192, 192, 0.5)', // Màu nền cột
+                borderColor: 'rgba(75, 192, 192, 1)', // Màu viền cột
+                borderWidth: 1 // Độ rộng viền cột
+                };
+
+                // Tạo biểu đồ cột
+                var ctx = document.getElementById('myChart-@yearlyStats.Year').getContext('2d');
+                var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                labels: months,
+                datasets: [dataset]
+                },
+                options: {
+                responsive: true,
+                scales: {
+                x: {
+                stacked: true // Hiển thị cột chồng lên nhau theo trục X
+                },
+                y: {
+                stacked: true // Hiển thị cột chồng lên nhau theo trục Y
+                }
+                }
+                }
+                });
+            </script>
+        
+    }
+}
+else
+{
+    <p>Không có dữ liệu thống kê.</p>
+}
+
+<input type="button" style="width:110px" class="btn btn-secondary" value="Danh sách" onclick="location.href='@Url.Action("index")'" />
+@*@if (Model != null && Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Năm</th>
+                <th>Tháng 1</th>
+                <th>Tháng 2</th>
+                <th>Tháng 3</th>
+                <th>Tháng 4</th>
+                <th>Tháng 5</th>
+                <th>Tháng 6</th>
+                <th>Tháng 7</th>
+                <th>Tháng 8</th>
+                <th>Tháng 9</th>
+                <th>Tháng 10</th>
+                <th>Tháng 11</th>
+                <th>Tháng 12</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stats in Model)
+            {
+                <tr>
+                    <td>@stats.Year</td>
+                    @foreach (var total in stats.MonthlyStats)
+                    {
+                        <td>@total</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Không có dữ liệu thống kê.</p>
+}
+<input type="button" style="width:110px" class="btn btn-secondary" value="Danh sách" onclick="location.href='@Url.Action("index")'" />*@

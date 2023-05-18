@@ -178,26 +178,31 @@
 
                 </td>
 
-                <td align ="right" width="100px">
+               
 
                     @if (item.MaMtqNavigation.MaMtq == Context.Session.GetInt32("idmtq") && item.TrangthaiNht.Trim() == "Chưa duyệt" && item.TtTraotangs.Count == 0 && item.Chiendiches.Count ==0)
                     {
+                    <td align="right" width="100px">
                         <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.Manoi })'" />
                         <input type="button" style="width:90px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = item.Manoi })'" />
                         <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.Manoi })'" />
+                    </td>
                     }
                     else if (item.MaMtqNavigation.MaMtq == Context.Session.GetInt32("idmtq") &&  item.TrangthaiNht.Trim() == "Đã duyệt" && item.TtTraotangs.Count == 0 && item.Chiendiches.Count == 0)
                     {
+                         <td align ="right" width="100px">
                         <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.Manoi })'" />
                        
                         <input type="button" style="width:90px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.Manoi })'" />
-                    }
-                    else
-                    {
-                        <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.Manoi })'" />
-                        
-                    }
                     </td>
+                    }
+                    else if(Context.Session.GetInt32("idmtq") != null)
+                    {
+                         <td align ="right" width="100px">
+                        <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.Manoi })'" />
+                    </td>
+                    }
+                   
             </tr>
         }    
     </tbody>

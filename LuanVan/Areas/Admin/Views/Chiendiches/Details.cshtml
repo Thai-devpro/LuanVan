@@ -127,6 +127,7 @@
         <input type="button" style="width:110px;" class="btn btn-primary" value="Sửa" onclick="location.href='@Url.Action("Edit", new { id = Model.MaCd })'" />
         <input type="button" style="width:110px" class="btn btn-secondary" value="Danh sách" onclick="location.href='@Url.Action("index")'" />
         <input type="button" style="width:110px;" class="btn btn-primary" value="Xuất báo cáo" onclick="location.href='@Url.Action("Export", new { id = Model.MaCd })'" />
+       
     </div>
     <br />
   
@@ -169,9 +170,7 @@
                
             </tr>
             <tr>
-                <th>
-                    Mã quyên góp
-                </th>
+                
                 <th>
                     Hiện vật
                 </th>
@@ -203,9 +202,7 @@
 
 
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MaQghv)
-                    </td>
+                    
                     <td>
                         @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
                     </td>
@@ -248,94 +245,6 @@
         <hr />
     }
 
-
-    @if (Model.TtTraotangs.Count > 0 && Model.MaNoi == null)
-    {
-        NienluancosoContext db = new NienluancosoContext();
-
-        <h4>Thông tin trao tặng của chiến dịch</h4>
-        var tongtt = 0;
-        var listtt = db.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(t => t.MaCd == Model.MaCd).ToList();
-
-        <table class="table" cellpadding="5" cellspacing="0" style="border: 1px solid #ccc;font-size: 9pt;">
-            @foreach (var item in listtt)
-            {
-                if (item.MaHv != null)
-                {
-                    tongtt += (item.MaHvNavigation.Gia) * (item.SoluongTt);
-                }
-            }
-
-            <tr>
-                <b>Tổng giá trị trao tặng của chiến dịch:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
-            </tr>
-            <tr>
-
-                <th>
-                    Nơi hỗ trợ
-                </th>
-                <th>
-                    Chiến dịch
-                </th>
-                <th>
-                    Hiện vật
-                </th>
-                <th>
-                    Số lượng
-                </th>
-                <th>
-                    Ngày tặng
-                </th>
-                <th>
-                    Ảnh
-                </th>
-                <th>
-                    Giá trị ước tính
-                </th>
-                <th>
-                    Người chịu trách nhiệm
-                </th>
-            </tr>
-            @foreach (var item in listtt)
-            {
-                <tr>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ManoiNavigation.Diachi)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SoluongTt) <a>@item.MaHvNavigation?.Donvitinh</a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Ngaytang)
-                    </td>
-                    <td>
-                        <img src="@Url.Content("~/Content/images/traotang/"+item.AnhTt)" width="45" />
-                    </td>
-                    <td>
-                        @(item.MaHvNavigation?.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
-                    </td>
-                    @if (item.MaTvNavigation?.MaTv != null)
-                    {
-                        <td>
-                            @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
-                        </td>
-                    }
-                    else
-                    {
-
-                    }
-                </tr>
-            }
-
-        </table>
-    }
 </div>
 
 

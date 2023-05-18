@@ -101,18 +101,14 @@
             <h4>  <b>Tổng số lượt đăng ký quyên góp của chiến dịch: @tong lượt; Đã nhận: @tongnhan lượt<br> Tổng giá trị quyên góp đã nhận:  @Html.FormatValue(tongqg, "{0:#,###}") VNĐ</b></h4>
         </tr>
         <tr>
-            <th>
-                Mã quyên góp
-            </th>
+            
             <th>
                 Hiện vật
             </th>
             <th>
                 Số lượng
             </th>
-            <th>
-                Mạnh thường quân
-            </th>
+          
 
             <th>
                 Ghi chú
@@ -135,18 +131,14 @@
 
 
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaQghv)
-                </td>
+               
                 <td>
                     @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SoluongQg) <a>@item.MaHvNavigation?.Donvitinh</a>
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaMtqNavigation.HotenMtq)
-                </td>
+                
 
                 <td>
                     @Html.DisplayFor(modelItem => item.Ghichu)
@@ -181,91 +173,4 @@
 }
 
 
-@if (Model.TtTraotangs.Count > 0 && Model.MaNoi == null)
-{
-    <hr />
-    NienluancosoContext db = new NienluancosoContext();
 
-    <h4>Thông tin trao tặng của chiến dịch</h4>
-    var tongtt = 0;
-    var listtt = db.TtTraotangs.Include(t => t.MaCdNavigation).Include(t => t.MaHvNavigation).Include(t => t.MaTvNavigation).Include(t => t.ManoiNavigation).Where(t => t.MaCd == Model.MaCd).ToList();
-
-    <table class="table">
-        @foreach (var item in listtt)
-        {
-            if (item.MaHv != null)
-            {
-                tongtt += (item.MaHvNavigation.Gia) * (item.SoluongTt);
-            }
-        }
-
-        <tr>
-            <b>Tổng giá trị trao tặng của chiến dịch:  @Html.FormatValue(tongtt, "{0:#,###}") VNĐ</b>
-        </tr>
-        <tr>
-
-            <th>
-                Nơi hỗ trợ
-            </th>
-            <th>
-                Chiến dịch
-            </th>
-            <th>
-                Hiện vật
-            </th>
-            <th>
-                Số lượng
-            </th>
-            <th>
-                Ngày tặng
-            </th>
-            <th>
-                Ảnh
-            </th>
-            <th>
-                Giá trị ước tính
-            </th>
-            <th>
-                Người chịu trách nhiệm
-            </th>
-        </tr>
-        @foreach (var item in listtt)
-        {
-            <tr>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.ManoiNavigation.Diachi)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaHvNavigation.TenHv)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SoluongTt) <a>@item.MaHvNavigation?.Donvitinh</a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ngaytang)
-                </td>
-                <td>
-                    <img src="@Url.Content("~/Content/images/traotang/"+item.AnhTt)" width="45" />
-                </td>
-                <td>
-                    @(item.MaHvNavigation?.Gia * item.SoluongTt) <a style="color:black">VNĐ</a>
-                </td>
-                @if (item.MaTvNavigation?.MaTv != null)
-                {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MaTvNavigation.TenTv)
-                    </td>
-                }
-                else
-                {
-
-                }
-            </tr>
-        }
-
-    </table>
-}

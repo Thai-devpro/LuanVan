@@ -145,9 +145,7 @@
     <thead>
         
         <tr>
-            <th>
-                Mạnh thường quân
-            </th>
+           
             <th>
                 Chiến dịch
             </th>
@@ -177,9 +175,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaMtqNavigation.HotenMtq)
-                </td>
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.MaCdNavigation.TenCd)
                 </td>
@@ -219,7 +215,11 @@
                         <input type="button" style="width:90px; padding-top:5px; padding-bottom:5px" class="btn btn-danger" value="Xóa" onclick="location.href='@Url.Action("Delete", new { id = item.MaQghv })'" />
 
                     }
-                    <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaQghv })'" />
+                    else if (Context.Session.GetInt32("idmtq") != null)
+                    {
+                        <input type="button" style="width:90px" class="btn btn-secondary" value="Chi tiết" onclick="location.href='@Url.Action("Details", new { id = item.MaQghv })'" />
+                    }
+                    
                 </td>
             </tr>
         }
